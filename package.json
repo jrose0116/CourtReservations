@@ -1,0 +1,23 @@
+{
+  "name": "courtreversations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrose0116/CourtReversations.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jrose0116/CourtReversations/issues"
+  },
+  "homepage": "https://github.com/jrose0116/CourtReversations#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

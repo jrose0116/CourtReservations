@@ -11,7 +11,7 @@ const validId = (id, errorPrefix) => {
   return id;
 };
 
-const find = async (obj, errorPrefix) => {
+const findOne = async (obj, errorPrefix) => {
   if (!obj) throw errorPrefix + " Object does not exist";
 
   const usersCollection = await users();
@@ -31,7 +31,7 @@ const exportedMethods = {
       throw e;
     }
 
-    return await find(
+    return await findOne(
       { _id: new ObjectId(id) },
       "Error (data/users.js :: getUserById(id)):"
     );

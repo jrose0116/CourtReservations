@@ -5,7 +5,7 @@ import utilRoutes from "./utils.js";
 // import adminRoutes from "./admin.js";
 
 const constructor = (app) => {
-  app.get("/", (req, res) => res.json({ route: "Here" }));
+  app.get("/", (req, res) => res.json({ route: "Landing Page or Sign Up" })); // TODO: Remember Internet Laws
 
   app.use("/", utilRoutes); // TODO: Handles settings, search, history, recommendations (Without actually using the '/' route)
 

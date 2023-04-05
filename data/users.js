@@ -19,6 +19,41 @@ const exportedMethods = {
     user._id = user._id.toString();
     return user;
   },
+  async createUser(
+    firstName,
+    lastName,
+    username,
+    password,
+    age,
+    city,
+    state,
+    zip,
+    email,
+    experience_level
+  ) {
+    // AGE must be > 13 legally
+  },
+  async getUserByName(firstname, lastname) {
+    //
+  },
+  async getUserByUsername(username) {
+    //
+  },
+  async updateUser(
+    id,
+    firstName,
+    lastName,
+    username,
+    password,
+    age,
+    city,
+    state,
+    zip,
+    email,
+    experience_level
+  ) {
+    //
+  },
 };
 
 export default exportedMethods;

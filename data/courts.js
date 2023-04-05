@@ -33,7 +33,7 @@ const exportedMethods = {
   ) {
     //
   },
-  async getCourtsByName() {
+  async getCourtsByName(name) {
     //
   },
   async addToSchedule(id, ...args) {

@@ -89,4 +89,30 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
 	return num;
 };
 
-export default { validId, validStr, validStrArr, validNumber };
+const validAdress = (adress) => {
+
+};
+
+const validState = (state) => {
+	/*
+	Validates a 2 letter state abbreviation and returns it trimmed.
+	*/
+	state = validStr(state, "State"); 	//check and trim string
+	if (state.length != 2) {
+		throw `Error: State must be its 2 letter abbreviation.`
+	}
+	state = state.toUpperCase();
+
+	let states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 
+				'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
+	if (!state.includes(state)) {
+		throw `Error: State must be valid state.`
+	}
+	return state;
+};
+
+const validZip = (zip) => {
+
+};
+
+export default { validId, validStr, validStrArr, validNumber, validState};

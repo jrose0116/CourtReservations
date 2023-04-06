@@ -1,6 +1,6 @@
 import { courts } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { validId, validStr, validStrArr, validNumber } from "../validation.js";
+import { validId, validStr, validStrArr, validNumber, validState } from "../validation.js";
 
 const exportedMethods = {
   async getCourtById(id) {
@@ -29,12 +29,22 @@ const exportedMethods = {
     capacity,
     length,
     width,
+    courtOpening,
+    courtClosing,
     ownerId
   ) {
-    //
+    //check and trim strings
+    name = validStr(name, "Name");
+    type = validStr(type, "Type");
+
+    //check and trim all address variables
+    //address = validAdress(address);
+    //city = validCity(city);
+    state = validState(state);
   },
   async getCourtsByName(name) {
-    //
+    //check and trim strings
+    
   },
   async addToSchedule(id, ...args) {
     //

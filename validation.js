@@ -89,7 +89,7 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
 	return num;
 };
 
-const validAdress = (adress) => {
+const validAddress = (address) => {
 
 };
 
@@ -115,4 +115,4 @@ const validZip = (zip) => {
 
 };
 
-export default { validId, validStr, validStrArr, validNumber, validState};
+export default { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip};

@@ -115,11 +115,13 @@ const validZip = (zip) => {
 
 };
 
-const validTime = (time, isClosingTime) => {
+const validTime = (time, isEndTime) => {
 	/*
 	(string, boolean)
 	Verifies the time is a string in HH:MM format (military time)
-	isClosingTime boolean -> 24:00 is only valid if it is a closing time
+	isEndTime boolean -> 24:00 is only valid if it is a closing time or booking end time
+		true if courtClosing time or if endTime
+		false if anything else
 	*/
 	time = validStr(time, "time");
 	let timeArr = time.split(":");
@@ -164,7 +166,7 @@ const validTime = (time, isClosingTime) => {
         throw "Error: HH:MM has converted to not a number";
     }
 
-	//24:00 will only be a valid closingTime	
+	//24:00 will only be a valid closingTime or endTime	
 	if (timeHourInt < 0 || timeHourInt > 24)
     {
         throw `Error: ${timeHourInt} out of range 0 to 24`;
@@ -175,24 +177,75 @@ const validTime = (time, isClosingTime) => {
     }
 	if (!(timeMinuteInt == 0 || timeMinuteInt == 15 || timeMinuteInt == 30 || timeMinuteInt == 45))
     {
-        throw `Error: ${timeMinuteInt} not in typical 15 minute increments`;
+        throw `Error: ${timeMinuteInt} not in typical 15 minute intervals`;
     }
 	if (timeHourInt == 24 && timeMinuteInt > 0)
 	{
 		throw `Error: ${time} out of range`;
 	}
-	if (isClosingTime == false && timeHourInt == 24 && timeMinuteInt == 0)
+	if (isEndTime == false && timeHourInt == 24 && timeMinuteInt == 0)
 	{
 		throw `Error: ${time} is only a valid time if it is a closingTime`;
 	}
 	return time;
 }
-const validTimeInRange = (time, courtOpening, courtClosing) => {
+const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	/*
 	valid time format is a string in HH:MM format (military time)
-	time, courtOpening, courtClosing are received as strings in valid time format
+	startTime, endTime, courtOpening, courtClosing are received as strings in valid time format
+	validTime must be called on these params before calling this function
 	*/
 
+	let startTimeArr = startTime.split(":");
+	let startTimeHourString = startTimeArr[0];
+    let startTimeMinuteString = startTimeArr[1];
+	let endTimeArr = endTime.split(":");
+	let endTimeHourString = endTimeArr[0];
+    let endTimeMinuteString = endTimeArr[1];
+
+	let openingArr = courtOpening.split(":");
+	let openingHourString = openingArr[0];
+    let openingMinuteString = openingArr[1];
+	let closingArr = courtClosing.split(":");
+	let closingHourString = closingArr[0];
+    let closingMinuteString = closingArr[1];
+
+	let startTimeHourInt = parseInt(startTimeHourString);
+    let startTimeMinuteInt = parseInt(startTimeMinuteString);
+	let endTimeHourInt = parseInt(endTimeHourString);
+    let endTimeMinuteInt = parseInt(endTimeMinuteString);
+
+	let openingHourInt = parseInt(openingHourString);
+    let openingMinuteInt = parseInt(openingMinuteString);
+	let closingHourInt = parseInt(closingHourString);
+    let closingMinuteInt = parseInt(closingMinuteString);
+	
+	if (openingHourInt > startTimeHourInt || startTimeHourInt > endTimeHourInt || endTimeHourInt > closingHourInt)
+	{
+		throw `Error: hours ${openingHourInt}, ${startTimeHourInt}, ${endTimeHourInt}, ${closingHourInt} are not in nondecreasing order`;
+	}
+	if (openingHourInt == startTimeHourInt)
+	{
+		if (openingMinuteInt > startTimeMinuteInt)
+		{
+			throw `Error: ${courtOpening} minute is greater than ${startTime} minute`;
+		}
+	}
+	if (startTimeHourInt == endTimeHourInt)
+	{
+		if (startTimeMinuteInt >= endTimeMinuteInt)
+		{
+			throw `Error: ${startTime} minute is greater than or equal to ${endTime} minute`;
+		}
+	}
+	if (endTimeHourInt == closingHourInt)
+	{
+		if (endTimeMinuteInt > closingMinuteInt)
+		{
+			throw `Error: ${endTime} minute is greater than ${courtClosing} minute`;
+		}
+	}
+	return true;
 }
 
 export default { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange};

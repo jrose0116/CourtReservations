@@ -122,7 +122,7 @@ const validTime = (time, isClosingTime) => {
 	isClosingTime boolean -> 24:00 is only valid if it is a closing time
 	*/
 	time = validStr(time, "time");
-	let timeArr = str.split(":");
+	let timeArr = time.split(":");
 
 	if (timeArr.length !== 2)
     {
@@ -191,7 +191,6 @@ const validTimeInRange = (time, courtOpening, courtClosing) => {
 	/*
 	valid time format is a string in HH:MM format (military time)
 	time, courtOpening, courtClosing are received as strings in valid time format
-	note: needs to check time and courtOpening are not 24:00
 	*/
 
 }

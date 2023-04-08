@@ -46,13 +46,16 @@ const exportedMethods = {
     //check and trim strings
     
   },
-  async addToSchedule(id, ...args) {
+  async getSchedule(courtId) {
+
+  },
+  async addToSchedule(courtId, ...args) {
     //
   },
-  async removeToSchedule(id, ...args) {
+  async removeFromSchedule(courtId, ...args) {
     //
   },
-  async clearSchedule(id, ...args) {
+  async clearSchedule(courtId, ...args) {
     //
   },
 };

@@ -115,4 +115,78 @@ const validZip = (zip) => {
 
 };
 
-export default { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip};
+const validTime = (time) => {
+	/*
+	Verifies the time is a string in HH:MM format (military time)
+	*/
+	time = validStr(time, "time");
+	let timeArr = str.split(":");
+
+	if (timeArr.length !== 2)
+    {
+        throw `Error: ${time} has incorrect number of :'s in ${time}`;
+    }
+	if (timeArr[0].length !== 2)
+    {
+        throw `Error: ${timeArr[0]} hour string has length ${timeArr[0].length}`;
+    }
+    if (timeArr[1].length !== 2)
+    {
+        throw `Error: ${timeArr[1]} minute string has length ${timeArr[1].length}`;
+    }
+
+	//check a number is at each location after splitting
+    for (let i=0;i<timeArr[0].length;i++)
+    {
+        if (timeArr[0].charCodeAt(i) < 48 || timeArr[0].charCodeAt(i) > 57)
+        {
+            throw `Error: ${timeArr[0][i]} is not a number`;
+        }
+    }
+    for (let i=0;i<timeArr[1].length;i++)
+    {
+        if (timeArr[1].charCodeAt(i) < 48 || timeArr[1].charCodeAt(i) > 57)
+        {
+            throw `Error: ${timeArr[1][i]} is not a number`;
+        }
+    }
+
+	let timeHourString = timeArr[0];
+    let timeMinuteString = timeArr[1];
+
+	let timeHourInt = parseInt(timeHourString);
+    let timeMinuteInt = parseInt(timeMinuteString);
+
+	if (isNaN(timeHourInt) === true || isNaN(timeMinuteInt) === true)
+    {
+        throw "Error: HH:MM has converted to not a number";
+    }
+
+	//24:00 will only be a valid closingTime	
+	if (timeHourInt < 0 || timeHourInt > 24)
+    {
+        throw `Error: ${timeHourInt} out of range 0 to 24`;
+    }
+    if (timeMinuteInt < 0 || timeMinuteInt > 59)
+    {
+        throw `Error: ${timeMinuteInt} out of range 0 to 59`;
+    }
+	if (!(timeMinuteInt == 0 || timeMinuteInt == 15 || timeMinuteInt == 30 || timeMinuteInt == 45))
+    {
+        throw `Error: ${timeMinuteInt} not in typical 15 minute increments`;
+    }
+	if (timeHourInt == 24 && timeMinuteInt > 0)
+	{
+		throw `Error: ${time} out of range`;
+	}
+}
+const validTimeInRange = (time, courtOpening, courtClosing) => {
+	/*
+	valid time format is a string in HH:MM format (military time)
+	time, courtOpening, courtClosing are received as strings in valid time format
+	note: needs to check time and courtOpening are not 24:00
+	*/
+
+}
+
+export default { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange};

@@ -115,9 +115,11 @@ const validZip = (zip) => {
 
 };
 
-const validTime = (time) => {
+const validTime = (time, isClosingTime) => {
 	/*
+	(string, boolean)
 	Verifies the time is a string in HH:MM format (military time)
+	isClosingTime boolean -> 24:00 is only valid if it is a closing time
 	*/
 	time = validStr(time, "time");
 	let timeArr = str.split(":");
@@ -179,6 +181,11 @@ const validTime = (time) => {
 	{
 		throw `Error: ${time} out of range`;
 	}
+	if (isClosingTime == false && timeHourInt == 24 && timeMinuteInt == 0)
+	{
+		throw `Error: ${time} is only a valid time if it is a closingTime`;
+	}
+	return time;
 }
 const validTimeInRange = (time, courtOpening, courtClosing) => {
 	/*

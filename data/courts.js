@@ -45,19 +45,7 @@ const exportedMethods = {
   async getCourtsByName(name) {
     //check and trim strings
     
-  },
-  async getSchedule(courtId) {
-
-  },
-  async addToSchedule(courtId, ...args) {
-    //
-  },
-  async removeFromSchedule(courtId, ...args) {
-    //
-  },
-  async clearSchedule(courtId, ...args) {
-    //
-  },
+  }
 };
 
 export default exportedMethods;

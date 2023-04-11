@@ -36,7 +36,16 @@ const createCourt = async (
     capacity,
     length,
     width,
-    schedule: [],
+    schedule: {
+      _id: new ObjectId(),
+      "Sunday": [],
+      "Monday": [],
+      "Tuesday": [],
+      "Wednesday": [],
+      "Thursday": [],
+      "Friday": [],
+      "Saturday": []
+    },
     courtOpening,
     courtClosing,
     ownerId

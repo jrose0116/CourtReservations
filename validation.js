@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-const validId = (id, varName) => {
+ const validId = (id, varName) => {
 	/*
   Validates and trims an id.
 
@@ -18,7 +18,7 @@ const validId = (id, varName) => {
 	return id;
 };
 
-const validStr = (str, varName) => {
+ const validStr = (str, varName) => {
 	/* 
   Validates and trims a string.
 
@@ -90,7 +90,7 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
 };
 
 const validAddress = (address) => {
-	return 'ToDo';
+  //todo
 };
 
 const validState = (state) => {
@@ -112,7 +112,16 @@ const validState = (state) => {
 };
 
 const validZip = (zip) => {
-
+  /*
+  Verifies that a given U.S. zip code is valid
+  */
+  validStr(zip);
+  zip = zip.trim();
+  let isValid = /^\d{5}(?:[-\s]\d{4})?$/.test(zip);
+  if (!isValid) {
+    throw "Error: Invalid US Zip Code";
+  }
+  return zip;
 };
 
 const validTime = (time, isEndTime) => {
@@ -248,4 +257,24 @@ const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	return true;
 }
 
-export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange};
+const validEmail = (email) => {
+  validStr(email);
+  email = email.trim();
+  let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!isValid) {
+    throw "Error: Invalid email address";
+  }
+  return email;
+}
+
+const validExpLevel = (level) => {
+  validStr(level);
+  level = level.trim();
+  if (level !== "beginner" && level !== "intermediate" && level !== "advanced") {
+    throw "Error: invalid experience level";
+  }
+  return level;
+}
+
+
+export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel};

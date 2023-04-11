@@ -90,7 +90,7 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
 };
 
 const validAddress = (address) => {
-
+	return 'ToDo';
 };
 
 const validState = (state) => {
@@ -248,4 +248,4 @@ const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	return true;
 }
 
-export default { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange};
+export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange};

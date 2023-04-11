@@ -1,19 +1,17 @@
 import { users } from "../config/mongoCollections.js";
 import { validId, validStr, validStrArr, validNumber } from "../validation.js";
 
-const exportedMethods = {
-  async appendToHistory(userId, courtId, date, startTime, endTime) {
+  const appendToHistory = async (userId, courtId, date, startTime, endTime) => {
     //
-  },
-  async deleteHistoryItem(historyItemId) {
+  };
+  const deleteHistoryItem = async (historyItemId) => {
     //
-  },
-  async getHistory(userId) {
+  };
+  const getHistory = async (userId) => {
     //
-  },
-  async getHistoryItem(historyItem) {
+  };
+  const getHistoryItem = async (historyItem) => {
     //
-  },
-};
+  };
 
-export default exportedMethods;
+export {appendToHistory, deleteHistoryItem, getHistory, getHistoryItem};

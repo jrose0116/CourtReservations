@@ -10,8 +10,13 @@ await db.dropDatabase();
 // TODO: Seed Users
 
 // TODO: Seed Courts
-let court = await createCourt("Court1");
-console.log(court);
+try {
+    let court = await createCourt("Best Field", "basketball", "100 Washington Street", "Hoboken", "NJ", "07030", "8", "50", "100", "9:00", "7:00", "shd");
+    console.log(court);
+}
+catch (e) {
+    console.log(e);
+}
 
 //TODO Verify User
 

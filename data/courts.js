@@ -18,7 +18,7 @@ const createCourt = async (
 ) => {
   //check and trim strings
   name = validStr(name, "Name");
-  type = validStr(type, "Type");
+  type = validStr(type, "Type of court");
 
   //check and trim all address variables
   //address = validAddress(address);

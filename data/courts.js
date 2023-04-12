@@ -87,13 +87,16 @@ const getCourtById = async (id) => {
 };
 
 const getCourtsByName = async (courtName) => {
-  //check and trim strings
   courtName = validStr(courtName);
 
   const courtsCollection = await courts();
-  const court = await courtsCollection.findOne({ name: courtName });
+  const courtArr = await courtsCollection.find({ name: courtName }).toArray();
 
-  return court;
+  if (courtArr.length === 0) {
+    throw `Error: No courts found with this name`
+  }
+
+  return courtArr;
 };
 
 export {createCourt, getCourtById, getCourtsByName};

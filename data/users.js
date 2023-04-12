@@ -59,20 +59,20 @@ const createUser = async(
     let addUser = {
       firstName: firstName,
       lastName: lastName,
-      username: username,
+      username: username.toLowerCase(),
       password: password,
       age: age,
       city: city,
       state: state,
       zip: zip,
-      email: email,
+      email: email.toLowerCase(),
       experience_level: experience_level,
       reviews: [],
       history: []
     }
     const usersCollection = await users();
     // check if username already exists
-    const checkUsername = await usersCollection.findOne({ username: username });
+    const checkUsername = await usersCollection.findOne({ username: new RegExp("^" + username, "i") });
     if (checkUsername !== null) {
       throw "Error: another user has this username."
     }

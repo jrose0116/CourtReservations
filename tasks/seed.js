@@ -1,5 +1,6 @@
 // TODO: Seed file for testing purposes
 import {createCourt, getCourtById, getCourtsByName} from '../data/courts.js';
+import {createUser, getUserById, getUserByName, getUserByUsername, updateUser} from '../data/users.js';
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 import { getSchedule } from '../data/schedule.js';
 
@@ -8,10 +9,29 @@ const db = await dbConnection();
 // !DUMP DB : (careful)
 await db.dropDatabase();
 
+let user1 = undefined;
+let user2 = undefined;
+
 let court1 = undefined;
 let court2 = undefined;
 
 // TODO: Seed Users
+try {
+    user1 = await createUser("Isabella  ", "  Stone", "iStONe  ", "jwhef:LSJ", 20, "Staten Island", "NY", "07030", "  iBelLarOSE1@gmaiL.coM  ", " begINNer ");
+    console.log(user1);
+}
+catch (e) {
+    console.log(e);
+}
+
+//try to add duplicate username
+try {
+    user1 = await createUser("Bella  ", "  Stone", "IstOnE  ", "jwhef:LSJ", 20, "Staten Island", "NY", "07030", "  iBelLarOSE1@gmaiL.coM  ", " begINNer ");
+    console.log(user1);
+}
+catch (e) {
+    console.log(e);
+}
 
 // TODO: Seed Courts
 try {

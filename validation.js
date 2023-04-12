@@ -270,7 +270,7 @@ const validEmail = (email) => {
 
 const validExpLevel = (level) => {
   validStr(level);
-  level = level.trim();
+  level = level.trim().toLowerCase();
   if (level !== "beginner" && level !== "intermediate" && level !== "advanced") {
     throw "Error: invalid experience level";
   }

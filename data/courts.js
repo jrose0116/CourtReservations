@@ -89,8 +89,9 @@ const getCourtById = async (id) => {
 const getCourtsByName = async (courtName) => {
   courtName = validStr(courtName);
 
+  const courtNameRegex = new RegExp(courtName, 'i');
   const courtsCollection = await courts();
-  const courtArr = await courtsCollection.find({ name: courtName }).toArray();
+  const courtArr = await courtsCollection.find({ name: courtNameRegex }).toArray();
 
   if (courtArr.length === 0) {
     throw `Error: No courts found with this name`

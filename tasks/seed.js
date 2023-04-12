@@ -51,7 +51,7 @@ catch (e) {
 
 //find court by name
 try {
-    let court = await getCourtsByName(" Court 2  ");
+    let court = await getCourtsByName(" cOUrT 2  ");
     console.log(court);
 }
 catch (e) {

@@ -352,5 +352,4 @@ const validDate = (date) => {
 	return date;
 }
 
-
 export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate};

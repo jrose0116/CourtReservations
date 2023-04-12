@@ -1,6 +1,6 @@
 import { courts } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validNumber, validTime } from "../validation.js";
+import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime } from "../validation.js";
 
 const createCourt = async (
   name,
@@ -16,15 +16,13 @@ const createCourt = async (
   courtClosing,
   ownerId
 ) => {
-  //check and trim strings
   name = validStr(name, "Name");
   type = validStr(type, "Type of court");
 
-  //check and trim all address variables
   //address = validAddress(address);
   //city = validCity(city);
-  state = validState(state);
-  zip = validZip(zip);
+  //state = validState(state);
+  //zip = validZip(zip);
 
   validNumber(capacity, "Capacity", true, 0, Infinity);
   validNumber(length, "Length", false, 0, Infinity);
@@ -73,7 +71,8 @@ const createCourt = async (
 const getCourtById = async (id) => {
   try {
     id = validId(id, "userId");
-  } catch (e) {
+  } 
+  catch (e) {
     throw "Error (data/courts.js :: getCourtById(id)):" + e;
   }
 
@@ -87,9 +86,14 @@ const getCourtById = async (id) => {
   return court;
 };
 
-const getCourtsByName = async (name) => {
+const getCourtsByName = async (courtName) => {
   //check and trim strings
-  name = validStr(name);
+  courtName = validStr(courtName);
+
+  const courtsCollection = await courts();
+  const court = await courtsCollection.findOne({ name: courtName });
+
+  return court;
 };
 
 export {createCourt, getCourtById, getCourtsByName};

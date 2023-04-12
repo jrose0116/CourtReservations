@@ -277,5 +277,80 @@ const validExpLevel = (level) => {
   return level;
 }
 
+const validDate = (date) => {
+	//validStr must be called on date before calling this function
+    //Format: MM/DD/YYYY
+    if (typeof date !== 'string')
+    {
+        throw `Error: ${date} is not a string`;
+    }
+    let dateArr = date.split("/");
+    if (dateArr.length !== 3)
+    {
+        throw "Error: weird number of /'s";
+    }
+    if (dateArr[0].length !== 2)
+    {
+        throw "Error: month string length too big or small";
+    }
+    if (dateArr[1].length !== 2)
+    {
+        throw "Error: day string length too big or small";
+    }
+    if (dateArr[2].length !== 4)
+    {
+        throw "Error: year string length too big or small";
+    }
+    //check a number is at each location
+    for (let i=0;i<dateArr[0].length;i++)
+    {
+        if (dateArr[0].charCodeAt(i) < 48 || dateArr[0].charCodeAt(i) > 57)
+        {
+            throw `Error: ${dateArr[0][i]} is not a number`;
+        }
+    }
+    for (let i=0;i<dateArr[1].length;i++)
+    {
+        if (dateArr[1].charCodeAt(i) < 48 || dateArr[1].charCodeAt(i) > 57)
+        {
+            throw `Error: ${dateArr[1][i]} is not a number`;
+        }
+    }
+    for (let i=0;i<dateArr[2].length;i++)
+    {
+        if (dateArr[2].charCodeAt(i) < 48 || dateArr[2].charCodeAt(i) > 57)
+        {
+            throw `Error: ${dateArr[2][i]} is not a number`;
+        }
+    }
 
-export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel};
+    let monthString = dateArr[0];
+    let dayString = dateArr[1];
+    let yearString = dateArr[2];
+
+    let monthInt = parseInt(monthString);
+    let dayInt = parseInt(dayString);
+    let yearInt = parseInt(yearString);
+
+    if (isNaN(monthInt) === true || isNaN(dayInt) === true || isNaN(yearInt) === true )
+    {
+        throw "Error: MM/DD/YYYY has converted to not a number";
+    }
+    
+    if (monthInt < 0 || monthInt > 12)
+    {
+        throw "Error: month out of range";
+    }
+    if (dayInt < 1 || dayInt > 31)
+    {
+        throw "Error: day out of range";
+    }
+    if (yearInt < 1900 || yearInt > 2024)
+    {
+        throw "Error: year out of range";
+    }
+	return date;
+}
+
+
+export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate};

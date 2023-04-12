@@ -1,6 +1,6 @@
 import { courts } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange } from "../validation.js";
+import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validDate} from "../validation.js";
 import * as courtDataFunctions from './courts.js';
 
 const getSchedule = async (courtId) => {
@@ -21,10 +21,14 @@ const getSchedule = async (courtId) => {
   return court.schedule;
 
 };
-const addToSchedule = async (courtId, ...args) => {
+const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity) => {
   //
+  courtId = validId(courtId);
+  userId = validId(userId);
+  date = validStr(date);
+  date = validDate(date);
 };
-const removeFromSchedule = async (courtId, userId, ...args) => {
+const removeFromSchedule = async (courtId, userId, date, startTime, endTime, capacity) => {
   //
 };
 const clearSchedule = async (courtId, ...args) => {

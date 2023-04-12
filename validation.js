@@ -278,6 +278,7 @@ const validExpLevel = (level) => {
 }
 
 const validDate = (date) => {
+    //does not account for leap years or months with under 31 days
     //Format: MM/DD/YYYY
 
 	date = validStr(date);
@@ -346,7 +347,7 @@ const validDate = (date) => {
     {
         throw "Error: day out of range";
     }
-    if (yearInt < 1900 || yearInt > 2024)
+    if (yearInt < 2000 || yearInt > 2024)
     {
         throw "Error: year out of range";
     }

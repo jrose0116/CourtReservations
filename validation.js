@@ -278,8 +278,9 @@ const validExpLevel = (level) => {
 }
 
 const validDate = (date) => {
-	//validStr must be called on date before calling this function
     //Format: MM/DD/YYYY
+
+	date = validStr(date);
     if (typeof date !== 'string')
     {
         throw `Error: ${date} is not a string`;

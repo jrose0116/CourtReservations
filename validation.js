@@ -198,6 +198,7 @@ const validTime = (time, isEndTime) => {
 	}
 	return time;
 }
+
 const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	/*
 	valid time format is a string in HH:MM format (military time)

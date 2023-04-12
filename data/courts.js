@@ -1,6 +1,6 @@
 import { courts } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip } from "../validation.js";
+import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validNumber, validTime } from "../validation.js";
 
 const createCourt = async (
   name,
@@ -24,6 +24,16 @@ const createCourt = async (
   //address = validAddress(address);
   //city = validCity(city);
   state = validState(state);
+  zip = validZip(zip);
+
+  validNumber(capacity, "Capacity", true, 0, Infinity);
+  validNumber(length, "Length", false, 0, Infinity);
+  validNumber(width, "Width", false, 0, Infinity);
+
+  courtOpening = validTime(courtOpening, false);
+  courtClosing = validTime(courtClosing, true);
+
+  ownerId = validId(ownerId);
 
   //add court
   let newCourt = {

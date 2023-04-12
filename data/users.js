@@ -19,15 +19,15 @@ const createUser = async(
       throw "Error: All inputs must be provided";
     }
     try {
-      firstName = validStr(firstName);
-      lastName = validStr(lastName);
-      username = validStr(username);
-      city = validStr(city);
+      firstName = validStr(firstName, "First name");
+      lastName = validStr(lastName, "Last name");
+      username = validStr(username, "Username");
+      city = validStr(city, "City");
     } catch (e) {
       throw e;
     }
     try {
-      age = validNumber(age);
+      age = validNumber(age, "Age");
     } catch (e) {
       throw e;
     }

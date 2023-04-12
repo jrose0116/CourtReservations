@@ -15,7 +15,7 @@ let user2 = undefined;
 let court1 = undefined;
 let court2 = undefined;
 
-// TODO: Seed Users
+// TODO: Seed Users ************************************************************************************************************
 //add user1
 try {
     user1 = await createUser("Isabella  ", "  Stone", "iStONe  ", "jwhef:LSJ", 20, "Staten Island", "NY", "07030", "  iBelLarOSE1@gmaiL.coM  ", " begINNer ");
@@ -79,7 +79,7 @@ catch (e) {
     console.log(e);
 }
 
-// TODO: Seed Courts
+// TODO: Seed Courts ************************************************************************************************************
 try {
     court1 = await createCourt("Court 1", "basketball", "100 Washington Street", "Hoboken", "NJ", "07030", 8, 50, 100, "09:00", "07:00", "6434bca3a383aa375a96458e");
     let courtId = court1._id.toString();
@@ -171,14 +171,18 @@ catch (e) {
     console.log(e);
 }
 
-//TODO Verify User
+// TODO: seed schedules ************************************************************************************************************
 
-// TODO: Seed Groups
+// TODO: seed history ************************************************************************************************************
 
-// TODO: Seed Friends
+// TODO: seed reviews ************************************************************************************************************
 
 
+// TODO: test user getters ************************************************************************************************************
+
+// TODO: test court getters ************************************************************************************************************
 // find court by id
+//working
 try {
     let court = await getCourtById(court1._id.toString());
     console.log(court);
@@ -187,7 +191,26 @@ catch (e) {
     console.log(e);
 }
 
+//invalid id
+try {
+    let court = await getCourtById("badinput");
+    console.log(court);
+}
+catch (e) {
+    console.log(e);
+}
+
+//id not found
+try {
+    let court = await getCourtById("643617375f52b6748b06c321");
+    console.log(court);
+}
+catch (e) {
+    console.log(e);
+}
+
 //find court by name
+//working
 try {
     let court = await getCourtsByName(" cOUrT 2  ");
     console.log(court);
@@ -195,6 +218,17 @@ try {
 catch (e) {
     console.log(e);
 }
+
+//not found
+try {
+    let court = await getCourtsByName(" no court Like THIs  ");
+    console.log(court);
+}
+catch (e) {
+    console.log(e);
+}
+
+
 
 // TODO: Close Connection
 await closeConnection();

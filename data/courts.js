@@ -73,8 +73,8 @@ const getCourtById = async (id) => {
   if (court === null)
     throw "Error (data/courts.js :: getCourtById(id)): No user found";
 
-  user._id = user._id.toString();
-  return user;
+  court._id = court._id.toString();
+  return court;
 };
 
 const getCourtsByName = async (name) => {

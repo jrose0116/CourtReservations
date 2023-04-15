@@ -2,7 +2,7 @@
 import {createCourt, getCourtById, getCourtsByName} from '../data/courts.js';
 import {createUser, getUserById, getUserByName, getUserByUsername, updateUser} from '../data/users.js';
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
-import { getSchedule } from '../data/schedule.js';
+import { addToSchedule, getSchedule } from '../data/schedule.js';
 
 // TODO: Open Db Connection
 const db = await dbConnection();
@@ -81,11 +81,14 @@ catch (e) {
 
 // TODO: Seed Courts ************************************************************************************************************
 try {
-    court1 = await createCourt("Court 1", "basketball", "100 Washington Street", "Hoboken", "NJ", "07030", 8, 50, 100, "09:00", "07:00", "6434bca3a383aa375a96458e");
+    court1 = await createCourt("Court 1", "basketball", "100 Washington Street", "Hoboken", "NJ", "07030", 8, 50, 100, "09:00", "19:00", "6434bca3a383aa375a96458e");
     let courtId = court1._id.toString();
     let sched = await getSchedule(courtId);
     console.log(court1);
     console.log(sched);
+    console.log("Schedule TEST");
+    let sched2 = await addToSchedule(court1._id.toString(), user1._id, "04/15/2023", "10:00", "11:00", 4);
+    console.log(sched2);
 }
 catch (e) {
     console.log(e);

@@ -88,6 +88,7 @@ try {
     console.log(sched);
     console.log("Schedule TEST");
     let sched2 = await addToSchedule(court1._id.toString(), user1._id, "04/15/2023", "10:00", "11:00", 4);
+    console.log("seed sched 2 result:");
     console.log(sched2);
 }
 catch (e) {

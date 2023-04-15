@@ -1,8 +1,9 @@
 import { Router } from "express";
 const router = Router();
 
-router.route("/list/").get((req, res) => {
-  return res.json({ route: "Available courts page" });
+router.route("/list/").get(async (req, res) => {
+  // return res.json({ route: "Available courts page" });
+  return res.render('../views/allCourts', {title: 'Available Courts'});
 });
 
 router.route("/recommend/").get((req, res) => {

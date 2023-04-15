@@ -85,11 +85,17 @@ try {
     let courtId = court1._id.toString();
     let sched = await getSchedule(courtId);
     console.log(court1);
-    console.log(sched);
-    console.log("Schedule TEST");
+    //console.log(sched);
+    //console.log("Schedule TEST");
     let sched2 = await addToSchedule(court1._id.toString(), user1._id, "04/15/2023", "10:00", "11:00", 4);
-    console.log("seed sched 2 result:");
-    console.log(sched2);
+    //console.log("seed sched 2 result:");
+    //console.log(sched2);
+    let sched3 = await addToSchedule(court1._id.toString(), user1._id, "04/18/2023", "16:00", "17:00", 2);
+    //console.log("seed sched 3 result:");
+    //console.log(sched3);
+    let sched4 = await addToSchedule(court1._id.toString(), user1._id, "04/18/2023", "12:00", "13:00", 1);
+    //console.log("seed sched 4 result:");
+    //console.log(sched4);
 }
 catch (e) {
     console.log(e);

@@ -84,69 +84,50 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
 
   const courtCollection = await courts();
 
-  //console.log(87);
-  //console.log(court.schedule);
   let buildObj = court.schedule;
-  buildObj[date] = [];
-  //console.log(buildObj);
+  if (!buildObj[date])
+  {
+    buildObj[date] = [];
+  }
   if (!court.schedule.date)
   {
-    //let emptyArr = [];
-    //let temp = await getSchedule(courtId);
-    //var currentVal = await courtCollection.findOne(scheduleId);
-    //console.log(currentVal);
     const insertInfo = await courtCollection.updateOne(
       {_id: new ObjectId(courtId)},
-      {$set: { schedule: buildObj} }//FIX
-      //{$set: { schedule: {[date]: emptyArr}} }//FIX
-      //{upsert:true}
+      {$set: { schedule: buildObj} }
     );
+    /*
     if (insertInfo.modifiedCount === 0)
     {
       throw "schedule.js: modifiedCount is 0";
-    }
+    }*/
   }
   court = await courtDataFunctions.getCourtById(courtId);
   console.log(date);
-  console.log(court.schedule);
-  if (true) //if (court.schedule.length == 0)
+  if (capacity > court.capacity)
   {
-    console.log("110");
-    if (capacity > court.capacity)
-    {
-      throw `schedule.js: ${capacity} exceeds ${court.capacity}`;
-    }
-    let newBookingObj = {
-      _id: new ObjectId(),
-      startTime: startTime,
-      endTime: endTime,
-      capacity: capacity,
-      userId: userId,
-    };
-    //let strTemp = "schedule".concat(date);
-    //console.log(strTemp);
-    let bookingsOnADayArray = court.schedule[date];
-    //console.log(typeof bookingsOnADayArray);
-    bookingsOnADayArray.push(newBookingObj);
-    //console.log("130");
-    //console.log(bookingsOnADayArray);
-
-    const insertInfo = await courtCollection.updateOne(
-      {_id: new ObjectId(courtId)},
-      //{ $set: { schedule: {[date]: newBookingObj}} }
-      //{ $push: { [strTemp]: newBookingObj} }
-      //{ $push: { [date]: bookingsOnADayArray} }
-      //{ $push: { schedule: {[date]: bookingsOnADayArray}} }
-      {$set: {schedule: {[date]: bookingsOnADayArray}} }
-    );
-    if (insertInfo.modifiedCount === 0)
-    {
-      throw "schedule.js: modifiedCount is 0";
-    }
+    throw `schedule.js: ${capacity} exceeds ${court.capacity}`;
   }
-  else
-  {
+  let newBookingObj = {
+    _id: new ObjectId(),
+    startTime: startTime,
+    endTime: endTime,
+    capacity: capacity,
+    userId: userId,
+  };
+  
+  //updates existing schedule with new booking object
+  let existingSchedule = court.schedule;//object
+  let bookingsOnADayArray = existingSchedule[date];
+  bookingsOnADayArray.push(newBookingObj);
+  existingSchedule[date] = bookingsOnADayArray;
 
+  const insertInfo = await courtCollection.updateOne(
+    {_id: new ObjectId(courtId)},
+    {$set: {schedule: existingSchedule} }
+  );
+  if (insertInfo.modifiedCount === 0)
+  {
+    throw "schedule.js: modifiedCount is 0";
   }
 
   court = await courtDataFunctions.getCourtById(courtId);

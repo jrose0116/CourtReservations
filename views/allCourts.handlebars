@@ -1,1 +1,14 @@
-<p>heyy</p>
+{{!-- <p>{{courts}}</p> --}}
+
+<h1>{{title}}</h1>
+
+<main>
+    <ul>
+        {{#each courts}}  
+            <li> 
+                {{!-- need to implement these links --}}
+                <a href="/courtdetails/{{this._id}}">{{this.name}}</a> 
+            </li> 
+        {{/each}}
+    </ul>
+</main>

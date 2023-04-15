@@ -4,7 +4,7 @@ import {createCourt, getCourtById, getAllCourts, getCourtsByName} from '../data/
 
 router.route("/list/").get(async (req, res) => {
   // return res.json({ route: "Available courts page" });
-  // let courtList = async courts.getAllCourts();
+  let courtList = await getAllCourts();
   return res.render('../views/allCourts', {title: 'Available Courts', courts: courtList});
 });
 

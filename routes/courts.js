@@ -1,8 +1,11 @@
 import { Router } from "express";
 const router = Router();
+import {createCourt, getCourtById, getAllCourts, getCourtsByName} from '../data/courts.js';
 
-router.route("/list/").get((req, res) => {
-  return res.json({ route: "Available courts page" });
+router.route("/list/").get(async (req, res) => {
+  // return res.json({ route: "Available courts page" });
+  // let courtList = async courts.getAllCourts();
+  return res.render('../views/allCourts', {title: 'Available Courts', courts: courtList});
 });
 
 router.route("/recommend/").get((req, res) => {

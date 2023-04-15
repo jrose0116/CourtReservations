@@ -61,6 +61,12 @@ const createCourt = async (
   return newCourt;
 };
 
+const getAllCourts = async () => {
+  const courtsCollection = await courts();
+  const allCourts = await courtsCollection.find({}).toArray();
+  return allCourts;
+};
+
 const getCourtById = async (id) => {
   try {
     id = validId(id, "userId");
@@ -93,4 +99,4 @@ const getCourtsByName = async (courtName) => {
   return courtArr;
 };
 
-export {createCourt, getCourtById, getCourtsByName};
+export {createCourt, getAllCourts, getCourtById, getCourtsByName};

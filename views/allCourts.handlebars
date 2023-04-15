@@ -1,14 +1,42 @@
-{{!-- <p>{{courts}}</p> --}}
-
 <h1>{{title}}</h1>
 
 <main>
-    <ul>
-        {{#each courts}}  
-            <li> 
-                {{!-- need to implement these links --}}
-                <a href="/courtdetails/{{this._id}}">{{this.name}}</a> 
-            </li> 
-        {{/each}}
-    </ul>
+    <div class="parent">
+        <div class="child1">
+            <ul>
+            {{#each courts}}  
+                <div>
+                    <li> 
+                        <a href="/court/{{this._id}}">{{this.name}}</a> 
+                        <p>Type: {{this.type}}</p>
+                        <p>Address: {{this.address}}, {{this.city}}, {{this.state}} {{this.zip}}</p>
+                    </li> 
+                </div>
+            {{/each}}
+        </ul>
+        </div>
+    
+        <div class="child2">
+            <h2>Upcoming Reservations: </h2>
+            <ul>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <style>
+        .parent {
+            width: 100%;
+            display: flex;
+        }
+
+        .child1 {
+            flex: 1;
+        }
+
+        .child2 {
+            width: 200px;
+        }
+    </style>
 </main>

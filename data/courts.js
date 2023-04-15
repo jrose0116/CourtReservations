@@ -99,4 +99,6 @@ const getCourtsByName = async (courtName) => {
   return courtArr;
 };
 
+// todo: recommend courts function
+
 export {createCourt, getAllCourts, getCourtById, getCourtsByName};

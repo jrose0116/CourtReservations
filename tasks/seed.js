@@ -1,5 +1,5 @@
 // TODO: Seed file for testing purposes
-import {createCourt, getCourtById, getCourtsByName} from '../data/courts.js';
+import {createCourt, getAllCourts, getCourtById, getCourtsByName} from '../data/courts.js';
 import {createUser, getUserById, getUserByName, getUserByUsername, updateUser} from '../data/users.js';
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 import { addToSchedule, getSchedule } from '../data/schedule.js';
@@ -185,6 +185,17 @@ catch (e) {
 // TODO: test user getters ************************************************************************************************************
 
 // TODO: test court getters ************************************************************************************************************
+//get all 
+//working
+try {
+    let courts = await getAllCourts();
+    // console.log('***********************************');
+    console.log(courts);
+}
+catch (e) {
+    console.log(e);
+}
+
 // find court by id
 //working
 try {
@@ -231,6 +242,7 @@ try {
 catch (e) {
     console.log(e);
 }
+
 
 
 

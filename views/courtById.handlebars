@@ -7,5 +7,11 @@
     <p>Capacity: {{court.capacity}} people</p> 
     <p>Dimensions(LxW): {{court.length}} x {{court.width}} ft</p>
     <p>Operating Hours: {{court.courtOpening}}-{{court.courtClosing}}</p>
+    <p>Schedule: </p>
+    <p>{{court.schedule}}</p>
+
+    {{!-- reserve will need an if to change to cancel if it is reserved by user already --}}
+    {{!-- <a href="/courts/{{id}}/reserve">Make Reservation</a> --}}
+    <button>Make Reservation</button>
 </main>
 

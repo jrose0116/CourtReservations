@@ -1,7 +1,23 @@
 <h1>{{title}}</h1>
 
 <main>
-    <label for="selected_date">Select a date to make a reservation:</label>
-    <input type="date" id="selected_date" value={{mindate}} min={{mindate}} max={{maxdate}}>
-    <button>Find available times</button>
+    <form action="GET" id="form">
+        <label for="selected_date">Select a date to make a reservation:</label>
+        <input type="date" id="selected_date" value={{mindate}} min={{mindate}} max={{maxdate}}>
+    </form>
+   
+    <button onclick="displayAvailableTimes()">Find available times</button>
+    <div id="timesDiv"></div>
 </main>
+
+{{!-- <script src="../public/js/makeReservation.js"></script> --}}
+<script>
+    const displayAvailableTimes = () => {
+        //first clear old day's times
+        timesDiv.innerHTML = '';
+
+        const newDiv = document.createElement('div');
+        newDiv.innerHTML = 'get schedule here';
+        timesDiv.appendChild(newDiv);
+    }
+</script>

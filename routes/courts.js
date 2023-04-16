@@ -28,7 +28,7 @@ router.route("/:courtId/reserve").get(async (req, res) => {
   var maxDay = String(maxDate.getDate()).padStart(2, '0');
   var maxDateStr = maxYear + '-' + maxMonth + '-' + maxDay;
 
-  return res.render('../views/makeReservation', {title: `Reserve ${thisCourt.name}`, court: thisCourt, id: thisCourt._id, mindate: currentDateStr, maxdate: maxDateStr });
+  return res.render('../views/makeReservation', {title: `Reserve ${thisCourt.name}`, court: thisCourt, id: thisCourt._id, mindate: currentDateStr, maxdate: maxDateStr, schedule: thisCourt.schedule });
 });
 
 router.route("/recommend/").get((req, res) => {

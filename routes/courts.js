@@ -14,7 +14,21 @@ router.route("/:courtId/").get(async (req, res) => {
 
 router.route("/:courtId/reserve").get(async (req, res) => {
   let thisCourt = await getCourtById(req.params.courtId);
-  return res.render('../views/makeReservation', {title: 'Make Reservation', court: thisCourt, id: thisCourt._id});
+
+  var currentDate = new Date();
+  var year = currentDate.getFullYear();
+  var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  var day = String(currentDate.getDate()).padStart(2, '0');
+  var currentDateStr = year + '-' + month + '-' + day;
+
+  var maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 1);
+  var maxYear = maxDate.getFullYear();
+  var maxMonth = String(maxDate.getMonth() + 1).padStart(2, '0');
+  var maxDay = String(maxDate.getDate()).padStart(2, '0');
+  var maxDateStr = maxYear + '-' + maxMonth + '-' + maxDay;
+
+  return res.render('../views/makeReservation', {title: `Reserve ${thisCourt.name}`, court: thisCourt, id: thisCourt._id, mindate: currentDateStr, maxdate: maxDateStr });
 });
 
 router.route("/recommend/").get((req, res) => {

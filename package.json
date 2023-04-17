@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon --exec npm start"
+    "dev": "nodemon --exec npm start",
+    "seed": "node tasks/seed.js"
   },
   "repository": {
     "type": "git",

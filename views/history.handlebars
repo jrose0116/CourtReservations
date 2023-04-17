@@ -1,0 +1,15 @@
+<h1>{{title}}</h1>
+
+<main>
+    <ul>
+        {{#each courts}}  
+            <div>
+                <li> 
+                    <a href="/courts/{{this._id}}">{{this.name}}</a> 
+                    <p>Type: {{this.type}}</p>
+                    <p>Address: {{this.address}}, {{this.city}}, {{this.state}} {{this.zip}}</p>
+                </li> 
+            </div>
+        {{/each}}
+    </ul>
+</main>

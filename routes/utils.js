@@ -6,7 +6,8 @@ router.get("/testutil", (req, res) => {
 });
 
 router.get("/history", (req, res) => {
-  res.json({ route: "History page" });
+  // let courtHistory = await
+  return res.render('../views/history', {title: 'History', courts: courtHistory});
 });
 
 export default router;

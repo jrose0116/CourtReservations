@@ -58,6 +58,8 @@ const createCourt = async (
     throw 'Error: Could not add court';
   }
 
+  newCourt._id = newCourt._id.toString();
+
   return newCourt;
 };
 

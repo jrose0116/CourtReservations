@@ -133,11 +133,86 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   court = await courtDataFunctions.getCourtById(courtId);
   return court.schedule;
 };
-const removeFromSchedule = async (courtId, userId, date, startTime, endTime) => {
-  //
+
+const removeFromSchedule = async (courtId, bookingId, date) => {
+  //bookingId is id within court.schedule.date
+  courtId = validId(courtId);
+  bookingId = validId(bookingId);
+  date = validDate(date);
+
+  let court = await courtDataFunctions.getCourtById(courtId);
+  const courtCollection = await courts();
+
+  let existingSchedule = court.schedule;//object
+  let bookingsOnADayArray = existingSchedule[date];
+  let newBookingsOnADayArray = [];
+  if (!bookingsOnADayArray)
+  {
+    throw `schedule.js: ${date} has no bookings`;
+  }
+
+  for (let i=0;i<bookingsOnADayArray.length;i++)
+  {
+    let currentString = bookingsOnADayArray[i]._id.toString();
+    //if different bookingId, keep in database by copying into new array
+    if (currentString.localeCompare(bookingId) !== 0)
+    {
+      newBookingsOnADayArray.push(bookingsOnADayArray[i]);
+    }
+  }
+  existingSchedule[date] = newBookingsOnADayArray;
+
+  let modifiedInfo;
+  if (newBookingsOnADayArray.length != 0)//update with updated schedule when array has values
+  {
+    modifiedInfo = await courtCollection.updateOne(
+      {_id: new ObjectId(courtId)},
+      {$set: {schedule: existingSchedule} }
+    );
+  }
+  else//update by removing the date field when array is empty
+  {
+    delete existingSchedule[date];
+    modifiedInfo = await courtCollection.updateOne(
+      {_id: new ObjectId(courtId)},
+      {$set: {schedule: existingSchedule}}
+    );
+  }
+
+  if (modifiedInfo.modifiedCount === 0)
+  {
+    throw "Error: modifiedCount is 0, court doesn't exist with that courtId";
+  }
+  court = await courtDataFunctions.getCourtById(courtId);
+  return court.schedule;
 };
-const clearSchedule = async (courtId, date, ...args) => {
-  //
+const clearSchedule = async (courtId, date) => {
+  //clears court schedule on a given date,
+  courtId = validId(courtId);
+  date = validDate(date);
+
+  let court = await courtDataFunctions.getCourtById(courtId);
+  const courtCollection = await courts();
+
+  let existingSchedule = court.schedule;//object
+  let bookingsOnADayArray = court.schedule[date];
+  if (!bookingsOnADayArray)
+  {
+    throw `schedule.js: ${date} has no bookings`;
+  }
+  delete court.schedule[date];
+
+  const modifiedInfo = await courtCollection.updateOne(
+      {_id: new ObjectId(courtId)},
+      {$set: {schedule: existingSchedule}}
+    );
+  
+  if (modifiedInfo.modifiedCount === 0)
+  {
+    throw "Error: modifiedCount is 0, court doesn't exist with that courtId";
+  }
+  court = await courtDataFunctions.getCourtById(courtId);
+  return court.schedule;
 };
 
 export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule};

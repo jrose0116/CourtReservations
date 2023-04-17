@@ -2,7 +2,7 @@
 import {createCourt, getAllCourts, getCourtById, getCourtsByName} from '../data/courts.js';
 import {createUser, getUserById, getUserByName, getUserByUsername, updateUser} from '../data/users.js';
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
-import { addToSchedule, getSchedule } from '../data/schedule.js';
+import { addToSchedule, getSchedule, removeFromSchedule, clearSchedule } from '../data/schedule.js';
 
 // TODO: Open Db Connection
 const db = await dbConnection();
@@ -96,6 +96,19 @@ try {
     let sched4 = await addToSchedule(court1._id.toString(), user1._id, "04/18/2023", "12:00", "13:00", 1);
     //console.log("seed sched 4 result:");
     //console.log(sched4);
+
+    //remove from schedule
+    // let bookingId = sched2["04/15/2023"][0]._id.toString();
+    // let remSched = await removeFromSchedule(courtId, bookingId, "04/15/2023");
+    // console.log(remSched);
+    // bookingId = sched3["04/18/2023"][0]._id.toString();
+    // let remSched2 = await removeFromSchedule(courtId, bookingId, "04/18/2023");
+    // console.log(remSched2);
+
+    //clear schedule
+    // let clearedSched = await clearSchedule(courtId, "04/18/2023");
+    // console.log(clearedSched);
+
 }
 catch (e) {
     console.log(e);

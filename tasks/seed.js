@@ -51,7 +51,8 @@ try {
     "NY",
     "07030",
     "  iBelLarOSE1@gmaiL.coM  ",
-    " begINNer "
+    " begINNer ",
+    true
   );
   console.log(user1);
 } catch (e) {
@@ -89,7 +90,8 @@ try {
     "NJ",
     "07030",
     "  rgIOv123@gMAiL.coM  ",
-    " INtermEdiate   "
+    " INtermEdiate   ",
+    false
   );
   console.log(user2);
 } catch (e) {

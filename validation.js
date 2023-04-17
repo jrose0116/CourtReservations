@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import moment from 'moment';
 
  const validId = (id, varName) => {
 	/*
@@ -350,6 +351,11 @@ const validDate = (date) => {
     if (yearInt < 2000 || yearInt > 2024)
     {
         throw "Error: year out of range";
+    }
+    //uses moment package
+    if (moment(date, 'MM/DD/YYYY', 'en', true).isValid() == false)
+    {
+        throw `Error: ${date} does not exist (via moment package)`;
     }
 	return date;
 }

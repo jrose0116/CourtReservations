@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validDate} from "../validation.js";
 import * as courtDataFunctions from './courts.js';
 import { getUserById } from "./users.js";
+import moment from 'moment';
 
 const getSchedule = async (courtId) => {
   courtId = validId(courtId);
@@ -24,8 +25,6 @@ const getSchedule = async (courtId) => {
 };
 const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity) => {
   //note: max 3 hrs for booking
-  //TODO: verify date is in range
-  //TODO: verify time is in range
   //TODO: capacity check when array if nonempty
 
   courtId = validId(courtId);
@@ -78,6 +77,21 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
     {
       throw "schedule.js: maximum of 3 hours for a time booking";
     }
+  }
+
+  let momentCurrentDateTime = moment();
+  let combinedDateAndStartTime = date + " " + startTime;
+  let momentDateScheduled = moment(combinedDateAndStartTime, 'MM/DD/YYYY kk:mm', 'en', true);//already verified in validation
+
+  //console.log("MAGIC");
+  if (momentCurrentDateTime.diff(momentDateScheduled) >= 0)//past.diff(future) = positive #
+  {
+    throw `schedule.js: booking with date and time ${combinedDateAndStartTime} is in the past`;
+  }
+  let sixMonthsAheadMark = momentCurrentDateTime.add(6, 'months');
+  if (momentDateScheduled.diff(sixMonthsAheadMark) >= 0)
+  {
+    throw `schedule.js: booking with date and time ${combinedDateAndStartTime} cannot be over 6 months in the future`;
   }
 
   //write TODOs here

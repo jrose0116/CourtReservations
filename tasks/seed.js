@@ -87,13 +87,15 @@ try {
     console.log(court1);
     //console.log(sched);
     //console.log("Schedule TEST");
-    let sched2 = await addToSchedule(court1._id.toString(), user1._id, "04/15/2023", "10:00", "11:00", 4);
+    let sched2 = await addToSchedule(court1._id.toString(), user1._id, "05/15/2023", "10:00", "11:00", 4);
     //console.log("seed sched 2 result:");
     //console.log(sched2);
-    let sched3 = await addToSchedule(court1._id.toString(), user1._id, "04/18/2023", "16:00", "17:00", 2);
+    let sched3 = await addToSchedule(court1._id.toString(), user1._id, "05/18/2023", "16:00", "17:00", 2);
     //console.log("seed sched 3 result:");
     //console.log(sched3);
-    let sched4 = await addToSchedule(court1._id.toString(), user1._id, "04/18/2023", "12:00", "13:00", 1);
+    //let sched4 = await addToSchedule(court1._id.toString(), user1._id, "05/18/2023", "12:00", "13:00", 1);
+    //let schedFail = await addToSchedule(court1._id.toString(), user1._id, "04/16/2023", "10:30", "12:00", 1);
+    //let schedFail2 = await addToSchedule(court1._id.toString(), user1._id, "02/16/2024", "10:30", "12:00", 1);
     //console.log("seed sched 4 result:");
     //console.log(sched4);
 
@@ -109,6 +111,10 @@ try {
     // let clearedSched = await clearSchedule(courtId, "04/18/2023");
     // console.log(clearedSched);
 
+    //invalid date testing
+    //let sched5 = await addToSchedule(court1._id.toString(), user1._id, "02/30/2023", "13:00", "14:00", 1);
+    //console.log("seed sched 5 result:");
+    //console.log(sched5);
 }
 catch (e) {
     console.log(e);

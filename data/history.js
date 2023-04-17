@@ -130,6 +130,37 @@ const getHistory = async (userId) => {
 
   return user.history;
 };
+
+const getUpcomingHistory = async (userId) => {
+  try {
+    userId = validId(userId);
+  } catch (e) {
+    throw "Error (data/history.js :: getHistory(userId)):" + e;
+  }
+
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({
+    _id: new ObjectId(userId),
+  });
+
+  if (user === null)
+    throw "Error (data/history.js :: getHistory(userId)): User not found";
+
+  const today = new Date();
+  user.history.map((val) => {
+    val._id = val._id.toString();
+  });
+  return user.history.filter((val) => {
+    const iDate = new Date(`${i.date} ${i.startTime}`);
+    return iDate < today;
+  });
+  // for (let i of user.history.reverse()) {
+  //   // Reversed so the order remains the same when pushed
+  // }
+
+  // return user.history;
+};
+
 const getHistoryItem = async (historyItemId) => {
   try {
     historyItemId = validId(historyItemId);

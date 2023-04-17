@@ -187,4 +187,10 @@ const getHistoryItem = async (historyItemId) => {
   throw "Error (data/history.js :: getHistoryItem(historyItemId): History Item not found";
 };
 
-export { appendToHistory, deleteHistoryItem, getHistory, getHistoryItem };
+export {
+  appendToHistory,
+  deleteHistoryItem,
+  getHistory,
+  getHistoryItem,
+  getUpcomingHistory,
+};

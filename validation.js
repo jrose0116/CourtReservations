@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import moment from 'moment';
 
  const validId = (id, varName) => {
 	/*
@@ -351,7 +352,20 @@ const validDate = (date) => {
     {
         throw "Error: year out of range";
     }
+    //uses moment package
+    if (moment(date, 'MM/DD/YYYY', 'en', true).isValid() == false)
+    {
+        throw `Error: ${date} does not exist (via moment package)`;
+    }
 	return date;
 }
 
-export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate};
+const validImageUrl = (url) => {
+  const imageExtensions = /(jpg|png|gif)$/i;
+  if (imageExtensions.test(url) === false) {
+    throw "Error: not a valid image url";
+  };
+  return url.trim();
+}
+
+export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl};

@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon --exec npm start"
+    "dev": "nodemon --exec npm start",
+    "seed": "node tasks/seed.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^7.0.7",
+    "moment": "^2.29.4",
     "mongodb": "^5.1.0",
     "nodemon": "^2.0.21"
   }

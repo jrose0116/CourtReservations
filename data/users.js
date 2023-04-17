@@ -1,6 +1,6 @@
 import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { validId, validStr, validNumber, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel} from "../validation.js";
+import { validId, validStr, validNumber, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validImageUrl} from "../validation.js";
 
 //HASH PASSWORD
 const createUser = async(
@@ -13,11 +13,21 @@ const createUser = async(
     state,
     zip,
     email,
-    experience_level
+    experience_level,
+    owner,
+    image,
   ) => {
     if (!firstName || !lastName || !username || !password || !age || !city || !state || !zip || !email || !experience_level) {
       throw "Error: All inputs must be provided";
-    }
+  }
+  if (owner === null) {
+    throw "Error: owner must be provided"
+  }
+  if (!image) {
+    image = '/public/images/No_Image_Available.jpg';
+  } else {
+    image = validImageUrl(image);
+  }
     try {
       firstName = validStr(firstName, "First name");
       lastName = validStr(lastName, "Last name");
@@ -55,7 +65,10 @@ const createUser = async(
       experience_level = validExpLevel(experience_level);
     } catch (e) {
       throw (e);
-    }
+  }
+  if (typeof owner !== "boolean") {
+    throw "Error: owner must be of type boolean";
+  }
     let addUser = {
       firstName: firstName,
       lastName: lastName,
@@ -66,7 +79,9 @@ const createUser = async(
       state: state,
       zip: zip,
       email: email.toLowerCase(),
+      image: image,
       experience_level: experience_level,
+      owner: owner,
       reviews: [],
       history: []
     }
@@ -145,11 +160,22 @@ const updateUser = async(
     state,
     zip,
     email,
-    experience_level
+    experience_level,
+    owner,
+    image,
+
   ) => {
     if (!firstName || !lastName || !username || !age || !city || !state || !zip || !email || !experience_level) {
       throw "Error: All inputs must be provided";
-    }
+  }
+   if (owner === null) {
+    throw "Error: owner must be provided"
+  }
+  if (!image) {
+    image = '/public/images/No_Image_Available.jpg';
+  } else {
+    image = validImageUrl(image);
+  }
       try {
       firstName = validStr(firstName);
       lastName = validStr(lastName);
@@ -192,7 +218,10 @@ const updateUser = async(
       id = validId(id);
     } catch (e) {
       throw (e);
-    }
+  }
+  if (typeof owner !== "boolean") {
+    throw "Error: owner must be of type boolean";
+  }
     let updatedUser = {
       firstName: firstName,
       lastName: lastName,
@@ -202,7 +231,9 @@ const updateUser = async(
       state: state,
       zip: zip,
       email: email,
-      experience_level: experience_level
+      image: image,
+      experience_level: experience_level,
+      owner: owner
     }
     const usersCollection = await users();
      const updateInfo = await usersCollection.findOneAndUpdate(

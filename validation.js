@@ -360,4 +360,12 @@ const validDate = (date) => {
 	return date;
 }
 
-export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate};
+const validImageUrl = (url) => {
+  const imageExtensions = /(jpg|png|gif)$/i;
+  if (imageExtensions.test(url) === false) {
+    throw "Error: not a valid image url";
+  };
+  return url.trim();
+}
+
+export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl};

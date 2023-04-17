@@ -18,7 +18,7 @@ let court2 = undefined;
 // TODO: Seed Users ************************************************************************************************************
 //add user1
 try {
-    user1 = await createUser("Isabella  ", "  Stone", "iStONe  ", "jwhef:LSJ", 20, "Staten Island", "NY", "07030", "  iBelLarOSE1@gmaiL.coM  ", " begINNer ");
+    user1 = await createUser("Isabella  ", "  Stone", "iStONe  ", "jwhef:LSJ", 20, "Staten Island", "NY", "07030", "  iBelLarOSE1@gmaiL.coM  ",  " begINNer ", false, "/public/images/boldandbrash.jpg");
     console.log(user1);
 }
 catch (e) {
@@ -27,7 +27,7 @@ catch (e) {
 
 //try to add duplicate username to user1
 try {
-    user1 = await createUser("Bella  ", "  Stone", "IstOnE  ", "jwhef:LSJ", 20, "Staten Island", "NY", "07030", "  iBelLarOSE1@gmaiL.coM  ", " begINNer ");
+    user1 = await createUser("Bella  ", "  Stone", "IstOnE  ", "jwhef:LSJ", 20, "Staten Island", "NY", "07030", "  iBelLarOSE1@gmaiL.coM  ", " begINNer ", true);
     console.log(user1);
 }
 catch (e) {
@@ -36,7 +36,7 @@ catch (e) {
 
 //add user2
 try {
-    user2 = await createUser("  Ryan  ", "Giovanniello", "rGIoV22  ", "fiuwefvjksfhe", 21, "Hoboken", "NJ", "07030", "  rgIOv123@gMAiL.coM  ", " INtermEdiate   ");
+    user2 = await createUser("  Ryan  ", "Giovanniello", "rGIoV22  ", "fiuwefvjksfhe", 21, "Hoboken", "NJ", "07030", "  rgIOv123@gMAiL.coM  ", " INtermEdiate   ", true);
     console.log(user2);
 }
 catch (e) {

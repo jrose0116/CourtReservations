@@ -26,11 +26,16 @@ import {
   getHistoryItem,
   getUpcomingHistory,
 } from "../data/history.js";
+import {
+  createReview,
+  deleteReview,
+  updateOverallRating,
+} from "../data/reviews.js";
 
 let printUsers = false;
 let printCourts = false;
 let printHistory = false;
-let printReviews = false;
+let printReviews = true;
 let printSchedule = false;
 
 // TODO: Open Db Connection
@@ -483,7 +488,29 @@ try {
 //invalid calls
 
 // TODO: seed reviews ************************************************************************************************************
+try {
+  let review1 = await createReview(
+    user1._id.toString(),
+    user2._id.toString(),
+    5,
+    "This person plays great!"
+  );
+  if (printReviews) console.log(review1);
 
+  let review2 = await createReview(
+    user2._id.toString(),
+    user1._id.toString(),
+    1,
+    "This person was not nice on the courts!"
+  );
+  if (printReviews) console.log(review2);
+  if (printReviews) console.log(await getUserById(user1._id.toString()));
+
+  let delete2 = await deleteReview(review2._id.toString());
+  console.log(delete2);
+} catch (e) {
+  if (printReviews) console.log(e);
+}
 // TODO: test user getters ************************************************************************************************************
 
 // TODO: test court getters ************************************************************************************************************

@@ -1,13 +1,15 @@
-import { Router } from "express";
-const router = Router();
+// not using this file???
 
-router.get("/testutil", (req, res) => {
-  res.json({ test: "util", implementMe: "<-" });
-});
+// import { Router } from "express";
+// const router = Router();
+// import {getHistory} from '../data/history.js';
 
-router.get("/history", (req, res) => {
-  // let courtHistory = await
-  return res.render('../views/history', {title: 'History', courts: courtHistory});
-});
+// router.get("/testutil", (req, res) => {
+//   res.json({ test: "util", implementMe: "<-" });
+// });
 
-export default router;
+// router.route("/history").get(async (req, res) => {
+//   // let courtHistory = await getHistory();
+// });
+
+// export default router;

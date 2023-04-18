@@ -20,7 +20,8 @@ router.route("/name/:username").get(async (req, res) => {
 
 router.route("/id/:userId/history").get(async (req, res) => {
   let courtHistory = await getHistory(req.params.userId);
-  return res.render('../views/history', {title: 'History', courts: 'courtHistory', id: req.params.userId});
+  // let link = `/user/id/${req.params.userId}/`;
+  return res.render('../views/history', {title: 'History', courts: courtHistory, id: req.params.userId});
 });
 
 export default router;

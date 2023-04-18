@@ -1,4 +1,5 @@
 import { users } from "../config/mongoCollections.js";
+import { ObjectId } from "mongodb";
 import { validId, validStr, validStrArr, validNumber } from "../validation.js";
 
 const createReview = async (revieweeId, reviewerId, rating, comment) => {
@@ -13,14 +14,14 @@ const createReview = async (revieweeId, reviewerId, rating, comment) => {
   }
 
   const usersCollection = await users();
-  const reviewee = await usersCollection.findOne({
-    _id: new ObjectId(revieweeid),
+  let reviewee = await usersCollection.findOne({
+    _id: new ObjectId(revieweeId),
   });
 
   if (reviewee === null)
     throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): Reviewed user not found";
 
-  reviews = reviewee.reviews;
+  let reviews = reviewee.reviews;
   for (let i of reviews) {
     if (i.reviewee_id.toString() == revieweeId) {
       throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): User already contains review from user (delete review to create a new one)";
@@ -44,20 +45,20 @@ const createReview = async (revieweeId, reviewerId, rating, comment) => {
     );
   }
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDate();
+  let date = new Date();
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let day = date.getDate();
 
   month = ("" + month).length == 1 ? "0" + month : month;
   day = ("" + day).length == 1 ? "0" + day : day;
 
-  dateString = `${month}/${day}/${year}`;
+  let dateString = `${month}/${day}/${year}`;
 
   let reviewObject = {
     _id: new ObjectId(),
-    reviewerUsername: reviewee._id.toString(),
-    revieweeUsername: reviewer._id.toString(),
+    reviewerUsername: reviewer.username,
+    revieweeUsername: reviewee.username,
     reviewer_id: reviewerId,
     reviewee_id: revieweeId,
     rating: rating,
@@ -140,14 +141,14 @@ const updateOverallRating = async (userId) => {
   }
 
   const usersCollection = await users();
-  const reviewee = await usersCollection.findOne({
+  let reviewee = await usersCollection.findOne({
     _id: new ObjectId(userId),
   });
 
   if (reviewee === null)
     throw "Error (data/reviews.js :: updateOverallRating(userId)): User not found";
 
-  reviews = reviewee.reviews;
+  let reviews = reviewee.reviews;
   let res = 0;
   for (let i of reviews) {
     res += i.rating;

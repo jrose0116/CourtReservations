@@ -83,7 +83,8 @@ const createUser = async(
       experience_level: experience_level,
       owner: owner,
       reviews: [],
-      history: []
+      history: [],
+      overallRating: 0
     }
     const usersCollection = await users();
     // check if username already exists

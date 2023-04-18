@@ -11,7 +11,7 @@
     <p>{{court.schedule}}</p>
 
     {{!-- reserve will need an if to change to cancel if it is reserved by user already --}}
-    <a href="/courts/{{id}}/reserve">Make Reservation</a>
-    {{!-- <button>Make Reservation</button> --}}
+    {{!-- should owner be allowed to reserve own court? --}}
+    <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
 </main>
 

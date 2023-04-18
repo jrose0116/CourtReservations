@@ -1,0 +1,15 @@
+<h1>{{title}}</h1>
+
+<main>
+    <ul>
+        {{#each courts}}  
+            <div>
+                <li> 
+                    <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
+                    <p>Date: {{this.date}}</p>
+                    <p>Booked: {{this.startTime}} to {{this.endTime}}</p>
+                </li> 
+            </div>
+        {{/each}}
+    </ul>
+</main>

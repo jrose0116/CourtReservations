@@ -1,6 +1,15 @@
 import { courts } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime } from "../validation.js";
+import {
+  validId,
+  validStr,
+  validStrArr,
+  validNumber,
+  validAddress,
+  validState,
+  validZip,
+  validTime,
+} from "../validation.js";
 
 const createCourt = async (
   name,
@@ -45,18 +54,20 @@ const createCourt = async (
     length,
     width,
     schedule: {
-      _id: new ObjectId()
+      _id: new ObjectId(),
     },
     courtOpening,
     courtClosing,
-    ownerId
+    ownerId,
   };
 
   const courtCollection = await courts();
   const insertInfo = await courtCollection.insertOne(newCourt);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-    throw 'Error: Could not add court';
+    throw "Error: Could not add court";
   }
+
+  newCourt._id = insertInfo.insertedId.toString();
 
   return newCourt;
 };
@@ -70,8 +81,7 @@ const getAllCourts = async () => {
 const getCourtById = async (id) => {
   try {
     id = validId(id, "userId");
-  } 
-  catch (e) {
+  } catch (e) {
     throw "Error (data/courts.js :: getCourtById(id)):" + e;
   }
 
@@ -88,12 +98,14 @@ const getCourtById = async (id) => {
 const getCourtsByName = async (courtName) => {
   courtName = validStr(courtName);
 
-  const courtNameRegex = new RegExp(courtName, 'i');
+  const courtNameRegex = new RegExp(courtName, "i");
   const courtsCollection = await courts();
-  const courtArr = await courtsCollection.find({ name: courtNameRegex }).toArray();
+  const courtArr = await courtsCollection
+    .find({ name: courtNameRegex })
+    .toArray();
 
   if (courtArr.length === 0) {
-    throw `Error: No courts found with this name`
+    throw `Error: No courts found with this name`;
   }
 
   return courtArr;
@@ -101,4 +113,4 @@ const getCourtsByName = async (courtName) => {
 
 // todo: recommend courts function
 
-export {createCourt, getAllCourts, getCourtById, getCourtsByName};
+export { createCourt, getAllCourts, getCourtById, getCourtsByName };

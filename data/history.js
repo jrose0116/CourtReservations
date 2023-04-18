@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { users, courts } from "../config/mongoCollections.js";
 import {
   validId,
@@ -82,7 +83,7 @@ const deleteHistoryItem = async (historyItemId) => {
   for (let i in history) {
     if (history[i]._id.toString() == historyItemId) {
       history[i]._id = history[i]._id.toString();
-      reviews.splice(i, 1);
+      history.splice(i, 1);
       found = true;
     }
   }
@@ -151,7 +152,7 @@ const getUpcomingHistory = async (userId) => {
     val._id = val._id.toString();
   });
   return user.history.filter((val) => {
-    const iDate = new Date(`${i.date} ${i.startTime}`);
+    const iDate = new Date(`${val.date} ${val.startTime}`);
     return iDate < today;
   });
   // for (let i of user.history.reverse()) {

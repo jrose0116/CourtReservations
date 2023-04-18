@@ -27,6 +27,12 @@ import {
   getUpcomingHistory,
 } from "../data/history.js";
 
+let printUsers = false;
+let printCourts = false;
+let printHistory = false;
+let printReviews = false;
+let printSchedule = false;
+
 // TODO: Open Db Connection
 const db = await dbConnection();
 // !DUMP DB : (careful)
@@ -54,9 +60,9 @@ try {
     " begINNer ",
     true
   );
-  console.log(user1);
+  if (printUsers) console.log(user1);
 } catch (e) {
-  console.log(e);
+  if (printUsers) console.log(e);
 }
 
 //try to add duplicate username to user1
@@ -73,9 +79,9 @@ try {
     "  iBelLarOSE1@gmaiL.coM  ",
     " begINNer "
   );
-  console.log(user1);
+  if (printUsers) console.log(user1);
 } catch (e) {
-  console.log(e);
+  if (printUsers) console.log(e);
 }
 
 //add user2
@@ -93,9 +99,9 @@ try {
     " INtermEdiate   ",
     false
   );
-  console.log(user2);
+  if (printUsers) console.log(user2);
 } catch (e) {
-  console.log(e);
+  if (printUsers) console.log(e);
 }
 
 //invalid firstName
@@ -112,9 +118,9 @@ try {
     "  rgIOv123@gMAiL.coM  ",
     " INtermEdiate   "
   );
-  console.log(user2);
+  if (printUsers) console.log(user2);
 } catch (e) {
-  console.log(e);
+  if (printUsers) console.log(e);
 }
 
 //invalid last name
@@ -131,9 +137,9 @@ try {
     "  rgIOv123@gMAiL.coM  ",
     " INtermEdiate   "
   );
-  console.log(user2);
+  if (printUsers) console.log(user2);
 } catch (e) {
-  console.log(e);
+  if (printUsers) console.log(e);
 }
 
 //invalid username
@@ -150,9 +156,9 @@ try {
     "  rgIOv123@gMAiL.coM  ",
     " INtermEdiate   "
   );
-  console.log(user2);
+  if (printUsers) console.log(user2);
 } catch (e) {
-  console.log(e);
+  if (printUsers) console.log(e);
 }
 
 //invalid age
@@ -169,9 +175,9 @@ try {
     "  rgIOv123@gMAiL.coM  ",
     " INtermEdiate   "
   );
-  console.log(user2);
+  if (printUsers) console.log(user2);
 } catch (e) {
-  console.log(e);
+  if (printUsers) console.log(e);
 }
 
 // TODO: Seed Courts ************************************************************************************************************
@@ -188,11 +194,11 @@ try {
     100,
     "09:00",
     "19:00",
-    user1._id.toString
+    user1._id.toString()
   );
   let courtId = court1._id.toString();
   let sched = await getSchedule(courtId);
-  console.log(court1);
+  if (printCourts) console.log(court1);
   //console.log(sched);
   //console.log("Schedule TEST");
   let sched2 = await addToSchedule(
@@ -238,7 +244,7 @@ try {
   //console.log("seed sched 5 result:");
   //console.log(sched5);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 try {
@@ -256,9 +262,9 @@ try {
     "18:00",
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid name
@@ -277,9 +283,9 @@ try {
     "18:00",
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid type
@@ -298,9 +304,9 @@ try {
     "18:00",
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid capacity
@@ -319,9 +325,9 @@ try {
     "18:00",
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid length
@@ -340,9 +346,9 @@ try {
     "18:00",
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid width
@@ -361,9 +367,9 @@ try {
     "18:00",
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid open time
@@ -382,9 +388,9 @@ try {
     "18:00",
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid close time
@@ -403,9 +409,9 @@ try {
     2,
     "6434bca3a383aa375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid owner id
@@ -424,56 +430,57 @@ try {
     "18:00",
     "6434bca375a96458e"
   );
-  console.log(court2);
+  if (printCourts) console.log(court2);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 // TODO: seed schedules ************************************************************************************************************
 
 // TODO: seed history ************************************************************************************************************
-console.log("--- History ---");
+if (printHistory) console.log("--- History ---");
 try {
   //valid calls
-  let history1 = appendToHistory(
+  let history1 = await appendToHistory(
     user1._id.toString(),
     court1._id.toString(),
     "04/28/2023",
     "18:00",
     "19:00"
   );
-  console.log(history1);
-  let history2 = appendToHistory(
+  if (printHistory) console.log(history1);
+  let history2 = await appendToHistory(
     user1._id.toString(),
     court1._id.toString(),
     "04/29/2023",
     "18:00",
     "19:00"
   );
-  console.log(history1);
-  let history3 = appendToHistory(
+  if (printHistory) console.log(history1);
+  let history3 = await appendToHistory(
     user1._id.toString(),
     court1._id.toString(),
     "04/16/2023",
     "18:00",
     "19:00"
   );
-  console.log(history3);
+  if (printHistory) console.log(history3);
 
-  let historyGetUser = getHistory(user1._id.toString());
-  consolelog(historyGetUser);
+  let historyGetUser = await getHistory(user1._id.toString());
+  if (printHistory) console.log(historyGetUser);
 
-  let historyGetItem = getHistoryItem(history2._id.toString());
-  console.log(historyGetItem);
-  //invalid calls
+  let historyGetItem = await getHistoryItem(history2._id.toString());
+  if (printHistory) console.log(historyGetItem);
 
-  let historyUpcoming = getUpcomingHistory(user1._id.toString()); // Should not have history 3.
-  console.log(historyUpcoming);
+  let historyUpcoming = await getUpcomingHistory(user1._id.toString()); // Should not have history 3.
+  if (printHistory) console.log(historyUpcoming);
 
-  let deletedHistory1 = deleteHistoryItem(history2._id.toString());
+  let deletedHistory1 = await deleteHistoryItem(history2._id.toString());
 } catch (e) {
-  console.log(e);
+  if (printHistory) console.log(e);
 }
+
+//invalid calls
 
 // TODO: seed reviews ************************************************************************************************************
 
@@ -485,51 +492,51 @@ try {
 try {
   let courts = await getAllCourts();
   // console.log('***********************************');
-  console.log(courts);
+  if (printCourts) console.log(courts);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 // find court by id
 //working
 try {
   let court = await getCourtById(court1._id.toString());
-  console.log(court);
+  if (printCourts) console.log(court);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //invalid id
 try {
   let court = await getCourtById("badinput");
-  console.log(court);
+  if (printCourts) console.log(court);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //id not found
 try {
   let court = await getCourtById("643617375f52b6748b06c321");
-  console.log(court);
+  if (printCourts) console.log(court);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //find court by name
 //working
 try {
   let court = await getCourtsByName(" cOUrT 2  ");
-  console.log(court);
+  if (printCourts) console.log(court);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 //not found
 try {
   let court = await getCourtsByName(" no court Like THIs  ");
-  console.log(court);
+  if (printCourts) console.log(court);
 } catch (e) {
-  console.log(e);
+  if (printCourts) console.log(e);
 }
 
 // TODO: Close Connection

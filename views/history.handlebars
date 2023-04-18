@@ -5,9 +5,9 @@
         {{#each courts}}  
             <div>
                 <li> 
-                    <a href="/courts/{{this._id}}">{{this.name}}</a> 
-                    <p>Type: {{this.type}}</p>
-                    <p>Address: {{this.address}}, {{this.city}}, {{this.state}} {{this.zip}}</p>
+                    <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
+                    <p>Date: {{this.date}}</p>
+                    <p>Booked: {{this.startTime}} to {{this.endTime}}</p>
                 </li> 
             </div>
         {{/each}}

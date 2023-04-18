@@ -7,6 +7,24 @@
     <p>Experience Level: {{user.experience_level}}</p>
     <p>Location: {{user.city}}, {{user.state}}</p>
     <p>Owner Status: {{user.owner}}</p>
-    <p>Reviews: {{user.reviews}}</p>
+    <p>Overall Rating: {{user.overallRating}}</p>
+    <p>Reviews:</p>
+    <div class="parent">
+        <div class="child1">
+            <ul>
+            {{#each reviews}}  
+                <div>
+                    <li> 
+                        <p>Reviewer: {{this.reviewerUsername}}</p>
+                        <p>Comment: {{this.comment}}</p>
+                        <p>Rating: {{this.rating}}</p>
+                        <p>Date Posted: {{this.date}}</p>
+                    </li> 
+                </div>
+            {{/each}}
+        </ul>
+    </div>
+<button onclick = "window.location.href='/user/id/{{user._id}}/createReview';">Leave a Review!</button>
+
 </p>
 </main>

@@ -7,10 +7,26 @@ router.route("/available/").get(async (req, res) => {
   return res.render('../views/allCourts', {title: 'Available Courts', courts: courtList});
 });
 
+router
+  .route("/create/")
+  .get(async(req, res) => {
+      return res.render('../views/createCourt', {});
+  })
+  .post(async(req, res) => {
+    return res.json({ create: "post" });
+  });
+
+
+router.route("/recommend/").get((req, res) => {
+  return res.json({ route: "Recommended courts page" });
+});
+
+
 router.route("/:courtId/").get(async (req, res) => {
   let thisCourt = await getCourtById(req.params.courtId);
   return res.render('../views/courtById', {title: thisCourt.name, court: thisCourt});
 });
+
 
 router.route("/:courtId/reserve").get(async (req, res) => {
   let thisCourt = await getCourtById(req.params.courtId);
@@ -31,18 +47,7 @@ router.route("/:courtId/reserve").get(async (req, res) => {
   return res.render('../views/makeReservation', {title: `Reserve ${thisCourt.name}`, court: thisCourt, id: thisCourt._id, mindate: currentDateStr, maxdate: maxDateStr, schedule: thisCourt.schedule });
 });
 
-router.route("/recommend/").get((req, res) => {
-  return res.json({ route: "Recommended courts page" });
-});
 
-router
-  .route("/create/")
-  .get((req, res) => {
-    return res.json({ route: "Create courts view" });
-  })
-  .post((req, res) => {
-    return res.json({ create: "post" });
-  });
 
 // router.route("/:courtId/cancel").get((req, res) => {
 //   return res.json({

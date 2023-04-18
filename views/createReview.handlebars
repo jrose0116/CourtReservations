@@ -1,13 +1,13 @@
 <h1>Leave a review for {{user.firstName}} {{user.lastName}}</h1>
 <form id="form" method="post">
       <label for="text_input">Write your username:</label>
-      <input type="text">
-      <br>
-      <label for="text_input">Leave a comment:</label>
-      <input type="text">
+      <input name="reviewerUsername" type="text">
       <br>
       <label for="text_input">Rate this user from 1 to 5:</label>
-      <input type="text">
+      <input name = "rating" type="text">
+      <br>
+      <label for="text_input">Leave a comment:</label>
+      <input name= "comment"type="text">
       <br>
       <button type="submit">Submit</button>
 </form>

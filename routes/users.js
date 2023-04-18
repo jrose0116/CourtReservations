@@ -15,10 +15,26 @@ router.route("/id/:userId").get(async (req, res) => {
   //return res.json({ userId: req.params.userId, implementMe: "<-" });
 });
 
-router.route("/id/:userId/createReview").get(async (req, res) => {
-  let user = await getUserById(req.params.userId);
-  res.render('../views/createReview', { title: req.params.username, user: user});
-})
+router
+  .route("/id/:userId/createReview")
+  .get(async(req, res) => {
+    let user = await getUserById(req.params.userId);
+    res.render('../views/createReview', { title: req.params.username, user: user});
+  })
+  .post(async (req, res) => {
+    let user = await getUserById(req.params.userId);
+    let reviewInfo = req.body;
+
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate = `0${month}/${day}/${year}`;
+    reviewInfo["date"] = currentDate;
+    reviewInfo["revieweeUsername"] = user.username;
+    reviewInfo["reviewee_id"] = user._id;
+    return res.json({ review: reviewInfo });
+  });
 
 /*router.route("/id/:userId/createReview").post(async(req, res) => {
   let newReview = await createReview(req.body);

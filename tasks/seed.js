@@ -19,7 +19,8 @@ import {
   removeFromSchedule,
   clearSchedule,
   getScheduleDate,
-  getBooking
+  getBooking,
+  checkBookingCapacity
 } from "../data/schedule.js";
 import {
   appendToHistory,
@@ -216,8 +217,8 @@ try {
     "11:00",
     4
   );
-  console.log("seed sched 2 result:");
-  console.log(sched2);
+  //console.log("seed sched 2 result:");
+  //console.log(sched2);
   //console.log("end");
   let sched3 = await addToSchedule(
     court1._id.toString(),
@@ -268,9 +269,20 @@ try {
   //getBooking
   //let booking = await getBooking(courtId, sched2[0]._id, "05/15/2023");
   //console.log(booking);
+
+  //checkBookingCapacity this example is meant to error
+  // let checkBookCap = await addToSchedule(
+  //   court1._id.toString(),
+  //   user1._id,
+  //   "05/18/2023",
+  //   "15:15",
+  //   "16:30",
+  //   7
+  // );
+  // console.log(checkBookCap);
 } catch (e) {
   // if (printCourts)
-  //console.log(e);
+  console.log(e);
 }
 
 try {

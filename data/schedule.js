@@ -21,8 +21,27 @@ const getSchedule = async (courtId) => {
     throw "schedule.js: getCourtById returns a court with a schedule that is not an object";
   }
   return court.schedule;
-
 };
+const getScheduleDate = async (courtId, date) => {
+  let sched = await getSchedule(courtId);
+  let dateArray = sched[date];
+  for (let i=0;i<dateArray.length;i++)
+  {
+    dateArray[i]._id = dateArray[i]._id.toString();
+  }
+  return dateArray;
+};
+const getBooking = async (courtId, bookingId, date) => {
+  let schedDateArr = await getScheduleDate(courtId, date);
+  for (let i=0;i<schedDateArr.length;i++)
+  {
+    if (schedDateArr[i]._id.localeCompare(bookingId) === 0)
+    {
+      return schedDateArr[i];
+    }
+  }
+  throw `schedule.js: getBooking does not have booking with bookingId of ${bookingId} on ${date} for courtId ${courtId}`;
+}
 const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity) => {
   //note: max 3 hrs for booking
   //TODO: capacity check when array if nonempty
@@ -144,8 +163,11 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
     throw "schedule.js: modifiedCount is 0";
   }
 
-  court = await courtDataFunctions.getCourtById(courtId);
-  return court.schedule;
+  let retArray = await getScheduleDate(courtId,date);
+
+  return retArray;
+  //court = await courtDataFunctions.getCourtById(courtId);
+  //return court.schedule;
 };
 
 const removeFromSchedule = async (courtId, bookingId, date) => {
@@ -157,6 +179,7 @@ const removeFromSchedule = async (courtId, bookingId, date) => {
   let court = await courtDataFunctions.getCourtById(courtId);
   const courtCollection = await courts();
 
+  let returnRemovedBooking = await getBooking(courtId, bookingId, date);
   let existingSchedule = court.schedule;//object
   let bookingsOnADayArray = existingSchedule[date];
   let newBookingsOnADayArray = [];
@@ -197,8 +220,9 @@ const removeFromSchedule = async (courtId, bookingId, date) => {
   {
     throw "Error: modifiedCount is 0, court doesn't exist with that courtId";
   }
-  court = await courtDataFunctions.getCourtById(courtId);
-  return court.schedule;
+  // court = await courtDataFunctions.getCourtById(courtId);
+  // return court.schedule;
+  return returnRemovedBooking;
 };
 const clearSchedule = async (courtId, date) => {
   //clears court schedule on a given date,
@@ -229,4 +253,4 @@ const clearSchedule = async (courtId, date) => {
   return court.schedule;
 };
 
-export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule};
+export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule, getScheduleDate, getBooking};

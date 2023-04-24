@@ -1,0 +1,43 @@
+<main>
+    <form action="/register" method="POST" id="registration-form">
+        <label for="firstNameInput">
+            First Name
+            <input type="text" name="firstNameInput" id="firstNameInput" placeholder="Enter first name">
+        </label>
+        
+        <label for="lastNameInput">
+            Last Name
+            <input type="text" name="lastNameInput" id="lastNameInput" placeholder="Enter last name">
+        </label>
+        
+        <label for="emailAddressInput">
+            Email
+            <input type="email" name="emailAddressInput" id="emailAddressInput" placeholder="Enter email address">
+        </label>
+        
+        <label for="passwordInput">
+            Password
+            <input type="password" name="passwordInput" id="passwordInput" placeholder="Create password">
+        </label>
+        
+        <label for="confirmPasswordInput">
+            Confirm Password
+            <input type="password" name="confirmPasswordInput" id="confirmPasswordInput" placeholder="Confirm Password">
+        </label>
+        
+        <label for="roleInput">
+            Select role
+            <select name="roleInput" id="roleInput">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+        </label>
+        
+        <div id="error-div"></div>
+        <div id="errors">{{bad}}</div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+
+    <a href="/login">Already have an account? Click here to log-in</a>
+</main>

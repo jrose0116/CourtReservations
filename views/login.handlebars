@@ -1,0 +1,24 @@
+<main>
+    <form action="/login" method="POST" id="login-form">
+        <label for="emailAddressInput">
+            Email
+            <input type="email" name="emailAddressInput" id="emailAddressInput" placeholder="Enter email address">
+        </label>
+        
+        <label for="passwordInput">
+            Password
+            <input type="password" name="passwordInput" id="passwordInput" placeholder="Enter password">
+        </label>
+
+        <div id="error-div"></div>
+        <div id="errors">{{bad}}</div>
+
+        {{#if error}}
+            <p>{{message}}</p>
+        {{/if}}
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+
+    <a href="/register">Click here to register!</a>
+</main>

@@ -1,16 +1,16 @@
 import { Router } from "express";
 const router = Router();
 
-router.patch("/login", (req, res) => {
-  res.json({ verified: "true?", user: req.params.userId });
+router.route("/login").get(async (req, res) => {
+    return res.render('../views/login', {});
 });
 
-router.patch("/register", (req, res) => {
-    res.json({ verified: "true?", user: req.params.userId });
+router.route("/register").get(async (req, res) => {
+    return res.render('../views/register', {});
 });
 
-router.patch("/logout", (req, res) => {
-res.json({ verified: "true?", user: req.params.userId });
+router.route("/logout").get(async (req, res) => {
+    return res.render('../views/logout', {});
 });
 
 export default router;

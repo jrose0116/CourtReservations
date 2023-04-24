@@ -12,8 +12,9 @@ router
   .get(async(req, res) => {
       return res.render('../views/createCourt', {});
   })
-  .post(async(req, res) => {
-    return res.json({ create: "post" });
+  .post(async (req, res) => {
+    let newCourt = req.body;
+    return res.json({ create: newCourt });
   });
 
 

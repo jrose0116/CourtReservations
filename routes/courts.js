@@ -19,7 +19,8 @@ router
 
 
 router.route("/recommend/").get((req, res) => {
-  return res.json({ route: "Recommended courts page" });
+  // return res.json({ route: "Recommended courts page" });
+  return res.render('../views/recommendedCourts', {});
 });
 
 

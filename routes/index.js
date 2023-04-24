@@ -7,7 +7,7 @@ import authRoutes from "./auth.js";
 
 const constructor = (app) => {
   // app.get("/", (req, res) => res.json({ route: "Landing Page or Sign Up" })); // TODO: Remember Internet Laws
-  app.get("/", authRoutes);
+  app.use("/", authRoutes);
   // app.use("/", utilRoutes); // TODO: Handles settings, search, history, recommendations (Without actually using the '/' route)
 
   app.use("/user", userRoutes); // TODO: Handle own profile, other user profiles, reviews, etc.

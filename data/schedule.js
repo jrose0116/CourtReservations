@@ -21,11 +21,72 @@ const getSchedule = async (courtId) => {
     throw "schedule.js: getCourtById returns a court with a schedule that is not an object";
   }
   return court.schedule;
-
 };
+const getScheduleDate = async (courtId, date) => {
+  let sched = await getSchedule(courtId);
+  let dateArray = sched[date];
+  for (let i=0;i<dateArray.length;i++)
+  {
+    dateArray[i]._id = dateArray[i]._id.toString();
+  }
+  return dateArray;
+};
+const getBooking = async (courtId, bookingId, date) => {
+  let schedDateArr = await getScheduleDate(courtId, date);
+  for (let i=0;i<schedDateArr.length;i++)
+  {
+    if (schedDateArr[i]._id.localeCompare(bookingId) === 0)
+    {
+      return schedDateArr[i];
+    }
+  }
+  throw `schedule.js: getBooking does not have booking with bookingId of ${bookingId} on ${date} for courtId ${courtId}`;
+}
+const checkBookingCapacity = async (courtId, date, startTime, endTime, capacity) => {
+  //checks to make sure a booking's capacity and all other booking capacities in that range do not exceed the court capacity
+
+  //avoid error by making sure date exists, still valid if it doesn't or is empty bc it won't exceed capacity
+  let sched = await getSchedule(courtId);
+  if (!sched[date])
+  {
+    return true;
+  }
+  let court = await courtDataFunctions.getCourtById(courtId);
+  let scheduleOnDate = await getScheduleDate(courtId, date);
+  
+  let exceededTimes = [];
+  let currentCapacity = capacity;//cap starts at the cap of inserting booking
+  let momentInsertingStartTime = moment(startTime, 'kk:mm', 'en', true);
+  let momentInsertingEndTime = moment(endTime, 'kk:mm', 'en', true);
+  let momentCurrentTime = momentInsertingStartTime;
+  let DBmomentStartTime;
+  let DBmomentEndTime;
+
+  while (momentCurrentTime.isBefore(momentInsertingEndTime))
+  {
+    for (let i=0;i<scheduleOnDate.length;i++)
+    {
+      DBmomentStartTime = moment(scheduleOnDate[i].startTime, 'kk:mm', 'en', true);
+      DBmomentEndTime = moment(scheduleOnDate[i].endTime, 'kk:mm', 'en', true);
+      if (momentCurrentTime.isSameOrAfter(DBmomentStartTime) && momentCurrentTime.isBefore(DBmomentEndTime))
+      {
+        currentCapacity += scheduleOnDate[i].capacity;
+      }
+      
+    }//end for loop
+    //increments/resets
+    if (currentCapacity > court.capacity)
+    {
+      exceededTimes.push(momentCurrentTime.format("kk:mm"));
+    }
+    currentCapacity = capacity;
+    momentCurrentTime.add(15,'minutes');
+  }//end while loop
+
+  return exceededTimes;
+}
 const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity) => {
   //note: max 3 hrs for booking
-  //TODO: capacity check when array if nonempty
 
   courtId = validId(courtId);
   userId = validId(userId);
@@ -83,7 +144,6 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   let combinedDateAndStartTime = date + " " + startTime;
   let momentDateScheduled = moment(combinedDateAndStartTime, 'MM/DD/YYYY kk:mm', 'en', true);//already verified in validation
 
-  //console.log("MAGIC");
   if (momentCurrentDateTime.diff(momentDateScheduled) >= 0)//past.diff(future) = positive #
   {
     throw `schedule.js: booking with date and time ${combinedDateAndStartTime} is in the past`;
@@ -93,8 +153,6 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   {
     throw `schedule.js: booking with date and time ${combinedDateAndStartTime} cannot be over 6 months in the future`;
   }
-
-  //write TODOs here
 
   const courtCollection = await courts();
 
@@ -116,7 +174,7 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
     }*/
   }
   court = await courtDataFunctions.getCourtById(courtId);
-  console.log(date);
+
   if (capacity > court.capacity)
   {
     throw `schedule.js: ${capacity} exceeds ${court.capacity}`;
@@ -135,6 +193,13 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   bookingsOnADayArray.push(newBookingObj);
   existingSchedule[date] = bookingsOnADayArray;
 
+  //check capacity issues
+  let timesOverCapArr = await checkBookingCapacity(courtId, date, startTime, endTime, capacity);
+  if (timesOverCapArr.length > 0)
+  {
+    throw `Error: Capacity is exceeded at the times ${timesOverCapArr}`;
+  }
+  
   const insertInfo = await courtCollection.updateOne(
     {_id: new ObjectId(courtId)},
     {$set: {schedule: existingSchedule} }
@@ -144,8 +209,9 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
     throw "schedule.js: modifiedCount is 0";
   }
 
-  court = await courtDataFunctions.getCourtById(courtId);
-  return court.schedule;
+  let retArray = await getScheduleDate(courtId,date);
+
+  return retArray;
 };
 
 const removeFromSchedule = async (courtId, bookingId, date) => {
@@ -157,6 +223,7 @@ const removeFromSchedule = async (courtId, bookingId, date) => {
   let court = await courtDataFunctions.getCourtById(courtId);
   const courtCollection = await courts();
 
+  let returnRemovedBooking = await getBooking(courtId, bookingId, date);
   let existingSchedule = court.schedule;//object
   let bookingsOnADayArray = existingSchedule[date];
   let newBookingsOnADayArray = [];
@@ -197,8 +264,9 @@ const removeFromSchedule = async (courtId, bookingId, date) => {
   {
     throw "Error: modifiedCount is 0, court doesn't exist with that courtId";
   }
-  court = await courtDataFunctions.getCourtById(courtId);
-  return court.schedule;
+  // court = await courtDataFunctions.getCourtById(courtId);
+  // return court.schedule;
+  return returnRemovedBooking;
 };
 const clearSchedule = async (courtId, date) => {
   //clears court schedule on a given date,
@@ -229,4 +297,4 @@ const clearSchedule = async (courtId, date) => {
   return court.schedule;
 };
 
-export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule};
+export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule, getScheduleDate, getBooking, checkBookingCapacity};

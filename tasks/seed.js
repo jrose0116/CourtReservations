@@ -18,6 +18,9 @@ import {
   getSchedule,
   removeFromSchedule,
   clearSchedule,
+  getScheduleDate,
+  getBooking,
+  checkBookingCapacity
 } from "../data/schedule.js";
 import {
   appendToHistory,
@@ -26,6 +29,11 @@ import {
   getHistoryItem,
   getUpcomingHistory,
 } from "../data/history.js";
+import {
+  createReview,
+  deleteReview,
+  updateOverallRating,
+} from "../data/reviews.js";
 
 let printUsers = false;
 let printCourts = false;
@@ -211,6 +219,7 @@ try {
   );
   //console.log("seed sched 2 result:");
   //console.log(sched2);
+  //console.log("end");
   let sched3 = await addToSchedule(
     court1._id.toString(),
     user1._id,
@@ -221,30 +230,59 @@ try {
   );
   //console.log("seed sched 3 result:");
   //console.log(sched3);
-  //let sched4 = await addToSchedule(court1._id.toString(), user1._id, "05/18/2023", "12:00", "13:00", 1);
+  let sched4 = await addToSchedule(
+    court1._id.toString(),
+    user1._id,
+    "05/18/2023",
+    "12:00",
+    "13:00",
+    1);
   //let schedFail = await addToSchedule(court1._id.toString(), user1._id, "04/16/2023", "10:30", "12:00", 1);
   //let schedFail2 = await addToSchedule(court1._id.toString(), user1._id, "02/16/2024", "10:30", "12:00", 1);
   //console.log("seed sched 4 result:");
   //console.log(sched4);
 
   //remove from schedule
-  // let bookingId = sched2["04/15/2023"][0]._id.toString();
-  // let remSched = await removeFromSchedule(courtId, bookingId, "04/15/2023");
+  //let bookingId = sched2["04/15/2023"][0]._id.toString();
+  // let bookingId = sched2[0]._id.toString();
+  // let remSched = await removeFromSchedule(courtId, bookingId, "05/15/2023");
+  // console.log("removed1:");
   // console.log(remSched);
-  // bookingId = sched3["04/18/2023"][0]._id.toString();
-  // let remSched2 = await removeFromSchedule(courtId, bookingId, "04/18/2023");
+  // bookingId = sched3[0]._id.toString();
+  // let remSched2 = await removeFromSchedule(courtId, bookingId, "05/18/2023");
+  // console.log("removed2:");
   // console.log(remSched2);
 
   //clear schedule
-  // let clearedSched = await clearSchedule(courtId, "04/18/2023");
-  // console.log(clearedSched);
+  //let clearedSched = await clearSchedule(courtId, "05/18/2023");
+  //console.log(clearedSched);
 
   //invalid date testing
   //let sched5 = await addToSchedule(court1._id.toString(), user1._id, "02/30/2023", "13:00", "14:00", 1);
   //console.log("seed sched 5 result:");
   //console.log(sched5);
+
+  //getScheduleDate
+  //let getSchedDate = await getScheduleDate(courtId,"05/18/2023");
+  //console.log(getSchedDate);
+
+  //getBooking
+  //let booking = await getBooking(courtId, sched2[0]._id, "05/15/2023");
+  //console.log(booking);
+
+  //checkBookingCapacity this example is meant to error
+  // let checkBookCap = await addToSchedule(
+  //   court1._id.toString(),
+  //   user1._id,
+  //   "05/18/2023",
+  //   "15:15",
+  //   "16:30",
+  //   7
+  // );
+  // console.log(checkBookCap);
 } catch (e) {
-  if (printCourts) console.log(e);
+  // if (printCourts)
+  console.log(e);
 }
 
 try {
@@ -483,7 +521,29 @@ try {
 //invalid calls
 
 // TODO: seed reviews ************************************************************************************************************
+try {
+  let review1 = await createReview(
+    user1._id.toString(),
+    user2._id.toString(),
+    5,
+    "This person plays great!"
+  );
+  if (printReviews) console.log(review1);
 
+  let review2 = await createReview(
+    user2._id.toString(),
+    user1._id.toString(),
+    1,
+    "This person was not nice on the courts!"
+  );
+  if (printReviews) console.log(review2);
+  if (printReviews) console.log(await getUserById(user1._id.toString()));
+
+  let delete2 = await deleteReview(review2._id.toString());
+  console.log(delete2);
+} catch (e) {
+  if (printReviews) console.log(e);
+}
 // TODO: test user getters ************************************************************************************************************
 
 // TODO: test court getters ************************************************************************************************************

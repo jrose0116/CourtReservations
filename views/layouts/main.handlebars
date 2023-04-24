@@ -1,11 +1,11 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>{{{title}}}</title>
-    <link rel="stylesheet" href="/public/css/main-styles.css">
-</head>
+	<head>
+		<meta charset="utf-8" />
+		<title>{{{title}}}</title>
+		<link rel="stylesheet" href="/public/css/main-styles.css" />
+	</head>
 
+<<<<<<< Updated upstream
 <div class="nav">
     <a href="/login">Login</a> {{!-- need ifs to not display this when user is logged in --}}
     <a href="/courts/available/">Available Courts</a>
@@ -16,8 +16,24 @@
     <a href="todo">Logout</a>
 </div>
 <br>
+=======
+	<div class="nav">
+		<a href="/courts/available/">Available Courts</a>
+		<a href="/courts/recommended/">Recommended Courts</a>
+		<a href="/user/id/{{{id}}}/history/">History</a>
+		{{#if owner}}
+			<a href="/courts/create/">Add Court</a>
+		{{/if}}
+		<a href="/user/id/{{{id}}}/">Profile</a>
+		{{#if auth}}
+			<a href="todo">Logout</a>
+		{{else}}
+			<a href="/login">Login</a>
+		{{/if}}
+	</div>
+>>>>>>> Stashed changes
 
-<body>    
-    {{{body}}}
-</body>
+	<body>
+		{{{body}}}
+	</body>
 </html>

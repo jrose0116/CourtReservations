@@ -19,3 +19,26 @@
     background-color: #ddd;
     color: black;
 }
+
+#registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#registration-form label,
+#registration-form input,
+#registration-form select {
+  margin-bottom: 10px;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-form label,
+#login-form input {
+  margin-bottom: 10px;
+}

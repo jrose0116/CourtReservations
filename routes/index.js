@@ -17,7 +17,7 @@ const constructor = (app) => {
   // app.use("/admin", adminRoutes); // TODO: Handle potential admin dashboard. Ability to verify profiles and remove listings, groups, etc.
 
   app.use("*", (req, res) => {
-    res.status(404).json({ error: "Not found" });
+    res.redirect("/");
   });
 };
 

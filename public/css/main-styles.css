@@ -29,7 +29,7 @@ body {
   color: black;
 }
 
-#registration-form {
+.centered {
   display: flex;
   flex-direction: column;
   align-items: center;

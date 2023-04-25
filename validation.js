@@ -1,5 +1,16 @@
 import { ObjectId } from "mongodb";
 import moment from 'moment';
+ 
+ const isAuth = (session) => {
+    let isAuth;
+    if (session) {
+		isAuth = true;
+	}
+	else {
+		isAuth = false;
+	}
+    return isAuth;
+ };
 
  const validId = (id, varName) => {
 	/*
@@ -368,4 +379,4 @@ const validImageUrl = (url) => {
   return url.trim();
 }
 
-export { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl};
+export { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl};

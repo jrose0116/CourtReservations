@@ -53,7 +53,7 @@ router
     } else {
       isAuth = false;
     }
-    return res.render("createCourt", { auth: isAuth, id: req.session.user.id });
+    return res.render("createCourt", { auth: true, id: req.session.user.id });
   })
   .post(async (req, res) => {
     let newCourt = req.body;
@@ -71,6 +71,7 @@ router.route("/recommend").get((req, res) => {
 router.route("/:courtId").get(async (req, res) => {
   let thisCourt = await getCourtById(req.params.courtId);
   return res.render("courtById", {
+    auth: true,
     title: thisCourt.name,
     court: thisCourt,
     id: req.session.user.id.toString(),
@@ -130,7 +131,7 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     if (!req || !req.body) {
       const strError =
         "This error occurred because in the /:courtId/reserve route, it had no req body.";
-      return res.status(400).render("error", { error: strError }); //number is good
+      return res.status(400).render("error", { error: strError, auth: true }); //number is good
     }
 
     //userId = validId(userId);
@@ -179,7 +180,23 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     //return res.status(404).render('error', {error: strError});
   }
 
+  try {
+    //data call
+    // console.log("data call")
+    // let addedToSchedule = await addToSchedule(
+    // 	courtId,
+    // 	userId,//<-- issue b/c not yet validated
+    // 	newDateStr,
+    // 	req.body.startTime,
+    // 	req.body.endTime,
+    // 	newCap);
+  } catch (e) {
+    return res.status(404).json({ error: e });
+    //return res.status(404).render('error', {error: strError});
+  }
+
   return res.render("makeReservation", {
+    auth: true,
     title: `Reserve ${thisCourt.name}`,
     court: thisCourt,
     id: thisCourt._id,

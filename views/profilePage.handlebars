@@ -19,7 +19,10 @@
           {{#each reviews}}
             <div>
               <li>
-                <p>Reviewer: {{this.reviewerUsername}}</p>
+                <p>Reviewer:
+                  <a
+                    href="/user/id/{{this.reviewer_id}}"
+                  >{{this.reviewerUsername}}</a></p>
                 <p>Comment: {{this.comment}}</p>
                 <p>Rating: {{this.rating}}</p>
                 <p>Date Posted: {{this.date}}</p>

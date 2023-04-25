@@ -15,9 +15,11 @@ import { validId, validStr } from "../validation.js";
 router
   .route("/id/:userId/createReview")
   .get(async (req, res) => {
-    let userId;
+    let userId, currentId;
     try {
       userId = validId(req.params.userId);
+      currentId = validId(req.session.user.id);
+      if (userId == currentId) throw "Cannot review your own profile";
     } catch (e) {
       return res
         .status(400)
@@ -43,6 +45,7 @@ router
     try {
       reviewerId = validId(req.session.user.id);
       revieweeId = validId(req.params.userId);
+      if (reviewerId == revieweeId) throw "Cannot cast review onto own profile";
     } catch (e) {
       return res
         .status(400)
@@ -50,16 +53,16 @@ router
     }
     let reviewee, reviewer;
     try {
-      reviewer = await getUserById(req.session.user.id);
-      reviewee = await getUserById(req.params.userId);
+      reviewer = await getUserById(reviewerId);
+      reviewee = await getUserById(revieweeId);
     } catch (e) {
       return res
         .status(404)
         .render("error", { error: e, auth: true, status: 404 });
     }
     let reviewInfo = req.body;
-    reviewInfo["reviewer_id"] = req.session.user.id;
-    reviewInfo["reviewee_id"] = reviewee._id;
+    reviewInfo["reviewer_id"] = reviewerId;
+    reviewInfo["reviewee_id"] = revieweeId;
     try {
       let review = await createReview(
         reviewInfo.reviewee_id,
@@ -143,9 +146,11 @@ router.route("/id/:userId/history").get(async (req, res) => {
 });
 
 router.route("/id/:userId").get(async (req, res) => {
+  let sessionId;
   let userId;
   try {
     userId = validId(req.params.userId);
+    sessionId = validId(req.session.user.id);
   } catch (e) {
     return res
       .status(400)
@@ -159,6 +164,7 @@ router.route("/id/:userId").get(async (req, res) => {
       user: user,
       reviews: user.reviews,
       auth: true,
+      ownPage: userId == sessionId,
     });
   } catch (e) {
     return res

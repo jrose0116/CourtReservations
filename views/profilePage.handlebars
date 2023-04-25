@@ -25,7 +25,9 @@
             </ul>
         </div>
     </div>
+{{#if ownPage}}
+{{else}}
 <button onclick = "window.location.href='/user/id/{{user._id}}/createReview';">Leave a Review!</button>
-
+{{/if}}
 </p>
 </main>

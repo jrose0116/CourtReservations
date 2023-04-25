@@ -9,6 +9,13 @@ const __dirname = dirname(__filename);
 
 const staticDir = express.static(__dirname + '/public');
 
+app.use(session({
+  name: 'AuthCookie',
+  secret: 'some secret string!',
+  resave: false,
+  saveUninitialized: false
+}));
+
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   // If the user posts to the server with a property called _method, rewrite the request's method
   // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets

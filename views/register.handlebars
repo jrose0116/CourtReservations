@@ -1,3 +1,8 @@
+{{!--
+
+registration handelbars
+
+--}}
 <main>
     <form action="/register" method="POST" id="registration-form">
         <label for="firstNameInput">
@@ -37,7 +42,7 @@
         <div id="errors">{{bad}}</div>
 
         <button type="submit" class="btn">Submit</button>
+        <br>
+        <a href="/login">Already have an account? Click here to log-in</a>
     </form>
-
-    <a href="/login">Already have an account? Click here to log-in</a>
 </main>

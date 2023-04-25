@@ -73,8 +73,13 @@ const createCourt = async (
 };
 
 const getAllCourts = async () => {
-  const courtsCollection = await courts();
-  const allCourts = await courtsCollection.find({}).toArray();
+  let allCourts;
+  try {
+    const courtsCollection = await courts();
+    allCourts = await courtsCollection.find({}).toArray();
+  } catch (e) {
+    throw e;
+  }
   return allCourts;
 };
 

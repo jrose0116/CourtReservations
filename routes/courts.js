@@ -9,16 +9,31 @@ import {
 
 router.route("/available/").get(async (req, res) => {
 	let courtList = await getAllCourts();
+	let isAuth;
+	if (req.session.user) {
+		isAuth = true;
+	}
+	else {
+		isAuth = false;
+	}
 	return res.render("allCourts", {
 		title: "Available Courts",
 		courts: courtList,
+		auth: isAuth
 	});
 });
 
 router
 	.route("/create/")
 	.get(async (req, res) => {
-		return res.render("createCourt", {});
+		let isAuth;
+		if (req.session.user) {
+			isAuth = true;
+		}
+		else {
+			isAuth = false;
+		}
+		return res.render("createCourt", {auth: isAuth});
 	})
 	.post(async (req, res) => {
 		let newCourt = req.body;

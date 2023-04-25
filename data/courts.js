@@ -80,7 +80,7 @@ const getAllCourts = async () => {
 
 const getCourtById = async (id) => {
   try {
-    id = validId(id, "userId");
+    id = validId(id, "courtId");
   } catch (e) {
     throw "Error (data/courts.js :: getCourtById(id)):" + e;
   }
@@ -89,7 +89,7 @@ const getCourtById = async (id) => {
   const court = await courtsCollection.findOne({ _id: new ObjectId(id) });
 
   if (court === null)
-    throw "Error (data/courts.js :: getCourtById(id)): No user found";
+    throw "Error (data/courts.js :: getCourtById(id)): No court found";
 
   court._id = court._id.toString();
   return court;

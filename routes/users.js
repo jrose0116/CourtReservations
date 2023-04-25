@@ -10,17 +10,18 @@ import {
 import { createReview } from "../data/reviews.js";
 import { getHistory } from "../data/history.js";
 import { getCourtById } from "../data/courts.js";
+import { validId, validStr } from "../validation.js";
 
 router.route("/id/:userId").get(async (req, res) => {
+  let userId;
   try {
-    // let isAuth;
-    // if (req.session.user) {
-    //   isAuth = true;
-    // } else {
-    //   isAuth = false;
-    // }
+    userId = validId(req.params.userId);
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+  try {
     let user = await getUserById(req.params.userId);
-    res.render("profilePage", {
+    return res.render("profilePage", {
       id: req.session.user.id,
       title: req.params.username,
       user: user,
@@ -28,7 +29,7 @@ router.route("/id/:userId").get(async (req, res) => {
       auth: true,
     });
   } catch (e) {
-    res.status(404).json({ error: "user not found" });
+    return res.status(404).json({ error: "User not found" });
   }
   //return res.json({ userId: req.params.userId, implementMe: "<-" });
 });
@@ -36,27 +37,42 @@ router.route("/id/:userId").get(async (req, res) => {
 router
   .route("/id/:userId/createReview")
   .get(async (req, res) => {
-    let isAuth;
-    if (req.session.user) {
-      isAuth = true;
-    } else {
-      isAuth = false;
+    let userId;
+    try {
+      userId = validId(req.params.userId);
+    } catch (e) {
+      return res.status(400).json({ error: e });
     }
-    let user = await getUserById(req.params.userId);
-    res.render("createReview", {
+    let user;
+    try {
+      user = await getUserById(userId);
+    } catch (e) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.render("createReview", {
       title: req.params.username,
       user: user,
       id: req.session.user.id,
-      auth: isAuth,
+      auth: true,
     });
   })
   .post(async (req, res) => {
-    let reviewee = await getUserById(req.params.userId);
+    let reviewerId, revieweeId;
+    try {
+      reviewerId = validId(req.session.user.id);
+      revieweeId = validId(req.params.userId);
+    } catch (e) {
+      return res.status(400).json({ error: e });
+    }
+    let reviewee, reviewer;
+    try {
+      reviewer = await getUserById(req.session.user.id);
+      reviewee = await getUserById(req.params.userId);
+    } catch (e) {
+      return res.status(404).json({ error: e });
+    }
     let reviewInfo = req.body;
-    let reviewer = await getUserById(req.session.user.id);
     reviewInfo["reviewer_id"] = req.session.user.id;
-    reviewInfo["reviewerUsername"] = reviewer.username;
-    reviewInfo["revieweeUsername"] = reviewee.username;
     reviewInfo["reviewee_id"] = reviewee._id;
     try {
       let review = await createReview(
@@ -66,7 +82,7 @@ router
         reviewInfo.comment
       );
       if (review) {
-        return res.redirect(`/user/id/${reviewInfo.reviewee_id}`);
+        return res.redirect(`/user/id/${revieweeId}`);
       }
     } catch (e) {
       return res.status(400).render("createReview", { bad: e });
@@ -86,14 +102,28 @@ router
 })*/
 
 router.route("/name/:username").get(async (req, res) => {
-  let username = await getUserByUsername(req.params.username);
-  return res.json({ username });
+  let usernameInput;
+  try {
+    usernameInput = validStr(usernameInput, "username");
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+  let user = await getUserByUsername(usernameInput);
+  if (user === null) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  return res.redirect("/id/" + user._id);
   //return res.json({ username: req.params.username, implementMe: "<-" });
 });
 
 router.route("/id/:userId/history").get(async (req, res) => {
-  let courtHistory = await getHistory(req.params.userId);
-  console.log(courtHistory);
+  let userId;
+  try {
+    userId = validId(req.params.userId);
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+  let courtHistory = await getHistory(userId);
   for (let i = 0; i < courtHistory.length; i++) {
     let court = await getCourtById(courtHistory[i].court_id);
     courtHistory[i].court_name = court.name;

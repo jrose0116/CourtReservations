@@ -15,36 +15,18 @@ import {
 	getBooking,
 	// checkBookingCapacity,
 } from "../data/schedule.js";
-import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validDate} from "../validation.js";
+import { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validDate} from "../validation.js";
 
 router.route("/available/").get(async (req, res) => {
 	let courtList = await getAllCourts();
-	let isAuth;
-	if (req.session.user) {
-		isAuth = true;
-	}
-	else {
-		isAuth = false;
-	}
-	return res.render("allCourts", {
-		title: "Available Courts",
-		courts: courtList,
-    auth: isAuth, 
-    id: req.session.user.id
+	return res.render("allCourts", {auth: isAuth(req.session.user), title: "Available Courts", courts: courtList, id: req.session.user.id
 	});
 });
 
 router
 	.route("/create/")
 	.get(async (req, res) => {
-		let isAuth;
-		if (req.session.user) {
-			isAuth = true;
-		}
-		else {
-			isAuth = false;
-		}
-		return res.render("createCourt", {auth: isAuth, id: req.session.user.id});
+		return res.render("createCourt", {auth: isAuth(req.session.user), id: req.session.user.id});
 	})
 	.post(async (req, res) => {
 		let newCourt = req.body;
@@ -53,12 +35,12 @@ router
 
 router.route("/recommend/").get((req, res) => {
 	// return res.json({ route: "Recommended courts page" });
-	return res.render("recommendedCourts", {});
+	return res.render("recommendedCourts", {auth: isAuth(req.session.user)});
 });
 
 router.route("/:courtId/").get(async (req, res) => {
 	let thisCourt = await getCourtById(req.params.courtId);
-	return res.render("courtById", { title: thisCourt.name, court: thisCourt, id: req.session.user.id });
+	return res.render("courtById", {auth: isAuth(req.session.user), title: thisCourt.name, court: thisCourt, id: req.session.user.id });
 });
 
 router.route("/:courtId/reserve").get(async (req, res) => {
@@ -88,6 +70,7 @@ router.route("/:courtId/reserve").get(async (req, res) => {
 	var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
 
 	return res.render("makeReservation", {
+		auth: isAuth(req.session.user),
 		title: `Reserve ${thisCourt.name}`,
 		court: thisCourt,
 		id: thisCourt._id,
@@ -116,7 +99,7 @@ router.route("/:courtId/reserve").post(async (req, res) => {
 		if (!req || !req.body)
 		{
 			const strError = "This error occurred because in the /:courtId/reserve route, it had no req body.";
-			return res.status(400).render('error', {error: strError});//number is good
+			return res.status(400).render('error', {auth: isAuth(req.session.user), error: strError});//number is good
 		}
 
 		//userId = validId(userId);
@@ -169,6 +152,7 @@ router.route("/:courtId/reserve").post(async (req, res) => {
 	}
 
 	return res.render("makeReservation", {
+		auth: isAuth(req.session.user),
 		title: `Reserve ${thisCourt.name}`,
 		court: thisCourt,
 		id: thisCourt._id,

@@ -52,9 +52,10 @@ app.use("/", (req, res, next) => {
   if (
     req.originalUrl.substring(0, 6) != "/login" &&
     req.originalUrl.substring(0, 9) != "/register" &&
+    req.originalUrl.substring(0, 9) != "/" &&
     (!req.session || !req.session.user)
   )
-    return res.redirect("/login");
+    return res.redirect("/");
   next();
 });
 

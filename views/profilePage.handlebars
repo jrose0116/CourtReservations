@@ -1,33 +1,38 @@
-<h1>{{user.firstName}} {{user.lastName}}</h1>
-
 <main>
-    <img alt="{{user.username}}" width="200" height="200" src={{user.image}}>
-    <p>Username: {{user.username}}</p>
-    <p>Age: {{user.age}}</p>
-    <p>Experience Level: {{user.experience_level}}</p>
-    <p>Location: {{user.city}}, {{user.state}}</p>
-    <p>Owner Status: {{user.owner}}</p>
-    <p>Overall Rating: {{user.overallRating}}</p>
-    <p>Reviews:</p>
+  <div class="profile-page">
+    <h1>{{user.firstName}} {{user.lastName}}</h1>
+    <img alt="{{user.username}}" width="200" height="200" src={{user.image}} />
+    <p id="p-username">{{user.username}}</p>
+    <p id="p-experience">{{user.experience_level}} Player</p>
+    <p id="p-age">Age {{user.age}}</p>
+    <p id="p-address">{{user.city}}, {{user.state}}</p>
+    {{#if user.owner}}
+      <p id="p-owner">Court Owner</p>
+    {{/if}}
+    {{#if user.overallRating}}
+      <p id="p-rating">Player Rating: {{user.overallRating}}</p>
+    {{/if}}
+    <p id="p-reviewhead">Reviews ({{reviewcount}}):</p>
     <div class="parent">
-        <div class="child1">
-            <ul>
-            {{#each reviews}}  
-                <div>
-                    <li> 
-                        <p>Reviewer: {{this.reviewerUsername}}</p>
-                        <p>Comment: {{this.comment}}</p>
-                        <p>Rating: {{this.rating}}</p>
-                        <p>Date Posted: {{this.date}}</p>
-                    </li> 
-                </div>
-            {{/each}}
-            </ul>
-        </div>
+      <div class="child1">
+        <ul>
+          {{#each reviews}}
+            <div>
+              <li>
+                <p>Reviewer: {{this.reviewerUsername}}</p>
+                <p>Comment: {{this.comment}}</p>
+                <p>Rating: {{this.rating}}</p>
+                <p>Date Posted: {{this.date}}</p>
+              </li>
+            </div>
+          {{/each}}
+        </ul>
+      </div>
     </div>
-{{#if ownPage}}
-{{else}}
-<button onclick = "window.location.href='/user/id/{{user._id}}/createReview';">Leave a Review!</button>
-{{/if}}
-</p>
+    {{#if ownPage}}{{else}}
+      <button
+        onclick="window.location.href='/user/id/{{user._id}}/createReview';"
+      >Leave a Review!</button>
+    {{/if}}
+  </div>
 </main>

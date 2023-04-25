@@ -90,3 +90,38 @@ body {
 .court-card h2 {
   font-size: x-large;
 }
+
+.profile-page {
+  text-transform: capitalize;
+  text-align: center;
+  align-items: center;
+}
+
+.profile-page img {
+  margin: 15px auto;
+  display: block;
+}
+
+.profile-page p {
+  margin-block-start: 5px;
+  margin-block-end: 5px;
+}
+
+#p-username {
+  margin: 0 15px;
+  font-size: xx-large;
+}
+
+#p-age {
+  margin: 0 15px;
+  font-size: larger;
+}
+
+#p-experience {
+  font-size: large;
+}
+
+#p-reviewhead {
+  margin-top: 30px;
+  font-size: x-large;
+}

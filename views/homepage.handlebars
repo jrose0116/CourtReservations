@@ -1,0 +1,74 @@
+<main id="home-main">
+  <div id="home-ctn">
+    <h1 id="home-head">Our Mission</h1>
+    <p id="home-text">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Sit amet tellus cras
+      adipiscing enim eu turpis egestas pretium. Pellentesque sit amet porttitor
+      eget dolor. Ultrices neque ornare aenean euismod elementum. Odio ut sem
+      nulla pharetra diam sit. Nunc eget lorem dolor sed viverra. Magna etiam
+      tempor orci eu. Ultrices in iaculis nunc sed. Lacus suspendisse faucibus
+      interdum posuere. Orci porta non pulvinar neque laoreet suspendisse
+      interdum consectetur. Risus pretium quam vulputate dignissim suspendisse
+      in est ante. Sit amet mauris commodo quis imperdiet massa tincidunt. Odio
+      morbi quis commodo odio aenean sed adipiscing diam donec. Felis bibendum
+      ut tristique et egestas quis ipsum suspendisse ultrices. Libero nunc
+      consequat interdum varius sit amet. Feugiat pretium nibh ipsum consequat
+      nisl. Ipsum dolor sit amet consectetur adipiscing elit duis tristique.
+      Amet consectetur adipiscing elit pellentesque. Nunc aliquet bibendum enim
+      facilisis gravida neque convallis a. Diam sit amet nisl suscipit
+      adipiscing bibendum est ultricies integer. Fusce id velit ut tortor
+      pretium viverra suspendisse. Consequat ac felis donec et odio
+      pellentesque. Commodo ullamcorper a lacus vestibulum sed arcu non odio
+      euismod. Dui faucibus in ornare quam viverra orci. Sed risus ultricies
+      tristique nulla aliquet enim tortor at. Sapien eget mi proin sed libero.
+    </p>
+  </div>
+  {{#if auth}}
+    <div class="parent center">
+      <div class="child2">
+        <h2>Available Courts</h2>
+        <div class="scroll-cards">
+          {{#each availableCourts}}
+            <div class="court-card">
+              <h2>{{this.name}}</h2>
+              <p>{{this.type}}</p>
+              <p>
+                {{this.address}},
+                {{this.city}},
+                {{this.state}}
+                {{this.zip}}</p>
+              <a href="/courts/{{this._id}}">Click for Details</a>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+      {{#if owner}}
+        <div class="child2">
+          <h2>Owned Courts</h2>
+          <div class="scroll-cards">
+            {{#each ownedCourts}}
+              <div class="court-card">
+                <h2>{{this.name}}</h2>
+                <p>{{this.type}}</p>
+                <p>
+                  {{this.address}},
+                  {{this.city}},
+                  {{this.state}}
+                  {{this.zip}}</p>
+                <a href="/courts/{{this._id}}">Click for Details</a>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  {{else}}
+    <div class="center">
+      <p class="block button-text">Have an Account?</p>
+      <a href="/login"><button class="big-btn">Log In</button></a>
+      <p class="block button-text">Create a New Account</p>
+      <a href="/register"><button class="big-btn">Register</button></a>
+    </div>
+  {{/if}}
+</main>

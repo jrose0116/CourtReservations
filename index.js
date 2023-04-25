@@ -1,18 +1,10 @@
 import express from "express";
 import session from "express-session";
 const app = express();
-<<<<<<< HEAD
-import configRoutes from './routes/index.js';
-import {fileURLToPath} from 'url';
-import {dirname} from 'path';
-import exphbs from 'express-handlebars';
-import session from 'express-session';
-=======
 import configRoutes from "./routes/index.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import exphbs from "express-handlebars";
->>>>>>> a1b452d6fbf75ff85653b28b5fd29cbf64e9be75
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 

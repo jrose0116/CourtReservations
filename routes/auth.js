@@ -45,7 +45,7 @@ router
 				isOwner: user.owner,
 			};
 			res.cookie("AuthCookie", req.session.sessionID);
-			if (user.isOwner === true) {
+			if (req.session.user.isOwner === true) {
 				return res.redirect("/courts/create");
 			} else {
 				return res.redirect("/courts/available");

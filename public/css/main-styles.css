@@ -13,6 +13,7 @@
 body {
   margin: 0 20%;
   margin-top: 80px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .nav a {
@@ -33,6 +34,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.center {
+  align-items: center;
+  text-align: center;
 }
 
 #registration-form label,
@@ -124,4 +130,48 @@ body {
 #p-reviewhead {
   margin-top: 30px;
   font-size: x-large;
+}
+
+#home-ctn {
+  border: 3px solid black;
+  width: 60%;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#home-text {
+  padding: 0px 40px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#home-head {
+  padding: 0px 40px;
+  font-size: xx-large;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+}
+
+.block {
+  display: block;
+}
+
+.big-btn {
+  width: 25%;
+  height: 10%;
+  font-size: x-large;
+  border-radius: 10px;
+  border: #333 3px solid;
+  background: white;
+}
+
+.button-text {
+  font-size: x-large;
+}
+
+.scroll-cards {
+  position: relative;
+  flex: 2;
+  overflow-y: scroll;
+  height: 300px;
 }

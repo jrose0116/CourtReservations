@@ -60,7 +60,9 @@ router.route("/register").get(async (req, res) => {
 });
 
 router.route("/logout").get(async (req, res) => {
-	return res.render("logout", {});
+    res.clearCookie('AuthCookie');
+    req.session.destroy();
+	return res.render("logout");
 });
 
 export default router;

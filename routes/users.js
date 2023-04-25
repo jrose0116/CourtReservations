@@ -13,11 +13,20 @@ import { getCourtById } from "../data/courts.js";
 
 router.route("/id/:userId").get(async (req, res) => {
 	try {
-		let user = await getUserById(req.params.userId);
-		res.render("profilePage", {
+    let isAuth;
+		if (req.session.user) {
+			isAuth = true;
+		}
+		else {
+			isAuth = false;
+		}
+    let user = await getUserById(req.params.userId);
+    res.render("profilePage", {
+      id: req.session.user.id,
 			title: req.params.username,
 			user: user,
-			reviews: user.reviews,
+      reviews: user.reviews,
+      auth: isAuth
 		});
 	} catch (e) {
 		res.status(404).json({ error: "user not found" });
@@ -27,23 +36,40 @@ router.route("/id/:userId").get(async (req, res) => {
 
 router
 	.route("/id/:userId/createReview")
-	.get(async (req, res) => {
+  .get(async (req, res) => {
+     let isAuth;
+		if (req.session.user) {
+			isAuth = true;
+		}
+		else {
+			isAuth = false;
+		}
 		let user = await getUserById(req.params.userId);
-		res.render("createReview", { title: req.params.username, user: user });
+		res.render("createReview", { title: req.params.username, user: user, id: req.session.user.id, auth: isAuth });
 	})
 	.post(async (req, res) => {
-		let user = await getUserById(req.params.userId);
+		let reviewee = await getUserById(req.params.userId);
 		let reviewInfo = req.body;
-
-		const date = new Date();
-		let day = date.getDate();
-		let month = date.getMonth() + 1;
-		let year = date.getFullYear();
-		let currentDate = `0${month}/${day}/${year}`;
-		reviewInfo["date"] = currentDate;
-		reviewInfo["revieweeUsername"] = user.username;
-		reviewInfo["reviewee_id"] = user._id;
-		return res.json({ review: reviewInfo });
+    let reviewer = await getUserById(req.session.user.id);
+    reviewInfo["reviewer_id"] = req.session.user.id;
+    reviewInfo["reviewerUsername"] = reviewer.username;
+		reviewInfo["revieweeUsername"] = reviewee.username;
+    reviewInfo["reviewee_id"] = reviewee._id;
+    try {
+      let review = await createReview(reviewInfo.reviewee_id, reviewInfo.reviewer_id, Number(reviewInfo.rating), reviewInfo.comment);
+      if (review) {
+        return res.redirect(`/user/id/${reviewInfo.reviewee_id}`);
+      }
+    } catch (e) {
+       return res.status(400).render('createReview', {bad: e});
+    }
+		 /*try {
+      let review = await createReview(reviewInfo.reviewee_id, reviewInfo.reviewer_id, reviewInfo.rating, reviewInfo.comment);
+       res.json({ create: reviewInfo });
+    } catch (e) {
+        return res.status(400).render('createReview', {bad: e});
+    }
+    res.status(500).render("createReview", { bad: "Internal Server Error" });*/
 	});
 
 /*router.route("/id/:userId/createReview").post(async(req, res) => {

@@ -29,7 +29,8 @@ router.route("/available/").get(async (req, res) => {
 	return res.render("allCourts", {
 		title: "Available Courts",
 		courts: courtList,
-		auth: isAuth
+    auth: isAuth, 
+    id: req.session.user.id
 	});
 });
 
@@ -43,7 +44,7 @@ router
 		else {
 			isAuth = false;
 		}
-		return res.render("createCourt", {auth: isAuth});
+		return res.render("createCourt", {auth: isAuth, id: req.session.user.id});
 	})
 	.post(async (req, res) => {
 		let newCourt = req.body;
@@ -57,7 +58,7 @@ router.route("/recommend/").get((req, res) => {
 
 router.route("/:courtId/").get(async (req, res) => {
 	let thisCourt = await getCourtById(req.params.courtId);
-	return res.render("courtById", { title: thisCourt.name, court: thisCourt });
+	return res.render("courtById", { title: thisCourt.name, court: thisCourt, id: req.session.user.id });
 });
 
 router.route("/:courtId/reserve").get(async (req, res) => {

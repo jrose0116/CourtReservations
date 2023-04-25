@@ -29,7 +29,12 @@ import {
 } from "../validation.js";
 
 router.route("/available").get(async (req, res) => {
-  let courtList = await getAllCourts();
+  let courtList;
+  try {
+    courtList = await getAllCourts();
+  } catch (e) {
+    return res.status(500).render("error", { error: e, status: 500 });
+  }
   //   let isAuth;
   //   if (req.session.user) {
   //     isAuth = true;
@@ -69,7 +74,18 @@ router.route("/recommend").get((req, res) => {
 });
 
 router.route("/:courtId").get(async (req, res) => {
-  let thisCourt = await getCourtById(req.params.courtId);
+  let courtId;
+  try {
+    courtId = validId(req.params.courtId, "courtId");
+  } catch (e) {
+    return res.status(400).render("error", { error: e, status: 400 });
+  }
+  let thisCourt;
+  try {
+    thisCourt = await getCourtById(req.params.courtId);
+  } catch (e) {
+    return res.status(404).render("error", { error: e, status: 404 });
+  }
   return res.render("courtById", {
     auth: true,
     title: thisCourt.name,

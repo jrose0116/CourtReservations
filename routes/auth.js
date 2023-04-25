@@ -6,35 +6,37 @@ import { users } from "../config/mongoCollections.js";
 
 router.route("/login")
 .get(async (req, res) => {
-    return res.render('../views/login', {});
+    return res.render('login', {});
 })
 .post(async (req, res) => {
+    console.log("login route!!!!!!!!!!!")
     let emailAddressInput = req.body.emailAddressInput;
     let passwordInput = req.body.passwordInput;
 
-    let errors = '';
-    let badInput = false;
+    // let errors = '';
+    // let badInput = false;
 
-    if (!emailAddressInput || !passwordInput) {
-      errors += `Email and password must both be supplied`;
-      badInput = true;
-    }
+    // if (!emailAddressInput || !passwordInput) {
+    //   errors += `Email and password must both be supplied`;
+    //   badInput = true;
+    // }
+
+    // try {
+    //   emailAddressInput = checkEmail(emailAddressInput);
+    //   passwordInput = checkPassword(passwordInput);
+    // }
+    // catch (e) {
+    //   errors += `, ` + e;
+    //   badInput = true;
+    // }
+
+    // if (badInput) {
+    //   return res.status(400).render('login', {bad: errors});
+    // }
 
     try {
-      emailAddressInput = checkEmail(emailAddressInput);
-      passwordInput = checkPassword(passwordInput);
-    }
-    catch (e) {
-      errors += `, ` + e;
-      badInput = true;
-    }
-
-    if (badInput) {
-      return res.status(400).render('login', {bad: errors});
-    }
-
-    try {
-      await checkUser(emailAddressInput, passwordInput);
+      let user1 = await checkUser(emailAddressInput, passwordInput);
+      console.log(user1);
       //cookie
       const userCollection = await users();
       let user = await userCollection.findOne({email: emailAddressInput});
@@ -53,11 +55,11 @@ router.route("/login")
   });
 
 router.route("/register").get(async (req, res) => {
-    return res.render('../views/register', {});
+    return res.render('register', {});
 });
 
 router.route("/logout").get(async (req, res) => {
-    return res.render('../views/logout', {});
+    return res.render('logout', {});
 });
 
 export default router;

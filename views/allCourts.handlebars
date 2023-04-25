@@ -1,40 +1,27 @@
 <h1>{{title}}</h1>
-
 <main>
-    <div class="parent">
-        <div class="child1">
-            <ul>
-            {{#each courts}}  
-                <div>
-                    <li> 
-                        <a href="/courts/{{this._id}}">{{this.name}}</a> 
-                        <p>Type: {{this.type}}</p>
-                        <p>Address: {{this.address}}, {{this.city}}, {{this.state}} {{this.zip}}</p>
-                    </li> 
-                </div>
-            {{/each}}
-            </ul>
-        </div>
-    
-        <div class="child2">
-            <h2>Upcoming Reservations: </h2>
-            <ul>
-            </ul>
-        </div>
+  <div class="parent">
+    <div class="child2">
+      <h2>Available Courts</h2>
+        {{#each courts}}
+          <div class="court-card">
+              <h2>{{this.name}}</h2>
+              <p>{{this.type}}</p>
+              <p>
+                {{this.address}},
+                {{this.city}},
+                {{this.state}}
+                {{this.zip}}</p>
+              <a href="/courts/{{this._id}}">Click for Details</a>
+          </div>
+        {{/each}}
+      </ul>
     </div>
 
-    <style>
-        .parent {
-            width: 100%;
-            display: flex;
-        }
-
-        .child1 {
-            flex: 1;
-        }
-
-        .child2 {
-            width: 200px;
-        }
-    </style>
+    <div class="child3">
+      <h2>Upcoming Reservations: </h2>
+      <ul>
+      </ul>
+    </div>
+  </div>
 </main>

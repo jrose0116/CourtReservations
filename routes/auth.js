@@ -62,9 +62,9 @@ router
       req.session.user = user;
       //   res.cookie("AuthCookie", req.session.sessionID);
       if (req.session.user.owner === true) {
-        return res.redirect("/courts/create");
+        return res.redirect("/");
       } else {
-        return res.redirect("/courts/available");
+        return res.redirect("/");
       }
     } catch (e) {
       return res

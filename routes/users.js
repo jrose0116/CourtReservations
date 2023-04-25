@@ -165,6 +165,7 @@ router.route("/id/:userId").get(async (req, res) => {
       reviews: user.reviews,
       auth: true,
       ownPage: userId == sessionId,
+      reviewcount: user.reviews.length,
     });
   } catch (e) {
     return res

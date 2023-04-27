@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { zipCodeDistance } from "zipcode-city-distance";
+import dotenv from "dotenv";
+dotenv.config();
 
 const router = Router();
 import {
@@ -104,7 +106,7 @@ router.route("/:courtId").get(async (req, res) => {
   }
   let thisCourt;
   try {
-    thisCourt = await getCourtById(req.params.courtId);
+    thisCourt = await getCourtById(courtId);
   } catch (e) {
     return res.status(404).render("error", { error: e, status: 404 });
   }
@@ -114,6 +116,7 @@ router.route("/:courtId").get(async (req, res) => {
     court: thisCourt,
     id: req.session.user.id,
     owner: req.session.user.owner,
+    apiKey: process.env.MAPS_API_KEY,
   });
 });
 

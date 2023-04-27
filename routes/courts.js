@@ -46,6 +46,7 @@ router.route("/available").get(async (req, res) => {
     courts: courtList,
     auth: true,
     id: req.session.user.id,
+    owner: req.session.user.owner,
   });
 });
 
@@ -58,7 +59,11 @@ router
     } else {
       isAuth = false;
     }
-    return res.render("createCourt", { auth: true, id: req.session.user.id });
+    return res.render("createCourt", {
+      auth: true,
+      id: req.session.user.id,
+      owner: req.session.user.owner,
+    });
   })
   .post(async (req, res) => {
     let newCourt = req.body;
@@ -70,6 +75,7 @@ router.route("/recommend").get((req, res) => {
   return res.render("recommendedCourts", {
     auth: true,
     id: req.session.user.id,
+    owner: req.session.user.owner,
   });
 });
 
@@ -90,7 +96,8 @@ router.route("/:courtId").get(async (req, res) => {
     auth: true,
     title: thisCourt.name,
     court: thisCourt,
-    id: req.session.user.id.toString(),
+    id: req.session.user.id,
+    owner: req.session.user.owner,
   });
 });
 
@@ -126,6 +133,7 @@ router.route("/:courtId/reserve").get(async (req, res) => {
     mindate: currentDateStr,
     maxdate: maxDateStr,
     schedule: thisCourt.schedule,
+    owner: req.session.user.owner,
   });
 });
 
@@ -219,6 +227,7 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     mindate: currentDateStr,
     maxdate: maxDateStr,
     schedule: thisCourt.schedule,
+    owner: req.session.user.owner,
   });
 });
 

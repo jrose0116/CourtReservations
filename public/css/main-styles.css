@@ -175,3 +175,8 @@ body {
   overflow-y: scroll;
   height: 300px;
 }
+
+#map {
+  height: 500px;
+  width: 500px;
+}

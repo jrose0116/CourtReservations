@@ -1,4 +1,4 @@
-function loadMap(address) {
+function loadMap(address, name) {
   var geocoder = new google.maps.Geocoder();
   geocoder.geocode({ address: address }, function (results, status) {
     if (status === "OK") {
@@ -9,6 +9,7 @@ function loadMap(address) {
       let marker = new google.maps.Marker({
         position: results[0].geometry.location,
         map: map,
+        title: name,
       });
     }
   });

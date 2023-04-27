@@ -371,6 +371,7 @@ const checkUser = async (email, password) => {
     username: user.username,
     owner: user.owner,
     id: user._id.toString(),
+    zip: user.zip,
   };
 };
 

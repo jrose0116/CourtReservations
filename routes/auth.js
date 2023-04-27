@@ -49,18 +49,8 @@ router
 
     try {
       let user = await checkUser(emailAddress, password);
-      //cookie
-      //   const userCollection = await users();
-      // let user = await userCollection.findOne({ email: emailAddressInput });
-      //   req.session.user = {
-      //     id: user._id.toString(),
-      //     firstName: user.firstName,
-      //     lastName: user.lastName,
-      //     emailAddress: user.emailAddress,
-      //     isOwner: user.owner,
-      //   };
       req.session.user = user;
-      //   res.cookie("AuthCookie", req.session.sessionID);
+
       if (req.session.user.owner === true) {
         return res.redirect("/");
       } else {

@@ -197,6 +197,26 @@ try {
   if (printUsers) console.log(e);
 }
 
+let user3;
+try {
+  user3 = await createUser(
+    "Jacob",
+    "Rose",
+    "Jrose",
+    "Password!1",
+    20,
+    "Marlboro",
+    "NJ",
+    "07751",
+    "jrose0116@gmail.com",
+    "beginner",
+    true
+  );
+  if (printUsers) console.log(user3);
+} catch (e) {
+  if (printUsers) console.log(e);
+}
+
 // TODO: Seed Courts ************************************************************************************************************
 try {
   court1 = await createCourt(

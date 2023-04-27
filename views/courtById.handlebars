@@ -1,19 +1,39 @@
 <main>
-    <div class="centered">
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key={{apiKey}}"
+    async
+    defer
+  ></script>
+  <div class="parent">
+    <div class="child1">
+      <div class="centered">
         <h1>{{court.name}}</h1>
 
         <p>Type: {{court.type}}</p>
-        <p>Address: {{court.address}}, {{court.city}}, {{court.state}} {{court.zip}}</p>
-        {{!-- should put 1 person / 2 people condition --}}
-        <p>Capacity: {{court.capacity}} people</p> 
+        <p>Address:
+          {{court.address}},
+          {{court.city}},
+          {{court.state}}
+          {{court.zip}}</p>
+        {{! should put 1 person / 2 people condition }}
+        <p>Capacity: {{court.capacity}} people</p>
         <p>Dimensions(LxW): {{court.length}} x {{court.width}} ft</p>
         <p>Operating Hours: {{court.courtOpening}}-{{court.courtClosing}}</p>
         <p>Schedule: </p>
         <p>{{court.schedule}}</p>
 
-        {{!-- reserve will need an if to change to cancel if it is reserved by user already --}}
-        {{!-- should owner be allowed to reserve own court? --}}
+        {{! reserve will need an if to change to cancel if it is reserved by user already }}
+        {{! should owner be allowed to reserve own court? }}
         <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
+      </div>
     </div>
+    <div class="child1">
+      <div id="map"></div>
+    </div>
+  </div>
+  <script src="/public/js/makeMap.js"></script>
+  <script>window.onload(loadMap(`{{court.address}},
+    {{court.city}},
+    {{court.state}}
+    {{court.zip}}`, "{{court.name}}"))</script>
 </main>
-

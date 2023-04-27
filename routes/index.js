@@ -33,7 +33,6 @@ const constructor = (app) => {
     // courtList = courtList.filter((court) => {
     //   return court.ownerId != req.session.user.id;
     // });
-    console.log(req.session.user);
     return res.render("homepage", {
       auth: true,
       title: "Home",

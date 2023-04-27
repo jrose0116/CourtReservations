@@ -50,7 +50,6 @@ router.route("/available").get(async (req, res) => {
     court.distance = Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
   });
   courtList = courtList.filter((court) => {
-    console.log(court.distance <= 25);
     return court.distance <= 25;
   });
   courtList.map((court) => {

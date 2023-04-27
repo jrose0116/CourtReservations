@@ -30,11 +30,11 @@ const constructor = (app) => {
     let ownedList = courtList.filter((court) => {
       return court.ownerId == req.session.user.id;
     });
-    courtList = courtList.filter((court) => {
-      return court.ownerId != req.session.user.id;
-    });
+    // courtList = courtList.filter((court) => {
+    //   return court.ownerId != req.session.user.id;
+    // });
     console.log(req.session.user);
-    res.render("homepage", {
+    return res.render("homepage", {
       auth: true,
       title: "Home",
       availableCourts: courtList,

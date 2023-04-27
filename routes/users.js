@@ -23,21 +23,32 @@ router
     } catch (e) {
       return res
         .status(400)
-        .render("error", { error: e, auth: true, status: 400 });
+        .render("error", {
+          error: e,
+          auth: true,
+          status: 400,
+          owner: req.session.user.owner,
+          id: req.session.user.id,
+        });
     }
     let user;
     try {
       user = await getUserById(userId);
     } catch (e) {
-      return res
-        .status(404)
-        .render("error", { error: "User not found", auth: true, status: 404 });
+      return res.status(404).render("error", {
+        error: "User not found",
+        auth: true,
+        status: 404,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+      });
     }
     return res.render("createReview", {
       title: req.params.username,
       user: user,
-      id: req.session.user.id,
       auth: true,
+      owner: req.session.user.owner,
+      id: req.session.user.id,
     });
   })
   .post(async (req, res) => {
@@ -47,18 +58,26 @@ router
       revieweeId = validId(req.params.userId);
       if (reviewerId == revieweeId) throw "Cannot cast review onto own profile";
     } catch (e) {
-      return res
-        .status(400)
-        .render("error", { error: e, auth: true, status: 400 });
+      return res.status(400).render("error", {
+        error: e,
+        auth: true,
+        status: 400,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+      });
     }
     let reviewee, reviewer;
     try {
       reviewer = await getUserById(reviewerId);
       reviewee = await getUserById(revieweeId);
     } catch (e) {
-      return res
-        .status(404)
-        .render("error", { error: e, auth: true, status: 404 });
+      return res.status(404).render("error", {
+        error: e,
+        auth: true,
+        status: 404,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+      });
     }
     let reviewInfo = req.body;
     reviewInfo["reviewer_id"] = reviewerId;
@@ -74,7 +93,11 @@ router
         return res.redirect(`/user/id/${revieweeId}`);
       }
     } catch (e) {
-      return res.status(400).render("createReview", { bad: e });
+      return res.status(400).render("createReview", {
+        bad: e,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+      });
     }
     /*try {
       let review = await createReview(reviewInfo.reviewee_id, reviewInfo.reviewer_id, reviewInfo.rating, reviewInfo.comment);
@@ -95,15 +118,23 @@ router.route("/name/:username").get(async (req, res) => {
   try {
     usernameInput = validStr(usernameInput, "username");
   } catch (e) {
-    return res
-      .status(400)
-      .render("error", { error: e, auth: true, status: 400 });
+    return res.status(400).render("error", {
+      error: e,
+      auth: true,
+      status: 400,
+      owner: req.session.user.owner,
+      id: req.session.user.id,
+    });
   }
   let user = await getUserByUsername(usernameInput);
   if (user === null) {
-    return res
-      .status(404)
-      .render("error", { error: "User not found", auth: true, status: 404 });
+    return res.status(404).render("error", {
+      error: "User not found",
+      auth: true,
+      status: 404,
+      owner: req.session.user.owner,
+      id: req.session.user.id,
+    });
   }
   return res.redirect("/id/" + user._id);
   //return res.json({ username: req.params.username, implementMe: "<-" });
@@ -114,17 +145,25 @@ router.route("/id/:userId/history").get(async (req, res) => {
   try {
     userId = validId(req.params.userId);
   } catch (e) {
-    return res
-      .status(400)
-      .render("error", { error: e, auth: true, status: 400 });
+    return res.status(400).render("error", {
+      error: e,
+      auth: true,
+      status: 400,
+      owner: req.session.user.owner,
+      id: req.session.user.id,
+    });
   }
   let courtHistory;
   try {
     courtHistory = await getHistory(userId);
   } catch (e) {
-    return res
-      .status(404)
-      .render("error", { error: e, status: 404, auth: true });
+    return res.status(404).render("error", {
+      error: e,
+      status: 404,
+      auth: true,
+      owner: req.session.user.owner,
+      id: req.session.user.id,
+    });
   }
   for (let i = 0; i < courtHistory.length; i++) {
     let court;
@@ -142,6 +181,7 @@ router.route("/id/:userId/history").get(async (req, res) => {
     title: "History",
     courts: courtHistory,
     id: req.params.userId,
+    owner: req.session.user.owner,
   });
 });
 
@@ -166,6 +206,7 @@ router.route("/id/:userId").get(async (req, res) => {
       auth: true,
       ownPage: userId == sessionId,
       reviewcount: user.reviews.length,
+      owner: req.session.user.owner,
     });
   } catch (e) {
     return res

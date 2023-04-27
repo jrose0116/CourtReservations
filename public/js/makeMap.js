@@ -5,6 +5,7 @@ function loadMap(address, name) {
       let map = new google.maps.Map(document.getElementById("map"), {
         zoom: 15,
         center: results[0].geometry.location,
+        disableDefaultUI: true,
       });
       let marker = new google.maps.Marker({
         position: results[0].geometry.location,

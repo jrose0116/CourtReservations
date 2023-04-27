@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { zipCodeDistance } from "zipcode-city-distance";
+
 const router = Router();
 import {
   createCourt,
@@ -41,6 +43,20 @@ router.route("/available").get(async (req, res) => {
   //   } else {
   //     isAuth = false;
   //   }
+  let zip = req.session.user.zip;
+  courtList.map((court) => {
+    court.distance = Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
+  });
+  courtList = courtList.filter((court) => {
+    console.log(court.distance <= 25);
+    return court.distance <= 25;
+  });
+  courtList.map((court) => {
+    if (court.distance <= 1) court.distance = "Within 1 Mile";
+    else {
+      court.distance = `${court.distance} Miles Away`;
+    }
+  });
   return res.render("allCourts", {
     title: "Courts",
     courts: courtList,

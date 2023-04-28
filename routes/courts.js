@@ -84,6 +84,69 @@ router
   })
   .post(async (req, res) => {
     let newCourt = req.body;
+    newCourt["ownerId"] = req.session.user.id;
+    let name, type;
+    try {
+      name = validStr(newCourt.name);
+      type = validStr(newCourt.type);
+    } catch (e) {
+      return res.status(400).render("createCourt", {
+      auth: true,
+      id: req.session.user.id,
+      owner: req.session.user.owner,
+      bad: e
+      });
+    }
+    let capacity, length, width;
+    try {
+      capacity = validNumber(Number(newCourt.capacity));
+      length = validNumber(Number(newCourt.length));
+      width = validNumber(Number(newCourt.width));
+    } catch (e) {
+      return res.status(400).render("createCourt", {
+      auth: true,
+      id: req.session.user.id,
+      owner: req.session.user.owner,
+      bad: e
+      });
+    }
+    let courtOpening, courtClosing;
+    try {
+      courtOpening = validTime(newCourt.courtOpening, false);
+      courtClosing = validTime(newCourt.courtClosing, true);
+    } catch (e) {
+      return res.status(400).render("createCourt", {
+      auth: true,
+      id: req.session.user.id,
+      owner: req.session.user.owner,
+      bad: e
+      });
+    }
+    let state, zip;
+    try {
+      state = validState(newCourt.state);
+      zip = validZip(newCourt.zip);
+    } catch (e) {
+      return res.status(400).render("createCourt", {
+      auth: true,
+      id: req.session.user.id,
+      owner: req.session.user.owner,
+      bad: e
+      });
+    }
+    try {
+      let court = await createCourt(name, type, newCourt.address, newCourt.city, state, zip, capacity, length, width, courtOpening, courtClosing, newCourt.ownerId);
+      if (court) {
+        return res.redirect("/");
+      }
+    } catch (e) {
+     return res.status(400).render("createCourt", {
+      auth: true,
+      id: req.session.user.id,
+      owner: req.session.user.owner,
+      bad: e
+    });
+  }
     return res.json({ create: newCourt });
   });
 

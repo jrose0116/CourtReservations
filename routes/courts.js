@@ -179,6 +179,7 @@ router.route("/:courtId").get(async (req, res) => {
     id: req.session.user.id,
     owner: req.session.user.owner,
     apiKey: process.env.MAPS_API_KEY,
+    ownCourt: thisCourt.ownerId == req.session.user.id
   });
 });
 

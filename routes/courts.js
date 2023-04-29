@@ -9,6 +9,7 @@ import {
   getCourtById,
   getAllCourts,
   getCourtsByName,
+  updateCourt
 } from "../data/courts.js";
 import {
   addToSchedule,
@@ -361,8 +362,84 @@ router
       closing: thisCourt.courtClosing
     });
   })
-  .post(async (req, res) => { 
-    //todo
+  .post(async (req, res) => {
+    let updatedCourt = req.body;
+    let thisCourt;
+     let isAuth;
+    if (req.session.user) {
+      isAuth = true;
+    } else {
+      isAuth = false;
+    }
+    try {
+      thisCourt = await getCourtById(req.params.courtId);
+    } catch (e) {
+      return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing, 
+      bad: e
+    });
+    }
+    let name;
+    try {
+      name = validStr(updatedCourt.name);
+    } catch (e) {
+      return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing, 
+      bad: e
+    });
+    }
+    let capacity;
+    try {
+      capacity = validNumber(Number(updatedCourt.capacity));
+    } catch (e) {
+      return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing, 
+      bad: e
+    });
+    }
+    let courtOpening, courtClosing;
+    try {
+      courtOpening = validTime(updatedCourt.courtOpening, false);
+      courtClosing = validTime(updatedCourt.courtClosing, true);
+    } catch (e) {
+      return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing, 
+      bad: e
+    });
+    }
+    updatedCourt["id"] = thisCourt._id;
+    updatedCourt["ownerId"] = thisCourt.ownerId;
+    try {
+      let finalCourt = await updateCourt(updatedCourt.id, name, capacity, courtOpening, courtClosing, updatedCourt.ownerId);
+      if (finalCourt) {
+        res.redirect(`/courts/${thisCourt._id}`);
+      }
+    } catch (e) {
+      return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing, 
+      bad: e
+    });
+    }
   });
 
 export default router;

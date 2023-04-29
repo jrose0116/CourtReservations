@@ -116,6 +116,41 @@ const getCourtsByName = async (courtName) => {
   return courtArr;
 };
 
+const updateCourt = async (
+  id,
+  name,
+  capacity,
+  courtOpening,
+  courtClosing,
+  ownerId
+) => { 
+  name = validStr(name, "Name");
+  validNumber(capacity, "Capacity", true, 0, Infinity);
+  courtOpening = validTime(courtOpening, false);
+  courtClosing = validTime(courtClosing, true);
+
+  ownerId = validId(ownerId);
+
+  let updatedCourt = {
+    name,
+    capacity,
+    courtOpening,
+    courtClosing,
+    ownerId
+  };
+
+  const courtCollection = await courts();
+  const updateInfo = await courtCollection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    { $set: updatedCourt },
+    { returnDocument: 'after' }
+  );
+
+  if (updateInfo.lastErrorObject.n === 0) throw "Error: Update failed";
+  let finalCourt = await updateInfo.value;
+  return finalCourt;
+};
+
 // todo: recommend courts function
 
-export { createCourt, getAllCourts, getCourtById, getCourtsByName };
+export { createCourt, getAllCourts, getCourtById, getCourtsByName, updateCourt };

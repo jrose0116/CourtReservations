@@ -1,4 +1,5 @@
 <h1>{{title}}</h1>
+<div id="error" class="error" hidden>I'm an error. I will change through Client-Side JS</div>
 
 <main>
     <form action="/courts/{{court._id}}/reserve" method="POST" id="makeReservationForm">
@@ -24,6 +25,7 @@
     {{#if reserveDate}}
         <h2>Reservation Information</h2>
         <div>
+            <p>Reserved Date: {{reserveDate}}</p>
             <p>Start Time: <time>{{startTime}}</time></p>
             <p>End Time: <time>{{endTime}}</time></p>
             <p>Booked for {{bookedForNumber}} people</p>
@@ -39,8 +41,8 @@
     </div>
 </main>
 
-{{!-- <script src="../public/js/makeReservation.js"></script> --}}
-<script>
+<script src="../public/js/makeReservation.js"></script>
+{{!-- <script>
     const displayAvailableTimes = () => {
         //first clear old day's times
         timesDiv.innerHTML = '';
@@ -49,4 +51,4 @@
         newDiv.innerHTML = 'get schedule here';
         timesDiv.appendChild(newDiv);
     }
-</script>
+</script> --}}

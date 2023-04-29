@@ -1,9 +1,6 @@
 <main>
   <script
-    src="https://maps.googleapis.com/maps/api/js?key={{apiKey}}"
-    async
-    defer
-  ></script>
+    src="https://maps.googleapis.com/maps/api/js?key={{apiKey}}&callback=Function.prototype"></script>
   <div class="parent">
     <div class="child1">
       <div class="centered">
@@ -25,6 +22,11 @@
         {{! reserve will need an if to change to cancel if it is reserved by user already }}
         {{! should owner be allowed to reserve own court? }}
         <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
+
+        {{#if ownCourt}}
+        <button>Edit Court</button>
+        {{else}}
+      {{/if}}
       </div>
     </div>
     <div class="child1">

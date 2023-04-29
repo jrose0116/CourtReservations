@@ -209,6 +209,7 @@ router.route("/:courtId/reserve").get(async (req, res) => {
   var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
 
   return res.render("makeReservation", {
+    auth: true,
     title: `Reserve ${thisCourt.name}`,
     court: thisCourt,
     id: thisCourt._id,
@@ -221,10 +222,11 @@ router.route("/:courtId/reserve").get(async (req, res) => {
 
 router.route("/:courtId/reserve").post(async (req, res) => {
   //TODO:userId validation
+  console.log("POST RESERVE");
   let thisCourt;
   try {
     //get court
-    req.params.courtId = validId(req.params.courtId);
+    req.params.courtId = validId(req.params.courtId, "court ID");
     thisCourt = await getCourtById(req.params.courtId);
   } catch (e) {
     const strError =
@@ -232,18 +234,28 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     return res.status(404).json({ error: strError });
     //return res.status(404).render('error', {error: strError});
   }
+  let newDateStr;
+  let newCap;
   try {
+	console.log("Validations");
     //validations
     if (!req || !req.body) {
       const strError =
         "This error occurred because in the /:courtId/reserve route, it had no req body.";
       return res.status(400).render("error", { error: strError, auth: true }); //number is good
     }
+    if (!req.session || !req.session.user || !req.session.user.id) {
+      const strError =
+        "This error occurred because in the /:courtId/reserve route, it had no req session user.";
+      return res.status(400).render("error", { error: strError, auth: true }); //number is good
+    }
 
-    //userId = validId(userId);
+    //console.log("A");
+    req.session.user.id = validId(req.session.user.id, "user ID from req.session");
+    //console.log(req.session.user.id);
 
     let dateArr = req.body.selectedDate.split("-");
-    let newDateStr = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
+    newDateStr = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
     newDateStr = validDate(newDateStr);
 
     req.body.startTime = validTime(req.body.startTime);
@@ -264,52 +276,41 @@ router.route("/:courtId/reserve").post(async (req, res) => {
         throw `Error: capacity must contain all digits`;
       }
     }
-    let newCap = parseInt(req.body.capacity);
+    newCap = parseInt(req.body.capacity);
     newCap = validNumber(newCap, "capacity", true, 0, thisCourt.capacity);
   } catch (e) {
-    //const strError = "";
+    //const strError = e;
     return res.status(404).json({ error: e });
   }
 
   try {
     //data call
-    console.log("data call");
-    // let addedToSchedule = await addToSchedule(
-    // 	courtId,
-    // 	userId,//<-- issue b/c not yet validated
-    // 	newDateStr,
-    // 	req.body.startTime,
-    // 	req.body.endTime,
-    // 	newCap);
+    let addedToSchedule = await addToSchedule(
+    	req.params.courtId,//courtId,
+    	req.session.user.id,//<-- issue b/c not yet validated
+    	newDateStr,
+    	req.body.startTime,
+    	req.body.endTime,
+    	newCap);
   } catch (e) {
-    return res.status(404).json({ error: e });
-    //return res.status(404).render('error', {error: strError});
-  }
-
-  try {
-    //data call
-    // console.log("data call")
-    // let addedToSchedule = await addToSchedule(
-    // 	courtId,
-    // 	userId,//<-- issue b/c not yet validated
-    // 	newDateStr,
-    // 	req.body.startTime,
-    // 	req.body.endTime,
-    // 	newCap);
-  } catch (e) {
+    console.log("Error on data call");
     return res.status(404).json({ error: e });
     //return res.status(404).render('error', {error: strError});
   }
 
   return res.render("makeReservation", {
     auth: true,
-    title: `Reserve ${thisCourt.name}`,
+    title: `Reservation for ${thisCourt.name} is complete!`,
     court: thisCourt,
     id: thisCourt._id,
-    mindate: currentDateStr,
-    maxdate: maxDateStr,
+    // mindate: currentDateStr,
+    // maxdate: maxDateStr,
     schedule: thisCourt.schedule,
     owner: req.session.user.owner,
+    reserveDate: newDateStr,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    bookedForNumber: newCap
   });
 });
 

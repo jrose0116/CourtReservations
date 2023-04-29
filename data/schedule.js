@@ -94,7 +94,15 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   startTime = validTime(startTime);
   endTime = validTime(endTime);
 
-  let court = await courtDataFunctions.getCourtById(courtId);
+  let court;
+  try {
+    court = await courtDataFunctions.getCourtById(courtId);
+  }
+  catch (e)
+  {
+    throw "schedule.js: getCourtsById failed";
+  }
+  
   if (!court)
   {
     throw "schedule.js: court with supplied id is null or undefined";
@@ -108,7 +116,15 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
     throw "schedule.js: getCourtById returns a court with a schedule that is not an object";
   }
 
-  let user = await getUserById(userId);
+  let user;
+  try 
+  {
+    user = await getUserById(userId);
+  }
+  catch (e)
+  {
+    throw "schedule.js: getUserById failed";
+  }
   if (!user)
   {
     throw "schedule.js: user with supplied id is null or undefined";
@@ -173,7 +189,13 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
       throw "schedule.js: modifiedCount is 0";
     }*/
   }
-  court = await courtDataFunctions.getCourtById(courtId);
+  try {
+    court = await courtDataFunctions.getCourtById(courtId);
+  }
+  catch (e)
+  {
+    throw "schedule.js: getCourtById (2)";
+  }  
 
   if (capacity > court.capacity)
   {
@@ -194,7 +216,15 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   existingSchedule[date] = bookingsOnADayArray;
 
   //check capacity issues
-  let timesOverCapArr = await checkBookingCapacity(courtId, date, startTime, endTime, capacity);
+  let timesOverCapArr;
+  try {
+    timesOverCapArr = await checkBookingCapacity(courtId, date, startTime, endTime, capacity);
+  }
+  catch (e)
+  {
+    throw "schedule.js: checkBookingCapacity failed, booking puts times over cap";
+  }
+  
   if (timesOverCapArr.length > 0)
   {
     throw `Error: Capacity is exceeded at the times ${timesOverCapArr}`;
@@ -209,7 +239,14 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
     throw "schedule.js: modifiedCount is 0";
   }
 
-  let retArray = await getScheduleDate(courtId,date);
+  let retArray;
+  try {
+    retArray = await getScheduleDate(courtId,date);
+  }
+  catch (e)
+  {
+    throw "schedule.js getScheduleDate failed";
+  }
 
   return retArray;
 };

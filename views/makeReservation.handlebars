@@ -17,10 +17,21 @@
         <input type="submit" class="submit"/>
     </form>
    
+    
     {{!-- <button onclick="displayAvailableTimes()">Find available times</button> --}}
-    <div id="timesDiv"></div>
-
-    <br>
+    {{!-- <div id="timesDiv"></div> --}}
+    {{!-- <br> --}}
+    {{#if reserveDate}}
+        <h2>Reservation Information</h2>
+        <div>
+            <p>Start Time: <time>{{startTime}}</time></p>
+            <p>End Time: <time>{{endTime}}</time></p>
+            <p>Booked for {{bookedForNumber}} people</p>
+        </div>
+        {{!-- <button onclick="window.location.href='/courts/available/';">Return to Available Courts page</button> --}}
+        <a href="/courts/available/">Return to Available Courts Page</a>
+        <br>
+    {{/if}}
     <div>
         <a href="/courts/{{court._id}}">{{court.name}}</a> 
         <p>Type: {{court.type}}</p>

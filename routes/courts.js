@@ -221,7 +221,6 @@ router.route("/:courtId/reserve").get(async (req, res) => {
 });
 
 router.route("/:courtId/reserve").post(async (req, res) => {
-  //TODO:userId validation
   console.log("POST RESERVE");
   let thisCourt;
   try {
@@ -283,6 +282,20 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     return res.status(404).json({ error: e });
   }
 
+  //creates string for min and max input values in html time input
+  var currentDate = new Date();
+  var year = currentDate.getFullYear();
+  var month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  var day = String(currentDate.getDate()).padStart(2, "0");
+  var currentDateStr = year + "-" + month + "-" + day;
+
+  var maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 1);
+  var maxYear = maxDate.getFullYear();
+  var maxMonth = String(maxDate.getMonth() + 6).padStart(2, "0");
+  var maxDay = String(maxDate.getDate()).padStart(2, "0");
+  var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
+
   try {
     //data call
     let addedToSchedule = await addToSchedule(
@@ -303,8 +316,8 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     title: `Reservation for ${thisCourt.name} is complete!`,
     court: thisCourt,
     id: thisCourt._id,
-    // mindate: currentDateStr,
-    // maxdate: maxDateStr,
+    mindate: currentDateStr,
+    maxdate: maxDateStr,
     schedule: thisCourt.schedule,
     owner: req.session.user.owner,
     reserveDate: newDateStr,

@@ -1,24 +1,25 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>{{{title}}}</title>
     <link rel="stylesheet" href="/public/css/main-styles.css" />
   </head>
-  {{#if auth}}
-    <div class="nav">
-      <a href="/">Home</a>
-      <a href="/courts/available/">Available Courts</a>
-      <a href="/courts/recommend/">Recommended Courts</a>
-      <a href="/user/id/{{{id}}}/history/">History</a>
-      {{#if owner}}
-        <a href="/courts/create/">Add Court</a>
-      {{/if}}
-      <a href="/user/id/{{{id}}}/">Profile</a>
-      <a href="/logout">Logout</a>
-    </div>
-  {{/if}}
-
   <body>
+    {{#if auth}}
+      <div class="nav">
+        <a href="/">Home</a>
+        <a href="/courts/available/">Available Courts</a>
+        <a href="/courts/recommend/">Recommended Courts</a>
+        <a href="/user/id/{{{id}}}/history/">History</a>
+        {{#if owner}}
+          <a href="/courts/create/">Add Court</a>
+        {{/if}}
+        <a href="/user/id/{{{id}}}/">Profile</a>
+        <a href="/logout">Logout</a>
+      </div>
+    {{/if}}
+    
     {{{body}}}
   </body>
 </html>

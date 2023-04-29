@@ -321,4 +321,34 @@ router.route("/:courtId/reserve").post(async (req, res) => {
 //   });
 // });
 
+router
+  .route("/:courtId/editCourt")
+  .get(async (req, res) => {
+    let isAuth;
+    if (req.session.user) {
+      isAuth = true;
+    } else {
+      isAuth = false;
+    }
+    let thisCourt;
+    try {
+     //get court
+      req.params.courtId = validId(req.params.courtId);
+      thisCourt = await getCourtById(req.params.courtId);
+    } catch (e) {
+      const strError = "This error occurred in the /:courtId/editCourt route because a court with the supplied id does not exist.";
+      return res.status(404).json({ error: strError });
+  }
+    return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing
+    });
+  })
+  .post(async (req, res) => { 
+    //todo
+  });
+
 export default router;

@@ -24,7 +24,7 @@
         <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
 
         {{#if ownCourt}}
-        <button>Edit Court</button>
+        <button onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>
         {{else}}
       {{/if}}
       </div>

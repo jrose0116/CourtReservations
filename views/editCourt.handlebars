@@ -1,0 +1,29 @@
+<main>
+    <script>
+    window.addEventListener('load', function() {
+      document.getElementById('name').value = "{{{courtName}}}";
+      document.getElementById('capacity').value = '{{capacity}}';
+      document.getElementById('courtOpening').value = '{{opening}}';
+      document.getElementById('courtClosing').value = '{{closing}}';
+    });
+  </script>
+  <div class="centered">
+    <h1>Edit {{courtName}}</h1>
+    <form id="form" method="post" class="centered">
+      <label for="name">Court Name:</label>
+      <input id="name" name="name" type="text" />
+      <br />
+      <label for="capacity">Capacity:</label>
+      <input name="capacity" id="capacity" type="text" />
+      <br />
+      <label for="courtOpening">Court Opening Time:</label>
+      <input name="courtOpening" id="courtOpening" type="time" />
+      <br />
+      <label for="courtClosing">Court Closing Time:</label>
+      <input name="courtClosing" id="courtClosing" type="time" />
+      <br />
+      <button type="submit">Save Changes</button>
+    </form>
+    <p>{{bad}}</p>
+  </div>
+</main>

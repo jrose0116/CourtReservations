@@ -8,6 +8,7 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
+  z-index: 2;
 }
 
 body {
@@ -174,12 +175,14 @@ body {
   flex: 2;
   overflow-y: scroll;
   height: 300px;
+  margin-bottom: 40px;
 }
 
 #map {
   height: 500px;
   width: 500px;
   border-radius: 50%;
+  z-index: 1;
 }
 
 #error-div {  
@@ -187,4 +190,8 @@ body {
   /* display: flex;
   flex-direction: column;
   align-items: center; */
+}
+
+#editCourt {
+  margin: 20px;
 }

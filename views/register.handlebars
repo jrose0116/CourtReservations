@@ -12,9 +12,9 @@
             <input type="text" name="lastNameInput" id="lastNameInput" placeholder="Enter last name">
         </label>
 
-        <label for="uasernameInput">
+        <label for="usernameInput">
             Username
-            <input type="text" name="uasernameInput" id="uasernameInput" placeholder="Enter username">
+            <input type="text" name="usernameInput" id="usernameInput" placeholder="Enter username">
         </label>
         
         <label for="emailAddressInput">
@@ -105,11 +105,13 @@
         </label>
         
         
-        <div id="error-div"></div>
+        <div id="error-div" class="error-div"></div>
         <div id="errors">{{bad}}</div>
 
         <button type="submit" class="btn">Submit</button>
         <br>
         <a href="/login">Already have an account? Click here to log-in</a>
     </form>
+
+    <script src="../public/js/register.js"></script>
 </main>

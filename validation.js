@@ -47,6 +47,17 @@ import moment from 'moment';
 	return str;
 };
 
+export const checkName = (name, stringName) => {
+    name = validStr(name, "Name");
+    if (!/^[a-zA-Z]+/.test(name)) {
+        throw `Error: ${stringName} cannot contain any spaces or numbers`
+    }
+    if (name.length < 2 || name.length > 25) {
+        throw `Error: ${stringName} cannot be less than 2 or greater than 25 characters`;
+    }
+    return name;
+}
+
 const validStrArr = (arr, varName) => {
 	/* 
   Validates a string array and trims each element.
@@ -127,7 +138,7 @@ const validZip = (zip) => {
   /*
   Verifies that a given U.S. zip code is valid
   */
-  validStr(zip);
+  validStr(zip, "Zip");
   zip = zip.trim();
   let isValid = /^\d{5}(?:[-\s]\d{4})?$/.test(zip);
   if (!isValid) {
@@ -271,7 +282,7 @@ const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 }
 
 const validEmail = (email) => {
-  validStr(email);
+  validStr(email, "Email");
   email = email.trim();
   let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (!isValid) {
@@ -281,7 +292,7 @@ const validEmail = (email) => {
 }
 
 const validExpLevel = (level) => {
-  validStr(level);
+  validStr(level, "Level");
   level = level.trim().toLowerCase();
   if (level !== "beginner" && level !== "intermediate" && level !== "advanced") {
     throw "Error: invalid experience level";
@@ -293,7 +304,7 @@ const validDate = (date) => {
     //does not account for leap years or months with under 31 days
     //Format: MM/DD/YYYY
 
-	date = validStr(date);
+	date = validStr(date, "Date");
     if (typeof date !== 'string')
     {
         throw `Error: ${date} is not a string`;

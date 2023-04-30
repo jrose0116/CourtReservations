@@ -39,8 +39,8 @@ const createUser = async (
     !city ||
     !state ||
     !zip ||
-    !email ||
-    !experience_level
+    !email
+    // !experience_level
   ) {
     throw "Error: All inputs must be provided";
   }

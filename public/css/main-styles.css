@@ -181,3 +181,10 @@ body {
   width: 500px;
   border-radius: 50%;
 }
+
+#error-div {  
+  color: red;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}

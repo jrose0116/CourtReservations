@@ -63,9 +63,48 @@ router
     }
   });
 
-router.route("/register").get(async (req, res) => {
-  return res.render("register", { auth: false });
-});
+router.route("/register")
+  .get(async (req, res) => {
+    return res.render("register", { auth: false });
+  })
+  .post(async (req, res) => {
+    let firstName = req.body.firstNameInput;
+    let lastName = req.body.lastNameInput;
+    let username = req.body.usernameInput;
+    let password = req.body.passwordInput;
+    let age = parseInt(req.body.ageInput);
+    let city = req.body.cityInput;
+    let state = req.body.stateInput;
+    let zip = req.body.zipInput;
+    let email = req.body.emailAddressInput;
+    try {
+      //make update
+      const newUser = await createUser(
+        firstName,
+        lastName,
+        username,
+        password,
+        age,
+        city,
+        state,
+        zip,
+        email,
+        "beginner",
+        false
+      );
+      if (newUser) {
+        return res.redirect('login');      
+      }
+      else {
+        //if it did not error but didn't work:
+        res.status(500).render('error', {error: "Internal Server Error"});
+      }
+    }
+    catch (e) {
+      console.log(e)
+      return res.status(400).render('register');
+    }
+  });
 
 router.route("/logout").get(async (req, res) => {
   req.session.destroy();

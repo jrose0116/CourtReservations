@@ -173,6 +173,8 @@ router.route("/:courtId").get(async (req, res) => {
   } catch (e) {
     return res.status(404).render("error", { error: e, status: 404 });
   }
+  let schedule = thisCourt.schedule;
+  delete schedule["_id"];
   return res.render("courtById", {
     auth: true,
     title: thisCourt.name,
@@ -180,7 +182,8 @@ router.route("/:courtId").get(async (req, res) => {
     id: req.session.user.id,
     owner: req.session.user.owner,
     apiKey: process.env.MAPS_API_KEY,
-    ownCourt: thisCourt.ownerId == req.session.user.id
+    ownCourt: thisCourt.ownerId == req.session.user.id,
+    schedule: schedule
   });
 });
 

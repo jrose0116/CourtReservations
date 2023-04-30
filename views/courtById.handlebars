@@ -17,14 +17,24 @@
         <p>Dimensions(LxW): {{court.length}} x {{court.width}} ft</p>
         <p>Operating Hours: {{court.courtOpening}}-{{court.courtClosing}}</p>
         <p>Schedule: </p>
-        <p>{{court.schedule}}</p>
+        {{#each schedule}}
+        <div>
+          <p>{{@key}}</p>
+          <ul>
+          {{#each this}}
+           <li>{{startTime}} - {{endTime}}</li>
+          {{/each}}
+          </ul>
+        </div>
+        {{/each}}
+
 
         {{! reserve will need an if to change to cancel if it is reserved by user already }}
         {{! should owner be allowed to reserve own court? }}
         <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
 
         {{#if ownCourt}}
-        <button onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>
+        <button id="editCourt"onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>
         {{else}}
       {{/if}}
       </div>

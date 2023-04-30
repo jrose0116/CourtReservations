@@ -113,7 +113,7 @@ const validEmail = (email) => {
       throw "Error: Invalid email address";
     }
     return email;
-  }
+}
 
 if (registerForm) {
   registerForm.addEventListener('submit', (event) => {    
@@ -293,7 +293,7 @@ if (registerForm) {
         }
     }
 
-    //check password
+    // check password
     // if (password.value.trim() === "") {
     //     event.preventDefault();
     //     emptyPassword = true;
@@ -303,7 +303,7 @@ if (registerForm) {
     // }
     // if (!emptyPassword) {
     //     try {
-    //         password.value = validPassword(password.value);
+    //         // password.value = validPassword(password.value);
     //     }
     //     catch (e) {
     //         event.preventDefault();
@@ -323,7 +323,7 @@ if (registerForm) {
     // }
     // if (!emptyConfirmPassword) {
     //     try {
-    //         confirmPassword.value = validPassword(confirmPassword.value);
+    //         // confirmPassword.value = validPassword(confirmPassword.value);
     //     }
     //     catch (e) {
     //         event.preventDefault();
@@ -333,8 +333,9 @@ if (registerForm) {
     //     }
     // }
 
-    // //check if passwords match********************************8
+    // //check if passwords match********************************
     // if (!emptyPassword && !emptyConfirmPassword) {
+    //     console.log("xxxxxxxxxxxxx")
     //     if (emptyPassword !== emptyConfirmPassword) {
     //         event.preventDefault();
     //         let message = document.createElement('p');

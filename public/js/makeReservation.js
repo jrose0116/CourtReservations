@@ -130,7 +130,14 @@ const validTime = (time, isEndTime) => {
         throw "Error: HH:MM has converted to not a number";
     }
 
-	//24:00 will only be a valid closingTime or endTime	
+	//24:00 will only be a valid closingTime or endTime
+    //00:00 converts to 24:00 if end time
+    if (timeHourInt == 0 && timeMinuteInt == 0 && isEndTime == true)
+    {
+        timeHourInt = 24;
+        timeMinuteInt = 0;
+        time = "24:00";
+    }    
 	if (timeHourInt < 0 || timeHourInt > 24)
     {
         throw `Error: ${timeHourInt} out of range 0 to 24`;
@@ -234,7 +241,64 @@ date = validStr(date, "Date");
 //   }
 return date;
 }
+const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
+	/*
+	valid time format is a string in HH:MM format (military time)
+	startTime, endTime, courtOpening, courtClosing are received as strings in valid time format
+	validTime must be called on these params before calling this function
+	*/
 
+	let startTimeArr = startTime.split(":");
+	let startTimeHourString = startTimeArr[0];
+    let startTimeMinuteString = startTimeArr[1];
+	let endTimeArr = endTime.split(":");
+	let endTimeHourString = endTimeArr[0];
+    let endTimeMinuteString = endTimeArr[1];
+
+	let openingArr = courtOpening.split(":");
+	let openingHourString = openingArr[0];
+    let openingMinuteString = openingArr[1];
+	let closingArr = courtClosing.split(":");
+	let closingHourString = closingArr[0];
+    let closingMinuteString = closingArr[1];
+
+	let startTimeHourInt = parseInt(startTimeHourString);
+    let startTimeMinuteInt = parseInt(startTimeMinuteString);
+	let endTimeHourInt = parseInt(endTimeHourString);
+    let endTimeMinuteInt = parseInt(endTimeMinuteString);
+
+	let openingHourInt = parseInt(openingHourString);
+    let openingMinuteInt = parseInt(openingMinuteString);
+	let closingHourInt = parseInt(closingHourString);
+    let closingMinuteInt = parseInt(closingMinuteString);
+	
+	if (openingHourInt > startTimeHourInt || startTimeHourInt > endTimeHourInt || endTimeHourInt > closingHourInt)
+	{
+		throw `Error: hours ${openingHourInt}, ${startTimeHourInt}, ${endTimeHourInt}, ${closingHourInt} are not in nondecreasing order`;
+	}
+	if (openingHourInt == startTimeHourInt)
+	{
+		if (openingMinuteInt > startTimeMinuteInt)
+		{
+			throw `Error: ${courtOpening} minute is greater than ${startTime} minute`;
+		}
+	}
+	if (startTimeHourInt == endTimeHourInt)
+	{
+		if (startTimeMinuteInt >= endTimeMinuteInt)
+		{
+			throw `Error: ${startTime} minute is greater than or equal to ${endTime} minute`;
+		}
+	}
+	if (endTimeHourInt == closingHourInt)
+	{
+		if (endTimeMinuteInt > closingMinuteInt)
+		{
+			throw `Error: ${endTime} minute is greater than ${courtClosing} minute`;
+		}
+	}
+	return true;
+}
 
 if (makeReservationForm) {
   makeReservationForm.addEventListener("submit", (event) => {
@@ -262,7 +326,7 @@ if (makeReservationForm) {
       console.log(e);
       event.preventDefault();
       dateErrorDiv.hidden = false;
-      dateErrorDiv.innerHTML = e;
+      dateErrorDiv.innerHTML = "Date " + e;
     }
 
     //start time
@@ -273,7 +337,7 @@ if (makeReservationForm) {
         console.log(e);
         event.preventDefault();
         startTimeErrorDiv.hidden = false;
-        startTimeErrorDiv.innerHTML = e;
+        startTimeErrorDiv.innerHTML = "Start Time " + e;
     }
 
     //end time
@@ -284,7 +348,24 @@ if (makeReservationForm) {
         console.log(e);
         event.preventDefault();
         endTimeErrorDiv.hidden = false;
-        endTimeErrorDiv.innerHTML = e;
+        endTimeErrorDiv.innerHTML = "End Time " + e;
+    }
+
+    try {
+        validTimeInRange(
+            startTime.value,
+            endTime.value,
+            "00:00",
+            "24:00"
+        );
+    }
+    catch (e) {
+        console.log(e);
+        event.preventDefault();
+        startTimeErrorDiv.hidden = false;
+        startTimeErrorDiv.innerHTML = "Start Time " + e;
+        endTimeErrorDiv.hidden = false;
+        endTimeErrorDiv.innerHTML = "End Time " + e;
     }
     
     //capacity
@@ -304,7 +385,7 @@ if (makeReservationForm) {
         console.log(e);
         event.preventDefault();
         capacityErrorDiv.hidden = false;
-        capacityErrorDiv.innerHTML = e;
+        capacityErrorDiv.innerHTML = "Number of Players " + e;
     }
 
   });

@@ -1,3 +1,5 @@
+import { validStr } from "../../validation";
+
 let loginForm = document.getElementById("login-form");
 let emailAddress = document.getElementById("emailAddressInput");
 let password = document.getElementById("passwordInput");

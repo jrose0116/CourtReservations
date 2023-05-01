@@ -1,48 +1,69 @@
 <h1>{{title}}</h1>
-<div id="error" class="error" hidden>I'm an error. I will change through Client-Side JS</div>
+<div id="error" class="error" hidden>I'm an error. I will change through
+  Client-Side JS</div>
 
 <main>
-    <form action="/courts/{{court._id}}/reserve" method="POST" id="makeReservationForm">
-        <label for="selectedDate">Select a date to make a reservation:</label>
-        <input type="date" id="selectedDate" name="selectedDate" value={{mindate}} min={{mindate}} max={{maxdate}}>
-        <br>
-        <label for="startTime">Select start time:</label>
-        <input type="time" id="startTime" name="startTime">
-        <br>
-        <label for="endTime">Select end time:</label>
-        <input type="time" id="endTime" name="endTime">
-        <br>
-        <label for="capacity">Number of Players:</label>
-        <input type="number" id="capacity" name="capacity" min=1 max={{court.capacity}}>
-        <br>
-        <input type="submit" class="submit"/>
-    </form>
-   
-    
-    {{!-- <button onclick="displayAvailableTimes()">Find available times</button> --}}
-    {{!-- <div id="timesDiv"></div> --}}
-    {{!-- <br> --}}
-    {{#if reserveDate}}
-        <h2>Reservation Information</h2>
-        <div>
-            <p>Reserved Date: {{reserveDate}}</p>
-            <p>Start Time: <time>{{startTime}}</time></p>
-            <p>End Time: <time>{{endTime}}</time></p>
-            <p>Booked for {{bookedForNumber}} people</p>
-        </div>
-        {{!-- <button onclick="window.location.href='/courts/available/';">Return to Available Courts page</button> --}}
-        <a href="/courts/available/">Return to Available Courts Page</a>
-        <br>
-    {{/if}}
+  <form
+    action="/courts/{{court._id}}/reserve"
+    method="POST"
+    id="makeReservationForm"
+  >
+    <label for="selectedDate">Select a date to make a reservation:</label>
+    <input
+      type="date"
+      id="selectedDate"
+      name="selectedDate"
+      value={{mindate}}
+      min={{mindate}}
+      max={{maxdate}}
+    />
+    <br />
+    <label for="startTime">Select start time:</label>
+    <input type="time" id="startTime" name="startTime" />
+    <br />
+    <label for="endTime">Select end time:</label>
+    <input type="time" id="endTime" name="endTime" />
+    <br />
+    <label for="capacity">Number of Players:</label>
+    <input
+      type="number"
+      id="capacity"
+      name="capacity"
+      min="1"
+      max={{court.capacity}}
+    />
+    <br />
+    <input type="submit" class="submit" />
+  </form>
+
+  {{! <button onclick="displayAvailableTimes()">Find available times</button> }}
+  {{! <div id="timesDiv"></div> }}
+  {{! <br> }}
+  {{#if reserveDate}}
+    <h2>Reservation Information</h2>
     <div>
-        <a href="/courts/{{court._id}}">{{court.name}}</a> 
-        <p>Type: {{court.type}}</p>
-        <p>Address: {{court.address}}, {{court.city}}, {{court.state}} {{court.zip}}</p>
+      <p>Reserved Date: {{reserveDate}}</p>
+      <p>Start Time: <time>{{startTime}}</time></p>
+      <p>End Time: <time>{{endTime}}</time></p>
+      <p>Booked for {{bookedForNumber}} people</p>
     </div>
+    {{! <button onclick="window.location.href='/courts/available/';">Return to Available Courts page</button> }}
+    <a href="/courts/available/">Return to Available Courts Page</a>
+    <br />
+  {{/if}}
+  <div>
+    <a href="/courts/{{court._id}}">{{court.name}}</a>
+    <p>Type: {{court.type}}</p>
+    <p>Address:
+      {{court.address}},
+      {{court.city}},
+      {{court.state}}
+      {{court.zip}}</p>
+  </div>
 </main>
 
-<script src="../public/js/makeReservation.js"></script>
-{{!-- <script>
+<script src="/public/js/makeReservation.js"></script>
+{{! <script>
     const displayAvailableTimes = () => {
         //first clear old day's times
         timesDiv.innerHTML = '';
@@ -51,4 +72,4 @@
         newDiv.innerHTML = 'get schedule here';
         timesDiv.appendChild(newDiv);
     }
-</script> --}}
+</script> }}

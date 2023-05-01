@@ -185,6 +185,11 @@ body {
   z-index: 1;
 }
 
+.error {
+	color: red;
+	font-weight: bold;
+}
+
 #error-div {  
   color: red;
   /* display: flex;

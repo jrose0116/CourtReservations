@@ -198,7 +198,14 @@ const validTime = (time, isEndTime) => {
         throw "Error: HH:MM has converted to not a number";
     }
 
-	//24:00 will only be a valid closingTime or endTime	
+	//24:00 will only be a valid closingTime or endTime
+    //00:00 converts to 24:00 if end time
+    if (timeHourInt == 0 && timeMinuteInt == 0 && isEndTime == true)
+    {
+        timeHourInt = 24;
+        timeMinuteInt = 0;
+        time = "24:00";
+    }
 	if (timeHourInt < 0 || timeHourInt > 24)
     {
         throw `Error: ${timeHourInt} out of range 0 to 24`;

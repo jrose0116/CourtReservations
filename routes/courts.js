@@ -225,7 +225,6 @@ router.route("/:courtId/reserve").get(async (req, res) => {
 });
 
 router.route("/:courtId/reserve").post(async (req, res) => {
-  console.log("POST RESERVE");
   let thisCourt;
   try {
     //get court
@@ -261,8 +260,8 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     newDateStr = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
     newDateStr = validDate(newDateStr);
 
-    req.body.startTime = validTime(req.body.startTime);
-    req.body.endTime = validTime(req.body.endTime);
+    req.body.startTime = validTime(req.body.startTime, false);
+    req.body.endTime = validTime(req.body.endTime, true);
 
     validTimeInRange(
       req.body.startTime,

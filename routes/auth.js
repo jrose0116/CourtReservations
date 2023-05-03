@@ -77,6 +77,16 @@ router.route("/register")
     let state = req.body.stateInput;
     let zip = req.body.zipInput;
     let email = req.body.emailAddressInput;
+    let experience_level = req.body.levelInput;
+    let ownerString = req.body.ownerInput;
+    let owner;
+    if (ownerString.charAt(0) === "Y") {
+      owner = true;
+    }
+    else {
+      owner = false;
+    }
+
     try {
       //make update
       const newUser = await createUser(
@@ -89,8 +99,8 @@ router.route("/register")
         state,
         zip,
         email,
-        "beginner",
-        false
+        experience_level,
+        owner
       );
       if (newUser) {
         return res.redirect('login');      

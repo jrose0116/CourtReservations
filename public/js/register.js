@@ -352,7 +352,7 @@ if (registerForm) {
 
     //check if passwords match
     if (!emptyPassword && !emptyConfirmPassword && goodPass && goodConfirmPass) {
-        if (password.value.value !== confirmPassword.value) {
+        if (password.value !== confirmPassword.value) {
             event.preventDefault();
             let message = document.createElement('p');
             message.innerHTML = "Password and confirm password do not match"

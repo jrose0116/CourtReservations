@@ -52,12 +52,17 @@ body {
   display: flex;
 }
 
+.light-link {
+  text-decoration: none;
+  font-size: 13px;
+}
+
 .div1, .div2 {
   flex: 1;
   padding: 10px;
 }
 
-#registration-form label {
+/* #registration-form label {
   display: block;
   margin-bottom: 10px;
 }
@@ -79,6 +84,31 @@ body {
   border-radius: 4px;
   margin-bottom: 10px;
 }
+*/
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
  
 .reg-parent {
   display: flex;

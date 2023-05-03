@@ -21,8 +21,21 @@
 
     <div class="child3">
       <h2>Upcoming Reservations: </h2>
-      <ul>
-      </ul>
+        {{#each upcoming}}
+          <div class="court-card">
+              <h2>{{this.court.name}}</h2>
+              <p class="date">{{this.date}}</p>
+              <p class="date">{{this.startTime}}-{{this.endTime}}</p>
+              <p>{{this.court.type}}</p>
+              <p>
+                {{this.court.address}},
+                {{this.court.city}},
+                {{this.court.state}}
+                {{this.court.zip}}</p>
+              <p>{{this.court.distance}}</p>
+              <a href="/courts/{{this.court._id}}">Click for Details</a>
+          </div>
+        {{/each}}
     </div>
   </div>
 </main>

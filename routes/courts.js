@@ -32,20 +32,16 @@ import {
   validTimeInRange,
   validDate,
 } from "../validation.js";
+import { getUpcomingHistory } from "../data/history.js";
 
 router.route("/available").get(async (req, res) => {
   let courtList;
   try {
     courtList = await getAllCourts();
-  } catch (e) {
+  } 
+  catch (e) {
     return res.status(500).render("error", { error: e, status: 500 });
   }
-  //   let isAuth;
-  //   if (req.session.user) {
-  //     isAuth = true;
-  //   } else {
-  //     isAuth = false;
-  //   }
   let zip = req.session.user.zip;
   courtList.map((court) => {
     court.distance = Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
@@ -59,9 +55,24 @@ router.route("/available").get(async (req, res) => {
       court.distance = `${court.distance} Miles Away`;
     }
   });
+
+  let upcomingList;
+  try {
+    upcomingList = await getUpcomingHistory(req.session.user.id);
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i]['court'] = await getCourtById(upcomingList[i].court_id);
+    }
+  }
+  catch (e) {
+    return res.status(500).render("error", { error: e, status: 500 });
+  }
+
+  // console.log(upcomingList)
+
   return res.render("allCourts", {
     title: "Courts",
     courts: courtList,
+    upcoming: upcomingList,
     auth: true,
     id: req.session.user.id,
     owner: req.session.user.owner,

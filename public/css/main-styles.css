@@ -48,6 +48,66 @@ body {
   margin-bottom: 10px;
 }
 
+#registration-form {
+  display: flex;
+}
+
+.div1, .div2 {
+  flex: 1;
+  padding: 10px;
+}
+
+#registration-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#registration-form input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+#registration-form select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+ 
+.reg-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.reg-left {
+  width: 50%;
+  text-align: center;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-right: 100px;
+}
+
+.reg-right {
+  width: 50%;
+  text-align: center;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+
+.extra-info {
+  color: #6d6d6d;
+  font-size: 12px;
+}
+
 #login-form {
   display: flex;
   flex-direction: column;
@@ -192,9 +252,6 @@ body {
 
 #error-div {  
   color: red;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
 }
 
 #editCourt {

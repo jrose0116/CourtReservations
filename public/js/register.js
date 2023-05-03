@@ -350,9 +350,8 @@ if (registerForm) {
         }
     }
 
-    //check if passwords match********************************
+    //check if passwords match
     if (!emptyPassword && !emptyConfirmPassword && goodPass && goodConfirmPass) {
-        //console.log("xxxxxxxxxxxxx")
         if (password.value.value !== confirmPassword.value) {
             event.preventDefault();
             let message = document.createElement('p');

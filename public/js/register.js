@@ -78,14 +78,6 @@ const validZip = (zip) => {
 };
 
 const validStr = (str, varName) => {
-	/* 
-  Validates and trims a string.
-
-  str = Variable
-  varName = String (variable name)
-  
-  Returns String
-  */
 	let strName = varName || "String variable";
 	if (!str) throw `Error: ${strName} not provided`;
 	if (typeof str !== "string" || str.trim().length === 0)
@@ -115,6 +107,27 @@ const validEmail = (email) => {
     return email;
 }
 
+const checkPassword = (password) => {
+    password = validStr(password, "Password");
+  
+    if (password.split(" ").length > 1) {
+        throw `Error: Password cannot contain spaces`;
+    }
+    if (password.length < 8) {
+        throw `Error: Password length must be at least 8`;
+    }
+    if (!/[A-Z]/.test(password)) {
+        throw `Error: Password must contain at least one uppercase character`;
+    }
+    if (!/\d/.test(password)) {
+        throw `Error: Password must contain at least one number`;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        throw `Error: Password must contain at least one special character`;
+    }
+    return password;
+  }
+
 if (registerForm) {
   registerForm.addEventListener('submit', (event) => {    
     errorDiv.hidden = false;
@@ -129,6 +142,8 @@ if (registerForm) {
     let emptyZip = false;
     let emptyPassword = false;
     let emptyConfirmPassword = false;
+    let goodPass = false;
+    let goodConfirmPass = false;
 
     //check first name
     if (firstName.value.trim() === "") {
@@ -294,54 +309,56 @@ if (registerForm) {
     }
 
     // check password
-    // if (password.value.trim() === "") {
-    //     event.preventDefault();
-    //     emptyPassword = true;
-    //     let message = document.createElement('p');
-    //     message.innerHTML = "Password is required"
-    //     errorDiv.appendChild(message);
-    // }
-    // if (!emptyPassword) {
-    //     try {
-    //         // password.value = validPassword(password.value);
-    //     }
-    //     catch (e) {
-    //         event.preventDefault();
-    //         let message = document.createElement('p');
-    //         message.innerHTML = "Password is not valid"
-    //         errorDiv.appendChild(message);        
-    //     }
-    // }
+    if (password.value.trim() === "") {
+        event.preventDefault();
+        emptyPassword = true;
+        let message = document.createElement('p');
+        message.innerHTML = "Password is required"
+        errorDiv.appendChild(message);
+    }
+    if (!emptyPassword) {
+        try {
+            password.value = checkPassword(password.value);
+            goodPass = true;
+        }
+        catch (e) {
+            event.preventDefault();
+            let message = document.createElement('p');
+            message.innerHTML = "Password is not valid"
+            errorDiv.appendChild(message);        
+        }
+    }
 
-    // //check confirm password
-    // if (confirmPassword.value.trim() === "") {
-    //     event.preventDefault();
-    //     emptyConfirmPassword = true;
-    //     let message = document.createElement('p');
-    //     message.innerHTML = "Confirm password is required"
-    //     errorDiv.appendChild(message);
-    // }
-    // if (!emptyConfirmPassword) {
-    //     try {
-    //         // confirmPassword.value = validPassword(confirmPassword.value);
-    //     }
-    //     catch (e) {
-    //         event.preventDefault();
-    //         let message = document.createElement('p');
-    //         message.innerHTML = "Confirm password is not valid"
-    //         errorDiv.appendChild(message);        
-    //     }
-    // }
+    //check confirm password
+    if (confirmPassword.value.trim() === "") {
+        event.preventDefault();
+        emptyConfirmPassword = true;
+        let message = document.createElement('p');
+        message.innerHTML = "Confirm password is required"
+        errorDiv.appendChild(message);
+    }
+    if (!emptyConfirmPassword) {
+        try {
+            confirmPassword.value = checkPassword(confirmPassword.value);
+            goodConfirmPass = true;
+        }
+        catch (e) {
+            event.preventDefault();
+            let message = document.createElement('p');
+            message.innerHTML = "Confirm password is not valid"
+            errorDiv.appendChild(message);        
+        }
+    }
 
-    // //check if passwords match********************************
-    // if (!emptyPassword && !emptyConfirmPassword) {
-    //     console.log("xxxxxxxxxxxxx")
-    //     if (emptyPassword !== emptyConfirmPassword) {
-    //         event.preventDefault();
-    //         let message = document.createElement('p');
-    //         message.innerHTML = "Password and confirm password do not match"
-    //         errorDiv.appendChild(message);  
-    //     }
-    // }
+    //check if passwords match********************************
+    if (!emptyPassword && !emptyConfirmPassword && goodPass && goodConfirmPass) {
+        //console.log("xxxxxxxxxxxxx")
+        if (password.value.value !== confirmPassword.value) {
+            event.preventDefault();
+            let message = document.createElement('p');
+            message.innerHTML = "Password and confirm password do not match"
+            errorDiv.appendChild(message);  
+        }
+    }
   });
 }

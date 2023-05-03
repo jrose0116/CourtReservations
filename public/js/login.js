@@ -23,7 +23,7 @@ const validEmail = (email) => {
 };
 
 const checkPassword = (password) => {
-  password = checkString(password, "Password");
+  password = validStr(password, "Password");
 
   if (password.split(" ").length > 1) {
       throw `Error: Password cannot contain spaces`;

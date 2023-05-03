@@ -32,7 +32,13 @@ import {
   validTimeInRange,
   validDate,
 } from "../validation.js";
-import { getUpcomingHistory } from "../data/history.js";
+import {
+  appendToHistory,
+  deleteHistoryItem,
+  getHistory,
+  getHistoryItem,
+  getUpcomingHistory,
+} from "../data/history.js";
 
 router.route("/available").get(async (req, res) => {
   let courtList;
@@ -311,16 +317,29 @@ router.route("/:courtId/reserve").post(async (req, res) => {
   var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
 
   try {
-    //data call
+    //schedule data call
     let addedToSchedule = await addToSchedule(
     	req.params.courtId,//courtId,
-    	req.session.user.id,//<-- issue b/c not yet validated
+    	req.session.user.id,
     	newDateStr,
     	req.body.startTime,
     	req.body.endTime,
     	newCap);
   } catch (e) {
-    console.log("Error on data call");
+    console.log("Error on schedule data call");
+    return res.status(404).json({ error: e });
+    //return res.status(404).render('error', {error: strError});
+  }
+  try {
+    //history data call
+    let addedToHistory = await appendToHistory(//(userId, courtId, date, startTime, endTime)
+    	req.session.user.id,
+      req.params.courtId,//courtId,
+    	newDateStr,
+    	req.body.startTime,
+    	req.body.endTime);
+  } catch (e) {
+    console.log("Error on history data call");
     return res.status(404).json({ error: e });
     //return res.status(404).render('error', {error: strError});
   }

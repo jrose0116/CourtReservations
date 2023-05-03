@@ -397,4 +397,25 @@ const validImageUrl = (url) => {
   return url.trim();
 }
 
-export { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl};
+const checkPassword = (password) => {
+    password = checkString(password, "Password");
+
+    if (password.split(" ").length > 1) {
+        throw `Error: Password cannot contain spaces`;
+    }
+    if (password.length < 8) {
+        throw `Error: Password length must be at least 8`;
+    }
+    if (!/[A-Z]/.test(password)) {
+        throw `Error: Password must contain at least one uppercase character`;
+    }
+    if (!/\d/.test(password)) {
+        throw `Error: Password must contain at least one number`;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        throw `Error: Password must contain at least one special character`;
+    }
+    return password;
+}
+
+export { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl, checkPassword};

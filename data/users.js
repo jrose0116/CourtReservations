@@ -201,6 +201,18 @@ const getUserByUsername = async (username) => {
   return user;
 };
 
+const getAllUsers = async () => {
+  let allUsers;
+  try {
+    const usersCollection = await users();
+    allUsers = await usersCollection.find({}).toArray();
+  } 
+  catch (e) {
+    throw e;
+  }
+  return allUsers;
+};
+
 // does not update password
 const updateUser = async (
   id,
@@ -378,6 +390,7 @@ const checkUser = async (email, password) => {
 export {
   createUser,
   getUserById,
+  getAllUsers,
   getUserByName,
   getUserByUsername,
   updateUser,

@@ -11,6 +11,7 @@ import { createReview } from "../data/reviews.js";
 import { getHistory } from "../data/history.js";
 import { getCourtById } from "../data/courts.js";
 import { validId, validStr } from "../validation.js";
+import { getAllUsers } from "../data/users.js";
 
 router
   .route("/id/:userId/createReview")
@@ -214,6 +215,11 @@ router.route("/id/:userId").get(async (req, res) => {
       .render("error", { error: "User not found", auth: true, status: 404 });
   }
   //return res.json({ userId: req.params.userId, implementMe: "<-" });
+});
+
+router.route("/explore").get(async (req, res) => {
+  let userList = await getAllUsers();
+  res.render("explore", {auth: true, users: userList})
 });
 
 export default router;

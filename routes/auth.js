@@ -7,7 +7,7 @@ import { validStr } from "../validation.js";
 router
   .route("/login")
   .get(async (req, res) => {
-    return res.render("login", {});
+    return res.render("login", {error: false, message: ""});
   })
   .post(async (req, res) => {
     let emailAddress, password;

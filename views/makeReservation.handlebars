@@ -56,10 +56,11 @@
     </div>
     {{! <button onclick="window.location.href='/courts/available/';">Return to Available Courts page</button> }}
     <a href="/courts/available/">Return to Available Courts Page</a>
+    <br>
     <br />
   {{/if}}
   <div>
-    <a href="/courts/{{court._id}}">{{court.name}}</a>
+    <a href="/courts/{{court._id}}">Return to {{court.name}}</a>
     <p>Type: {{court.type}}</p>
     <p>Address:
       {{court.address}},

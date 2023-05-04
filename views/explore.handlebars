@@ -1,11 +1,14 @@
 <main>
     <h2>Explore</h2>
-    {{#each users}}
-        <div class="court-card">
-            <a href="">{{this.firstName}} {{this.lastName}}</a>
-            <p>{{this.username}}</p>
+    <div class="users">
+        {{#each users}}
+        <div class="court-card2">
+            <p class="bigger">{{this.firstName}} {{this.lastName}}</p>
+            <a href="/user/id/{{this._id}}">{{this.username}}</a>
             <p>{{this.experience_level}}</p>
             <p>Rating: {{this.overallRating}}</p>
         </div>
-    {{/each}}
+        <br>
+        {{/each}}
+    </div>
 </main>

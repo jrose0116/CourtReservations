@@ -339,7 +339,7 @@ router
     }
 
     try {
-      let finalUser = await updateUser(req.params.userId, thisUser.firstName, thisUser.lastName, thisUser.username, thisUser.age, newCity, newState, newZip, updatedUser.emailAddressInput, newLevel, updatedUser.ownerInput, updatedUser.userImage);
+      let finalUser = await updateUser(req.params.userId, thisUser.firstName, thisUser.lastName, thisUser.username, thisUser.age, newCity, newState, newZip, updatedUser.emailAddressInput, newLevel, thisUser.owner, updatedUser.userImage);
       if (finalUser) {
         res.redirect(`/user/id/${req.params.userId}`);
       }

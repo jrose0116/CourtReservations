@@ -299,7 +299,18 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     newCap = validNumber(newCap, "capacity", true, 0, thisCourt.capacity);
   } catch (e) {
     //const strError = e;
-    return res.status(404).json({ error: e });
+    //return res.status(404).json({ error: e });
+    return res.status(404).render("makeReservation", {
+      error: e,
+      auth: true,
+      title: `Reserve ${thisCourt.name}`,
+      court: thisCourt,
+      id: thisCourt._id,
+      mindate: currentDateStr,
+      maxdate: maxDateStr,
+      schedule: thisCourt.schedule,
+      owner: req.session.user.owner,
+    });
   }
 
   //creates string for min and max input values in html time input
@@ -327,7 +338,18 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     	newCap);
   } catch (e) {
     console.log("Error on schedule data call");
-    return res.status(404).json({ error: e });
+    //return res.status(404).json({ error: e });
+    return res.status(404).render("makeReservation", {
+      error: e,
+      auth: true,
+      title: `Reserve ${thisCourt.name}`,
+      court: thisCourt,
+      id: thisCourt._id,
+      mindate: currentDateStr,
+      maxdate: maxDateStr,
+      schedule: thisCourt.schedule,
+      owner: req.session.user.owner,
+    });
     //return res.status(404).render('error', {error: strError});
   }
   try {
@@ -340,13 +362,24 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     	req.body.endTime);
   } catch (e) {
     console.log("Error on history data call");
-    return res.status(404).json({ error: e });
+    //return res.status(404).json({ error: e });
+    return res.status(404).render("makeReservation", {
+      error: e,
+      auth: true,
+      title: `Reserve ${thisCourt.name}`,
+      court: thisCourt,
+      id: thisCourt._id,
+      mindate: currentDateStr,
+      maxdate: maxDateStr,
+      schedule: thisCourt.schedule,
+      owner: req.session.user.owner,
+    });
     //return res.status(404).render('error', {error: strError});
   }
 
   return res.render("makeReservation", {
     auth: true,
-    title: `Reservation for ${thisCourt.name} is complete!`,
+    title: `Reserve ${thisCourt.name}`,
     court: thisCourt,
     id: thisCourt._id,
     mindate: currentDateStr,

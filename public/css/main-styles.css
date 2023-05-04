@@ -333,3 +333,8 @@ a {
   margin: 0 auto;
   text-align: center;
 }
+
+.own-court {
+  font-weight: bolder;
+  color: rgb(243, 164, 46);
+}

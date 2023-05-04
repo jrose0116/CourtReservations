@@ -5,6 +5,12 @@
     <div class="child1">
       <div class="centered">
         <h1>{{court.name}}</h1>
+        {{#if ownCourt}}
+          <h3 class="own-court">YOU OWN THIS COURT</h3>
+        {{/if}}
+        {{#if ownCourt}}
+          <button id="editCourt"onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>
+        {{/if}}
 
         <p>Type: {{court.type}}</p>
         <p>Address:
@@ -30,11 +36,11 @@
 
         {{! should owner be allowed to reserve own court? }}
         <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
-
-        {{#if ownCourt}}
+        <br>
+        {{!-- {{#if ownCourt}}
           <button id="editCourt"onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>
         {{else}}
-      {{/if}}
+      {{/if}} --}}
       </div>
     </div>
     <div class="child1">

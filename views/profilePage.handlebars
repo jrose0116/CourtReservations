@@ -12,13 +12,17 @@
     {{#if user.overallRating}}
       <p id="p-rating">Player Rating: {{user.overallRating}}</p>
     {{/if}}
+     {{#if ownPage}}
+    <button id="editProfile" onclick="window.location.href='/user/id/{{user._id}}/editProfile';">Edit Profile!</button>
+    {{/if}}
     <p id="p-reviewhead">Reviews ({{reviewcount}}):</p>
     <div class="parent">
       <div class="child1">
         <ul>
           {{#each reviews}}
-            <div>
+            <div class="review">
               <li>
+                <button onclick="showReportForm()" id="report-review">Report</button>
                 <p>Reviewer:
                   <a
                     href="/user/id/{{this.reviewer_id}}"
@@ -26,18 +30,37 @@
                 <p>Comment: {{this.comment}}</p>
                 <p>Rating: {{this.rating}}</p>
                 <p>Date Posted: {{this.date}}</p>
+                <div id="report-form" style="display:none;">
+                <h3>Report Review</h3>
+                <form id="report-form">
+                 <label for="inappropriate">Inappropriate Content
+                    <input id="inappropriate"type="radio" name="reason" value="inappropriate">
+                  </label>
+                  <label for="spam">Spam
+                    <input id="spam" type="radio" name="reason" value="spam">
+                  </label>
+                  <label for="harassment">Harassment
+                    <input id="harassment" type="radio" name="reason" value="other">
+                  </label>
+                  <input type="submit" value="Submit">
+                </form>
+              </div>
               </li>
             </div>
           {{/each}}
         </ul>
       </div>
     </div>
-    {{#if ownPage}}
-    <button id="editProfile" onclick="window.location.href='/user/id/{{user._id}}/editProfile';">Edit Profile!</button>
-    {{else}}
+    {{#if ownPage}}{{else}}
       <button
         onclick="window.location.href='/user/id/{{user._id}}/createReview';"
       >Leave a Review!</button>
     {{/if}}
   </div>
+  <script>
+    function showReportForm() {
+      var reportForm = document.getElementById("report-form");
+      reportForm.style.display = "block";
+    }
+  </script>
 </main>

@@ -296,3 +296,14 @@ select {
 a {
   text-decoration: none;
 }
+
+#report-review {
+  color:red;
+  float:right;
+  margin-right: 5px;
+}
+
+.review {
+  border-radius: 5px;
+  border: #333 solid 1px;
+}

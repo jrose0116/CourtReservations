@@ -192,12 +192,27 @@ router.route("/:courtId").get(async (req, res) => {
   }
   let schedule = thisCourt.schedule;
   delete schedule["_id"];
+
+  let isBooked;
+  let history = await getUpcomingHistory(req.session.user.id);
+  let historyList = [];
+  for (let i = 0; i < history.length; i++) {
+    historyList.push(history[i].court_id.toString());
+  }
+  if (historyList.includes(req.params.courtId)) {
+    isBooked = true;
+  }
+  else {
+    isBooked = false;
+  }
+
   return res.render("courtById", {
     auth: true,
     title: thisCourt.name,
     court: thisCourt,
     id: req.session.user.id,
     owner: req.session.user.owner,
+    booked: isBooked,
     apiKey: process.env.MAPS_API_KEY,
     ownCourt: thisCourt.ownerId == req.session.user.id,
     schedule: schedule

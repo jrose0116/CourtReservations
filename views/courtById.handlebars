@@ -29,9 +29,12 @@
         {{/each}}
 
 
-        {{! reserve will need an if to change to cancel if it is reserved by user already }}
         {{! should owner be allowed to reserve own court? }}
-        <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
+        {{#if booked}}
+          Cancel!!!!!!
+        {{else}}
+          <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
+        {{/if}}
 
         {{#if ownCourt}}
         <button id="editCourt"onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>

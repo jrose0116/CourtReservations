@@ -28,7 +28,7 @@ const createUser = async (
   zip,
   email,
   experience_level,
-  owner,
+  //owner,
   image
 ) => {
   if (

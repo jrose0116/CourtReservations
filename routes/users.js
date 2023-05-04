@@ -243,14 +243,16 @@ router
   .post(upload.single('userImage'), async (req, res) => {
     let updatedUser = req.body;
     let fileData = req.file;
-    fs.readFile(fileData.path, function (err, data) {
+    if (fileData) {
+      fs.readFile(fileData.path, function (err, data) {
       if (err) throw err;
       fs.writeFile('public/images/' + fileData.originalname, data, function (err) {
         if (err) throw err;
       });
     });
-    if (fileData) {
       updatedUser["userImage"] = '/public/images/' + fileData.originalname;
+    } else {
+      updatedUser["userImage"] = '/public/images/No_Image_Available.jpg';
     }
 
     let thisUser;

@@ -183,7 +183,8 @@ router.route("/:courtId").get(async (req, res) => {
     owner: req.session.user.owner,
     apiKey: process.env.MAPS_API_KEY,
     ownCourt: thisCourt.ownerId == req.session.user.id,
-    schedule: schedule
+    schedule: schedule, 
+    totalCapacity: thisCourt.capacity
   });
 });
 

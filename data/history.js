@@ -153,7 +153,7 @@ const getUpcomingHistory = async (userId) => {
   });
   return user.history.filter((val) => {
     const iDate = new Date(`${val.date} ${val.startTime}`);
-    return iDate < today;
+    return iDate > today;
   });
   // for (let i of user.history.reverse()) {
   //   // Reversed so the order remains the same when pushed

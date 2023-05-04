@@ -287,3 +287,12 @@ select {
 #editCourt, #editProfile {
   margin: 20px;
 }
+
+.date {
+  color: rgb(30, 183, 101);
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+}

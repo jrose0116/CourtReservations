@@ -1,0 +1,11 @@
+<main>
+    <h2>Explore</h2>
+    {{#each users}}
+        <div class="court-card">
+            <a href="">{{this.firstName}} {{this.lastName}}</a>
+            <p>{{this.username}}</p>
+            <p>{{this.experience_level}}</p>
+            <p>Rating: {{this.overallRating}}</p>
+        </div>
+    {{/each}}
+</main>

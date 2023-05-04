@@ -32,20 +32,22 @@ import {
   validTimeInRange,
   validDate,
 } from "../validation.js";
+import {
+  appendToHistory,
+  deleteHistoryItem,
+  getHistory,
+  getHistoryItem,
+  getUpcomingHistory,
+} from "../data/history.js";
 
 router.route("/available").get(async (req, res) => {
   let courtList;
   try {
     courtList = await getAllCourts();
-  } catch (e) {
+  } 
+  catch (e) {
     return res.status(500).render("error", { error: e, status: 500 });
   }
-  //   let isAuth;
-  //   if (req.session.user) {
-  //     isAuth = true;
-  //   } else {
-  //     isAuth = false;
-  //   }
   let zip = req.session.user.zip;
   courtList.map((court) => {
     court.distance = Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
@@ -59,9 +61,24 @@ router.route("/available").get(async (req, res) => {
       court.distance = `${court.distance} Miles Away`;
     }
   });
+
+  let upcomingList;
+  try {
+    upcomingList = await getUpcomingHistory(req.session.user.id);
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i]['court'] = await getCourtById(upcomingList[i].court_id);
+    }
+  }
+  catch (e) {
+    return res.status(500).render("error", { error: e, status: 500 });
+  }
+
+  // console.log(upcomingList)
+
   return res.render("allCourts", {
     title: "Courts",
     courts: courtList,
+    upcoming: upcomingList,
     auth: true,
     id: req.session.user.id,
     owner: req.session.user.owner,
@@ -175,12 +192,27 @@ router.route("/:courtId").get(async (req, res) => {
   }
   let schedule = thisCourt.schedule;
   delete schedule["_id"];
+
+  let isBooked;
+  let history = await getUpcomingHistory(req.session.user.id);
+  let historyList = [];
+  for (let i = 0; i < history.length; i++) {
+    historyList.push(history[i].court_id.toString());
+  }
+  if (historyList.includes(req.params.courtId)) {
+    isBooked = true;
+  }
+  else {
+    isBooked = false;
+  }
+
   return res.render("courtById", {
     auth: true,
     title: thisCourt.name,
     court: thisCourt,
     id: req.session.user.id,
     owner: req.session.user.owner,
+    // booked: isBooked,
     apiKey: process.env.MAPS_API_KEY,
     ownCourt: thisCourt.ownerId == req.session.user.id,
     schedule: schedule, 
@@ -283,7 +315,18 @@ router.route("/:courtId/reserve").post(async (req, res) => {
     newCap = validNumber(newCap, "capacity", true, 0, thisCourt.capacity);
   } catch (e) {
     //const strError = e;
-    return res.status(404).json({ error: e });
+    //return res.status(404).json({ error: e });
+    return res.status(404).render("makeReservation", {
+      error: e,
+      auth: true,
+      title: `Reserve ${thisCourt.name}`,
+      court: thisCourt,
+      id: thisCourt._id,
+      mindate: currentDateStr,
+      maxdate: maxDateStr,
+      schedule: thisCourt.schedule,
+      owner: req.session.user.owner,
+    });
   }
 
   //creates string for min and max input values in html time input
@@ -301,23 +344,58 @@ router.route("/:courtId/reserve").post(async (req, res) => {
   var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
 
   try {
-    //data call
+    //schedule data call
     let addedToSchedule = await addToSchedule(
     	req.params.courtId,//courtId,
-    	req.session.user.id,//<-- issue b/c not yet validated
+    	req.session.user.id,
     	newDateStr,
     	req.body.startTime,
     	req.body.endTime,
     	newCap);
   } catch (e) {
-    console.log("Error on data call");
-    return res.status(404).json({ error: e });
+    console.log("Error on schedule data call");
+    //return res.status(404).json({ error: e });
+    return res.status(404).render("makeReservation", {
+      error: e,
+      auth: true,
+      title: `Reserve ${thisCourt.name}`,
+      court: thisCourt,
+      id: thisCourt._id,
+      mindate: currentDateStr,
+      maxdate: maxDateStr,
+      schedule: thisCourt.schedule,
+      owner: req.session.user.owner,
+    });
+    //return res.status(404).render('error', {error: strError});
+  }
+  try {
+    //history data call
+    let addedToHistory = await appendToHistory(//(userId, courtId, date, startTime, endTime)
+    	req.session.user.id,
+      req.params.courtId,//courtId,
+    	newDateStr,
+    	req.body.startTime,
+    	req.body.endTime);
+  } catch (e) {
+    console.log("Error on history data call");
+    //return res.status(404).json({ error: e });
+    return res.status(404).render("makeReservation", {
+      error: e,
+      auth: true,
+      title: `Reserve ${thisCourt.name}`,
+      court: thisCourt,
+      id: thisCourt._id,
+      mindate: currentDateStr,
+      maxdate: maxDateStr,
+      schedule: thisCourt.schedule,
+      owner: req.session.user.owner,
+    });
     //return res.status(404).render('error', {error: strError});
   }
 
   return res.render("makeReservation", {
     auth: true,
-    title: `Reservation for ${thisCourt.name} is complete!`,
+    title: `Reserve ${thisCourt.name}`,
     court: thisCourt,
     id: thisCourt._id,
     mindate: currentDateStr,
@@ -331,13 +409,15 @@ router.route("/:courtId/reserve").post(async (req, res) => {
   });
 });
 
-// router.route("/:courtId/cancel").get((req, res) => {
-//   return res.json({
-//     courtId: req.params.courtId,
-//     cancel: "this",
-//     implementMe: "<-",
-//   });
-// });
+router.route("/:courtId/cancel")
+.get(async (req, res) => {
+  // let thisCourt = await getCourtById(req.params.courtId);
+  console.log("cancellll!!!")
+  //remove from history
+  //deleteHistoryItem()
+  //removeFromSchedule()
+  return res.redirect('/courts/available');
+});
 
 router
   .route("/:courtId/editCourt")

@@ -28,16 +28,11 @@
         </div>
         {{/each}}
 
-
         {{! should owner be allowed to reserve own court? }}
-        {{#if booked}}
-          Cancel!!!!!!
-        {{else}}
-          <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
-        {{/if}}
+        <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
 
         {{#if ownCourt}}
-        <button id="editCourt"onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>
+          <button id="editCourt"onclick="window.location.href='/courts/{{court._id}}/editCourt';">Edit Your Court</button>
         {{else}}
       {{/if}}
       </div>

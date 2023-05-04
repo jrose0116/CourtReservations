@@ -212,7 +212,7 @@ router.route("/:courtId").get(async (req, res) => {
     court: thisCourt,
     id: req.session.user.id,
     owner: req.session.user.owner,
-    booked: isBooked,
+    // booked: isBooked,
     apiKey: process.env.MAPS_API_KEY,
     ownCourt: thisCourt.ownerId == req.session.user.id,
     schedule: schedule
@@ -408,13 +408,20 @@ router.route("/:courtId/reserve").post(async (req, res) => {
   });
 });
 
-// router.route("/:courtId/cancel").get((req, res) => {
-//   return res.json({
-//     courtId: req.params.courtId,
-//     cancel: "this",
-//     implementMe: "<-",
-//   });
-// });
+router.route("/:courtId/cancel")
+.get((req, res) => {
+  return res.render("courtById", {
+    auth: true,
+    title: thisCourt.name,
+    court: thisCourt,
+    id: req.session.user.id,
+    owner: req.session.user.owner,
+    // booked: false,
+    apiKey: process.env.MAPS_API_KEY,
+    ownCourt: thisCourt.ownerId == req.session.user.id,
+    schedule: schedule
+  });
+});
 
 router
   .route("/:courtId/editCourt")

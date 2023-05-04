@@ -35,16 +35,16 @@ const getScheduleDate = async (courtId, date) => {
   }
   return dateArray;
 };
-const getBooking = async (courtId, bookingId, date) => {
+const getBooking = async (courtId, userId, date) => {
   let schedDateArr = await getScheduleDate(courtId, date);
   for (let i=0;i<schedDateArr.length;i++)
   {
-    if (schedDateArr[i]._id.localeCompare(bookingId) === 0)
+    if (schedDateArr[i].userId.localeCompare(userId) === 0)
     {
       return schedDateArr[i];
     }
   }
-  throw `schedule.js: getBooking does not have booking with bookingId of ${bookingId} on ${date} for courtId ${courtId}`;
+  throw `schedule.js: getBooking does not have booking with userId of ${userId} on ${date} for courtId ${courtId}`;
 }
 const checkBookingCapacity = async (courtId, date, startTime, endTime, capacity) => {
   //checks to make sure a booking's capacity and all other booking capacities in that range do not exceed the court capacity
@@ -260,16 +260,15 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   return retArray;
 };
 
-const removeFromSchedule = async (courtId, bookingId, date) => {
-  //bookingId is id within court.schedule.date
+const removeFromSchedule = async (courtId, userId, date) => {
   courtId = validId(courtId);
-  bookingId = validId(bookingId);
+  userId = validId(userId);
   date = validDate(date);
 
   let court = await courtDataFunctions.getCourtById(courtId);
   const courtCollection = await courts();
 
-  let returnRemovedBooking = await getBooking(courtId, bookingId, date);
+  let returnRemovedBooking = await getBooking(courtId, userId, date);
   let existingSchedule = court.schedule;//object
   let bookingsOnADayArray = existingSchedule[date];
   let newBookingsOnADayArray = [];
@@ -280,9 +279,9 @@ const removeFromSchedule = async (courtId, bookingId, date) => {
 
   for (let i=0;i<bookingsOnADayArray.length;i++)
   {
-    let currentString = bookingsOnADayArray[i]._id.toString();
+    let currentString = bookingsOnADayArray[i].userId.toString();
     //if different bookingId, keep in database by copying into new array
-    if (currentString.localeCompare(bookingId) !== 0)
+    if (currentString.localeCompare(userId) !== 0)
     {
       newBookingsOnADayArray.push(bookingsOnADayArray[i]);
     }

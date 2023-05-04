@@ -276,11 +276,13 @@ try {
   //remove from schedule
   //let bookingId = sched2["04/25/2023"][0]._id.toString();
   // let bookingId = sched2[0]._id.toString();
-  // let remSched = await removeFromSchedule(courtId, bookingId, "06/05/2023");
+
+  // let remSched = await removeFromSchedule(courtId, user1._id, "06/05/2023");
   // console.log("removed1:");
   // console.log(remSched);
+
   // bookingId = sched3[0]._id.toString();
-  // let remSched2 = await removeFromSchedule(courtId, bookingId, "06/18/2023");
+  // let remSched2 = await removeFromSchedule(courtId, user3._id, "06/18/2023");
   // console.log("removed2:");
   // console.log(remSched2);
 
@@ -298,8 +300,9 @@ try {
   //console.log(getSchedDate);
 
   //getBooking
-  //let booking = await getBooking(courtId, sched2[0]._id, "06/05/2023");
-  //console.log(booking);
+  // console.log("GET BOOKING: ");
+  // let booking = await getBooking(courtId, user1._id, "06/05/2023");
+  // console.log(booking);
 
   //checkBookingCapacity this example is meant to error
   // let checkBookCap = await addToSchedule(

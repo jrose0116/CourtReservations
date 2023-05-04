@@ -122,11 +122,18 @@ const createUser = async (
     username: new RegExp("^" + username, "i"),
   });
   if (checkUsername !== null) {
-    throw "Error: another user has this username.";
+    throw "Error: this username is taken.";
+  }
+  //check email doesn't exist
+  const checkEmail = await usersCollection.findOne({
+    email: new RegExp("^" + email.toLowerCase(), "i"),
+  });
+  if (checkEmail !== null) {
+    throw "Error: this email is already associated with an account.";
   }
   const insertInfo = await usersCollection.insertOne(addUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw "Could not add band";
+    throw "Could not add user";
 
   const newId = insertInfo.insertedId.toString();
 

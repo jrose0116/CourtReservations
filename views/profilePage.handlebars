@@ -32,7 +32,9 @@
         </ul>
       </div>
     </div>
-    {{#if ownPage}}{{else}}
+    {{#if ownPage}}
+    <button id="editProfile" onclick="window.location.href='/user/id/{{user._id}}/editProfile';">Edit Profile!</button>
+    {{else}}
       <button
         onclick="window.location.href='/user/id/{{user._id}}/createReview';"
       >Leave a Review!</button>

@@ -284,6 +284,6 @@ select {
   color: red;
 }
 
-#editCourt {
+#editCourt, #editProfile {
   margin: 20px;
 }

@@ -1,0 +1,118 @@
+<main>
+   <script>
+    window.addEventListener('load', function() {
+      document.getElementById('emailAddressInput').value = "{{{email}}}";
+      document.getElementById('stateInput').value = '{{state}}';
+      document.getElementById('cityInput').value = '{{city}}';
+      document.getElementById('zipInput').value = '{{zip}}';
+      document.getElementById('levelInput').value = '{{level}}';
+    });
+  </script>
+    <form method="POST" id="edit-profile" class="centered" enctype="multipart/form-data">
+    <h2>Edit Profile</h2>
+   <br>
+
+    <div class="reg-parent">
+        <div class="reg-center">
+           <label for="emailAddressInput">
+                Edit Email
+                <input type="email" name="emailAddressInput" id="emailAddressInput" placeholder="Enter email address">
+            </label>
+            <label for="userImage">User Image:</label>
+            <input type="file" id="userImage" name="userImage"><br><br>
+            <label for="stateInput">
+                Edit State
+                <select name="stateInput" id="stateInput">
+                    <option value="">Select state</option>
+                    <option value="AL">AL</option>
+                    <option value="AK">AK</option>
+                    <option value="AZ">AZ</option>
+                    <option value="AR">AR</option>
+                    <option value="CA">CA</option>
+                    <option value="CO">CO</option>
+                    <option value="CT">CT</option>
+                    <option value="DE">DE</option>
+                    <option value="FL">FL</option>
+                    <option value="GA">GA</option>
+                    <option value="HI">HI</option>
+                    <option value="ID">ID</option>
+                    <option value="IL">IL</option>
+                    <option value="IN">IN</option>
+                    <option value="IA">IA</option>
+                    <option value="KS">KS</option>
+                    <option value="KY">KY</option>
+                    <option value="LA">LA</option>
+                    <option value="ME">ME</option>
+                    <option value="MD">MD</option>
+                    <option value="MA">MA</option>
+                    <option value="MI">MI</option>
+                    <option value="MN">MN</option>
+                    <option value="MS">MS</option>
+                    <option value="MO">MO</option>
+                    <option value="MT">MT</option>
+                    <option value="NE">NE</option>
+                    <option value="NV">NV</option>
+                    <option value="NH">NH</option>
+                    <option value="NJ">NJ</option>
+                    <option value="NM">NM</option>
+                    <option value="NY">NY</option>
+                    <option value="NC">NC</option>
+                    <option value="ND">ND</option>
+                    <option value="OH">OH</option>
+                    <option value="OK">OK</option>
+                    <option value="OR">OR</option>
+                    <option value="PA">PA</option>
+                    <option value="RI">RI</option>
+                    <option value="SC">SC</option>
+                    <option value="SD">SD</option>
+                    <option value="TN">TN</option>
+                    <option value="TX">TX</option>
+                    <option value="UT">UT</option>
+                    <option value="VT">VT</option>
+                    <option value="VA">VA</option>
+                    <option value="WA">WA</option>
+                    <option value="WV">WV</option>
+                    <option value="WI">WI</option>
+                    <option value="WY">WY</option>
+                </select>
+            </label>
+
+            <label for="cityInput">
+                City
+                <input type="text" name="cityInput" id="cityInput" placeholder="Edit your city">
+            </label>
+
+            <label for="zipInput">
+                ZIP Code
+                <input type="text" name="zipInput" id="zipInput" placeholder="Edit your zipcode">
+            </label>
+
+            <label for="ownerInput">
+                Owner Status
+                <select name="ownerInput" id="ownerInput">
+                    <option value="n/a">Select option</option>
+                    <option value="true">Yes, I plan on listing courts that I own</option>
+                    <option value="false">No, I do not own any courts/plan on listing them</option>
+                </select>
+            </label>
+
+            <label for="levelInput">
+                Player Level
+                <select name="levelInput" id="levelInput">
+                    <option value="n/a">Change level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </label>
+        </div>
+    </div>
+
+        <div id="error-div" class="centered"></div>
+        <div id="errors">{{bad}}</div>
+
+        <button type="submit" class="btn">Submit</button>
+        <br>
+    </form>
+    
+</main>

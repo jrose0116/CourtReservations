@@ -1,5 +1,8 @@
 import { Router } from "express";
 const router = Router();
+import multer from "multer";
+const upload = multer({ dest: 'public/images' });
+import fs from 'fs';
 import {
   createUser,
   getUserById,
@@ -10,7 +13,7 @@ import {
 import { createReview } from "../data/reviews.js";
 import { getHistory } from "../data/history.js";
 import { getCourtById } from "../data/courts.js";
-import { validId, validStr } from "../validation.js";
+import { validExpLevel, validId, validState, validStr, validZip } from "../validation.js";
 
 router
   .route("/id/:userId/createReview")
@@ -215,5 +218,139 @@ router.route("/id/:userId").get(async (req, res) => {
   }
   //return res.json({ userId: req.params.userId, implementMe: "<-" });
 });
+
+
+router
+  .route("/id/:userId/editProfile")
+  .get(async (req, res) => {
+    let thisUser = await getUserById(req.params.userId);
+    res.render("editProfile", {
+    auth: true,
+    owner: req.session.user.owner,
+      id: req.session.user.id, 
+      email: thisUser.email,
+      state: thisUser.state,
+      city: thisUser.city,
+      zip: thisUser.zip,
+      level: thisUser.experience_level
+  });
+  })
+  .post(upload.single('userImage'), async (req, res) => {
+    let updatedUser = req.body;
+    let fileData = req.file;
+    fs.readFile(fileData.path, function (err, data) {
+      if (err) throw err;
+      fs.writeFile('public/images/' + fileData.originalname, data, function (err) {
+        if (err) throw err;
+      });
+    });
+    if (fileData) {
+      updatedUser["userImage"] = '/public/images/' + fileData.originalname;
+    }
+
+    let thisUser;
+    let isAuth;
+    if (req.session.user) {
+      isAuth = true;
+    } else {
+      isAuth = false;
+    }
+
+     try {
+      thisUser = await getUserById(req.params.userId);
+    } catch (e) {
+      return res.render("editProfile", {
+        auth: isAuth,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: e
+      });
+    }
+    let newCity, newState, newZip, newLevel, newOwner;
+    try {
+      newCity = validStr(updatedUser.cityInput);
+    } catch (e) {
+      return res.render("editProfile", {
+        auth: isAuth,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: e
+      });
+    }
+    try {
+      newState = validState(updatedUser.stateInput);
+    } catch (e) {
+      return res.render("editProfile", {
+        auth: isAuth,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: e
+      });
+    }
+    try {
+      newZip = validZip(updatedUser.zipInput);
+    } catch (e) {
+      return res.render("editProfile", {
+        auth: isAuth,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: e
+      });
+    }
+    try {
+      newLevel = validExpLevel(updatedUser.levelInput);
+    } catch (e) {
+      return res.render("editProfile", {
+        auth: isAuth,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: e
+      });
+    }
+
+    try {
+      let finalUser = await updateUser(req.params.userId, thisUser.firstName, thisUser.lastName, thisUser.username, thisUser.age, newCity, newState, newZip, updatedUser.emailAddressInput, newLevel, updatedUser.ownerInput, updatedUser.userImage);
+      if (finalUser) {
+        res.redirect(`/user/id/${req.params.userId}`);
+      }
+    } catch (e) {
+      return res.render("editProfile", {
+      auth: isAuth,
+      owner: req.session.user.owner,
+      id: req.session.user.id, 
+      email: thisUser.email,
+      state: thisUser.state,
+      city: thisUser.city,
+      zip: thisUser.zip,
+      level: thisUser.experience_level,
+        bad: e
+      })
+    }
+  });
 
 export default router;

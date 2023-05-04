@@ -266,13 +266,15 @@ const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	}
 	if (openingHourInt > startTimeHourInt || startTimeHourInt > endTimeHourInt || endTimeHourInt > closingHourInt)
 	{
-		throw `Error: hours ${openingHourInt}, ${startTimeHourInt}, ${endTimeHourInt}, ${closingHourInt} are not in nondecreasing order`;
+        throw `Error: Reservation must start and end between ${courtOpening} and ${courtClosing}`;
+		//throw `Error: hours ${openingHourInt}, ${startTimeHourInt}, ${endTimeHourInt}, ${closingHourInt} are not in nondecreasing order`;
 	}
 	if (openingHourInt == startTimeHourInt)
 	{
 		if (openingMinuteInt > startTimeMinuteInt)
 		{
-			throw `Error: ${courtOpening} minute is greater than ${startTime} minute`;
+            throw `Error: Reservation must start and end between ${courtOpening} and ${courtClosing}`;
+			//throw `Error: ${courtOpening} minute is greater than ${startTime} minute`;
 		}
 	}
 	if (startTimeHourInt == endTimeHourInt)
@@ -287,7 +289,8 @@ const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	{
 		if (endTimeMinuteInt > closingMinuteInt)
 		{
-			throw `Error: ${endTime} minute is greater than ${courtClosing} minute`;
+            throw `Error: Reservation must start and end between ${courtOpening} and ${courtClosing}`;
+			//throw `Error: ${endTime} minute is greater than ${courtClosing} minute`;
 		}
 	}
 	return true;

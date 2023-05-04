@@ -1,4 +1,9 @@
-<h1>{{title}}</h1>
+<h1>Reserve {{court.name}}</h1>
+{{#if error}}
+  <div class="error">
+    <p>{{error}}</p>
+  </div>
+{{/if}}
 <div id="dateError" class="error" hidden></div>
 <div id="startTimeError" class="error" hidden></div>
 <div id="endTimeError" class="error" hidden></div>

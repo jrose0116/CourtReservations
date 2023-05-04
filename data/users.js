@@ -13,6 +13,7 @@ import {
   validEmail,
   validExpLevel,
   validImageUrl,
+  checkPassword
 } from "../validation.js";
 
 //HASH PASSWORD
@@ -87,6 +88,11 @@ const createUser = async (
   }
   try {
     experience_level = validExpLevel(experience_level);
+  } catch (e) {
+    throw e;
+  }
+  try {
+    password = checkPassword(password);
   } catch (e) {
     throw e;
   }
@@ -280,8 +286,19 @@ const updateUser = async (
   } catch (e) {
     throw e;
   }
+ 
   if (typeof owner !== "boolean") {
-    throw "Error: owner must be of type boolean";
+    if (typeof owner === "string") {
+      if (owner === "true") {
+        owner = true;
+      } else if (owner === "false") {
+        owner = false;
+      } else {
+        throw "Error: owner must be of type boolean"
+      }
+    } else {
+      throw "Error: owner must be of type boolean";
+    }
   }
   let updatedUser = {
     firstName: firstName,

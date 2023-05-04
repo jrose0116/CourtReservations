@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { createUser, checkUser } from "../data/users.js";
 const router = Router();
-// import { users } from "../config/mongoCollections.js";
-import { validStr, checkPassword } from "../validation.js";
+import { users } from "../config/mongoCollections.js";
+import { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl, checkPassword} from "../validation.js";
 
 router
   .route("/login")
@@ -65,7 +65,7 @@ router
 
 router.route("/register")
   .get(async (req, res) => {
-    return res.render("register", { auth: false });
+    return res.render("register", { auth: false, bad: "" });
   })
   .post(async (req, res) => {
     let firstName = req.body.firstNameInput;
@@ -86,11 +86,60 @@ router.route("/register")
     // else {
     //   owner = false;
     // }
-   try {
-    password = checkPassword(password);
-  } catch (e) {
-    throw e;
-  }
+    let errors = "";
+    let hasErrors = false;
+
+    if (
+      !firstName ||
+      !lastName ||
+      !username ||
+      !password ||
+      !age ||
+      !city ||
+      !state ||
+      !zip ||
+      !email
+      // !experience_level
+    ) 
+    {
+      errors += "All inputs must be provided";
+    }
+
+    try {
+      firstName = validStr(firstName, "First name");
+      lastName = validStr(lastName, "Last name");
+      username = validStr(username, "Username");
+      city = validStr(city, "City");
+      age = validNumber(age, "Age");
+      state = validState(state);
+      zip = validZip(zip);
+      email = validEmail(email);
+      experience_level = validExpLevel(experience_level);
+      password = checkPassword(password);
+    }
+    catch (e) {
+      errors += ' - ' + e;
+    }
+
+    const usersCollection = await users();
+    // check if username already exists
+    const checkUsername = await usersCollection.findOne({
+      username: new RegExp("^" + username, "i"),
+    });
+    if (checkUsername !== null) {
+      errors += "- another user has this username.";
+    }
+    //check email doesn't exist
+    const checkEmail = await usersCollection.findOne({
+      email: new RegExp("^" + email.toLowerCase(), "i"),
+    });
+    if (checkEmail !== null) {
+      errors += " - this email is already associated with an account";
+    }
+
+    if (hasErrors) {
+      return res.render("register", {auth: false, bad: errors});
+    }
 
     try {
       //make update
@@ -116,8 +165,8 @@ router.route("/register")
       }
     }
     catch (e) {
-      console.log(e)
-      return res.status(400).render('register');
+      // console.log(e)
+      res.render('register', {auth: false, bad: e});
     }
   });
 

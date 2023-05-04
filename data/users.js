@@ -122,7 +122,7 @@ const createUser = async (
     username: new RegExp("^" + username, "i"),
   });
   if (checkUsername !== null) {
-    throw "Error: another user has this username.";
+    throw "Error: this username is taken.";
   }
   //check email doesn't exist
   const checkEmail = await usersCollection.findOne({

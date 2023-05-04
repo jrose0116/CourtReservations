@@ -338,3 +338,7 @@ a {
   font-weight: bolder;
   color: rgb(243, 164, 46);
 }
+
+#errors {
+  color: red;
+}

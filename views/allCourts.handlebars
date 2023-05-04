@@ -35,7 +35,8 @@
               <p>{{this.court.distance}}</p>
               <a href="/courts/{{this.court._id}}">Click for Details</a>
               <br>
-              <a href="/courts/{{this.court._id}}/cancel">Cancel</a>
+              <br>
+              <a href="/courts/{{this.court._id}}/{{this._id}}/{{this.date}}/cancel" class="error">Cancel</a>
           </div>
         {{/each}}
     </div>

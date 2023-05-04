@@ -68,6 +68,7 @@ router.route("/available").get(async (req, res) => {
     for (let i = 0; i < upcomingList.length; i++) {
       upcomingList[i]['court'] = await getCourtById(upcomingList[i].court_id);
     }
+    // console.log(upcomingList);
   }
   catch (e) {
     return res.status(500).render("error", { error: e, status: 500 });
@@ -193,18 +194,18 @@ router.route("/:courtId").get(async (req, res) => {
   let schedule = thisCourt.schedule;
   delete schedule["_id"];
 
-  let isBooked;
+  // let isBooked;
   let history = await getUpcomingHistory(req.session.user.id);
   let historyList = [];
   for (let i = 0; i < history.length; i++) {
     historyList.push(history[i].court_id.toString());
   }
-  if (historyList.includes(req.params.courtId)) {
-    isBooked = true;
-  }
-  else {
-    isBooked = false;
-  }
+  // if (historyList.includes(req.params.courtId)) {
+  //   isBooked = true;
+  // }
+  // else {
+  //   isBooked = false;
+  // }
 
   return res.render("courtById", {
     auth: true,
@@ -409,13 +410,18 @@ router.route("/:courtId/reserve").post(async (req, res) => {
   });
 });
 
-router.route("/:courtId/cancel")
+// router.route("/:courtId/cancel")
+router.route("/:courtId/:historyId/:date/cancel")
 .get(async (req, res) => {
-  // let thisCourt = await getCourtById(req.params.courtId);
   console.log("cancellll!!!")
-  //remove from history
-  //deleteHistoryItem()
-  //removeFromSchedule()
+  //remove from history and schedule
+  try {
+    await deleteHistoryItem(req.params.historyId);
+    //await removeFromSchedule(req.params.courtId, req.session.user.id, req.params.date);
+  }
+  catch (e) {
+    return res.status(500).json({ error: 'Your booking was not successfully cancelled, please try again.'});
+  }
   return res.redirect('/courts/available');
 });
 

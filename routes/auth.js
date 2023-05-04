@@ -2,7 +2,7 @@ import { Router } from "express";
 import { createUser, checkUser } from "../data/users.js";
 const router = Router();
 // import { users } from "../config/mongoCollections.js";
-import { validStr } from "../validation.js";
+import { validStr, checkPassword } from "../validation.js";
 
 router
   .route("/login")
@@ -78,14 +78,14 @@ router.route("/register")
     let zip = req.body.zipInput;
     let email = req.body.emailAddressInput;
     let experience_level = req.body.levelInput;
-    let ownerString = req.body.ownerInput;
-    let owner;
-    if (ownerString.charAt(0) === "Y") {
-      owner = true;
-    }
-    else {
-      owner = false;
-    }
+    // let ownerString = req.body.ownerInput;
+    // let owner;
+    // if (ownerString.charAt(0) === "Y") {
+    //   owner = true;
+    // }
+    // else {
+    //   owner = false;
+    // }
    try {
     password = checkPassword(password);
   } catch (e) {
@@ -104,8 +104,8 @@ router.route("/register")
         state,
         zip,
         email,
-        experience_level,
-        owner
+        experience_level
+        // owner
       );
       if (newUser) {
         return res.redirect('login');      

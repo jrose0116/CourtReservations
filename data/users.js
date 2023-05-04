@@ -45,9 +45,9 @@ const createUser = async (
   ) {
     throw "Error: All inputs must be provided";
   }
-  if (owner === null) {
-    throw "Error: owner must be provided";
-  }
+  // if (owner === null) {
+  //   throw "Error: owner must be provided";
+  // }
   if (!image) {
     image = "/public/images/No_Image_Available.jpg";
   } else {
@@ -96,9 +96,9 @@ const createUser = async (
   } catch (e) {
     throw e;
   }
-  if (typeof owner !== "boolean") {
-    throw "Error: owner must be of type boolean";
-  }
+  // if (typeof owner !== "boolean") {
+  //   throw "Error: owner must be of type boolean";
+  // }
   let addUser = {
     firstName: firstName,
     lastName: lastName,
@@ -111,7 +111,7 @@ const createUser = async (
     email: email.toLowerCase(),
     image: image,
     experience_level: experience_level,
-    owner: owner,
+    // owner: owner,
     reviews: [],
     history: [],
     overallRating: 0,

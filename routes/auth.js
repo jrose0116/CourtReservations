@@ -86,6 +86,11 @@ router.route("/register")
     else {
       owner = false;
     }
+   try {
+    password = checkPassword(password);
+  } catch (e) {
+    throw e;
+  }
 
     try {
       //make update

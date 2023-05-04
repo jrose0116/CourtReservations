@@ -409,18 +409,13 @@ router.route("/:courtId/reserve").post(async (req, res) => {
 });
 
 router.route("/:courtId/cancel")
-.get((req, res) => {
-  return res.render("courtById", {
-    auth: true,
-    title: thisCourt.name,
-    court: thisCourt,
-    id: req.session.user.id,
-    owner: req.session.user.owner,
-    // booked: false,
-    apiKey: process.env.MAPS_API_KEY,
-    ownCourt: thisCourt.ownerId == req.session.user.id,
-    schedule: schedule
-  });
+.get(async (req, res) => {
+  // let thisCourt = await getCourtById(req.params.courtId);
+  console.log("cancellll!!!")
+  //remove from history
+  //deleteHistoryItem()
+  //removeFromSchedule()
+  return res.redirect('/courts/available');
 });
 
 router

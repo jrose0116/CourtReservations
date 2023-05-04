@@ -260,6 +260,10 @@ const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	let closingHourInt = parseInt(closingHourString);
     let closingMinuteInt = parseInt(closingMinuteString);
 	
+    if (startTimeHourInt > endTimeHourInt)
+	{
+		throw `Error: start time (${startTime}) should be before end time (${endTime})`;
+	}
 	if (openingHourInt > startTimeHourInt || startTimeHourInt > endTimeHourInt || endTimeHourInt > closingHourInt)
 	{
 		throw `Error: hours ${openingHourInt}, ${startTimeHourInt}, ${endTimeHourInt}, ${closingHourInt} are not in nondecreasing order`;
@@ -275,7 +279,8 @@ const validTimeInRange = (startTime, endTime, courtOpening, courtClosing) => {
 	{
 		if (startTimeMinuteInt >= endTimeMinuteInt)
 		{
-			throw `Error: ${startTime} minute is greater than or equal to ${endTime} minute`;
+            throw `Error: start time (${startTime}) should be before end time (${endTime})`;
+			//throw `Error: ${startTime} minute is greater than or equal to ${endTime} minute`;
 		}
 	}
 	if (endTimeHourInt == closingHourInt)

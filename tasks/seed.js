@@ -241,7 +241,7 @@ try {
   let sched2 = await addToSchedule(
     court1._id.toString(),
     user1._id,
-    "05/15/2023",
+    "06/05/2023",
     "10:00",
     "11:00",
     4
@@ -252,7 +252,7 @@ try {
   let sched3 = await addToSchedule(
     court1._id.toString(),
     user1._id,
-    "05/18/2023",
+    "06/18/2023",
     "16:00",
     "17:00",
     2
@@ -261,30 +261,31 @@ try {
   //console.log(sched3);
   let sched4 = await addToSchedule(
     court1._id.toString(),
-    user1._id,
-    "05/18/2023",
+    user3._id,
+    "06/18/2023",
     "12:00",
     "13:00",
     1
   );
+
   //let schedFail = await addToSchedule(court1._id.toString(), user1._id, "04/16/2023", "10:30", "12:00", 1);
   //let schedFail2 = await addToSchedule(court1._id.toString(), user1._id, "02/16/2024", "10:30", "12:00", 1);
   //console.log("seed sched 4 result:");
   //console.log(sched4);
 
   //remove from schedule
-  //let bookingId = sched2["04/15/2023"][0]._id.toString();
+  //let bookingId = sched2["04/25/2023"][0]._id.toString();
   // let bookingId = sched2[0]._id.toString();
-  // let remSched = await removeFromSchedule(courtId, bookingId, "05/15/2023");
+  // let remSched = await removeFromSchedule(courtId, bookingId, "06/05/2023");
   // console.log("removed1:");
   // console.log(remSched);
   // bookingId = sched3[0]._id.toString();
-  // let remSched2 = await removeFromSchedule(courtId, bookingId, "05/18/2023");
+  // let remSched2 = await removeFromSchedule(courtId, bookingId, "06/18/2023");
   // console.log("removed2:");
   // console.log(remSched2);
 
   //clear schedule
-  //let clearedSched = await clearSchedule(courtId, "05/18/2023");
+  //let clearedSched = await clearSchedule(courtId, "06/18/2023");
   //console.log(clearedSched);
 
   //invalid date testing
@@ -293,18 +294,18 @@ try {
   //console.log(sched5);
 
   //getScheduleDate
-  //let getSchedDate = await getScheduleDate(courtId,"05/18/2023");
+  //let getSchedDate = await getScheduleDate(courtId,"06/18/2023");
   //console.log(getSchedDate);
 
   //getBooking
-  //let booking = await getBooking(courtId, sched2[0]._id, "05/15/2023");
+  //let booking = await getBooking(courtId, sched2[0]._id, "06/05/2023");
   //console.log(booking);
 
   //checkBookingCapacity this example is meant to error
   // let checkBookCap = await addToSchedule(
   //   court1._id.toString(),
   //   user1._id,
-  //   "05/18/2023",
+  //   "06/18/2023",
   //   "15:15",
   //   "16:30",
   //   7
@@ -312,6 +313,21 @@ try {
   // console.log(checkBookCap);
 } catch (e) {
   // if (printCourts)
+  console.log(e);
+}
+try {
+  let sched5 = await addToSchedule(
+    court1._id.toString(),
+    user1._id,
+    "06/18/2023",
+    "12:00",
+    "13:00",
+    1
+  );
+}
+catch (e)
+{
+  console.log("Successful Erroring - max 1 reservation per person per date");
   console.log(e);
 }
 

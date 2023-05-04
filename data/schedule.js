@@ -25,6 +25,10 @@ const getSchedule = async (courtId) => {
 const getScheduleDate = async (courtId, date) => {
   let sched = await getSchedule(courtId);
   let dateArray = sched[date];
+  if (!dateArray || dateArray.length == 0)
+  {
+    return [];
+  }
   for (let i=0;i<dateArray.length;i++)
   {
     dateArray[i]._id = dateArray[i]._id.toString();
@@ -168,6 +172,11 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   if (momentDateScheduled.diff(sixMonthsAheadMark) >= 0)
   {
     throw `schedule.js: booking with date and time ${combinedDateAndStartTime} cannot be over 6 months in the future`;
+  }
+  let isInvalidInsertion = await userHasReservationOnDate(courtId, userId, date);
+  if (isInvalidInsertion)
+  {
+    throw 'schedule.js: each court has a max of 1 reservation per day per user';
   }
 
   const courtCollection = await courts();
@@ -332,6 +341,22 @@ const clearSchedule = async (courtId, date) => {
   }
   court = await courtDataFunctions.getCourtById(courtId);
   return court.schedule;
+};
+const userHasReservationOnDate = async (courtId, userId, date) => {
+  //params should be valid since called internally
+  courtId = validId(courtId);
+  userId = validId(userId);
+  date = validDate(date);
+
+  let schedDateArr = await getScheduleDate(courtId, date);
+  for (let i=0;i<schedDateArr.length;i++)
+  {
+    if (schedDateArr[i].userId.localeCompare(userId) === 0)
+    {
+      return true;
+    }
+  }
+  return false;//should be false to insert in db
 };
 
 export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule, getScheduleDate, getBooking, checkBookingCapacity};

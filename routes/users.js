@@ -13,7 +13,7 @@ import {
 } from "../data/users.js";
 import { createReview } from "../data/reviews.js";
 import { getHistory } from "../data/history.js";
-import { getCourtById } from "../data/courts.js";
+import { getCourtById, checkIfOwner } from "../data/courts.js";
 import {
   validExpLevel,
   validId,
@@ -36,7 +36,7 @@ router
         error: e,
         auth: true,
         status: 400,
-        owner: req.session.user.owner,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
       });
     }
@@ -48,7 +48,7 @@ router
         error: "User not found",
         auth: true,
         status: 404,
-        owner: req.session.user.owner,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
       });
     }
@@ -56,7 +56,7 @@ router
       title: req.params.username,
       user: user,
       auth: true,
-      owner: req.session.user.owner,
+      //owner: req.session.user.owner,
       id: req.session.user.id,
     });
   })
@@ -71,7 +71,7 @@ router
         error: e,
         auth: true,
         status: 400,
-        owner: req.session.user.owner,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
       });
     }
@@ -84,7 +84,7 @@ router
         error: e,
         auth: true,
         status: 404,
-        owner: req.session.user.owner,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
       });
     }
@@ -104,7 +104,7 @@ router
     } catch (e) {
       return res.status(400).render("createReview", {
         bad: e,
-        owner: req.session.user.owner,
+       // owner: req.session.user.owner,
         id: req.session.user.id,
       });
     }
@@ -131,7 +131,7 @@ router.route("/name/:username").get(async (req, res) => {
       error: e,
       auth: true,
       status: 400,
-      owner: req.session.user.owner,
+      //owner: req.session.user.owner,
       id: req.session.user.id,
     });
   }
@@ -141,7 +141,7 @@ router.route("/name/:username").get(async (req, res) => {
       error: "User not found",
       auth: true,
       status: 404,
-      owner: req.session.user.owner,
+      //owner: req.session.user.owner,
       id: req.session.user.id,
     });
   }
@@ -158,7 +158,7 @@ router.route("/id/:userId/history").get(async (req, res) => {
       error: e,
       auth: true,
       status: 400,
-      owner: req.session.user.owner,
+      //owner: req.session.user.owner,
       id: req.session.user.id,
     });
   }
@@ -170,7 +170,7 @@ router.route("/id/:userId/history").get(async (req, res) => {
       error: e,
       status: 404,
       auth: true,
-      owner: req.session.user.owner,
+      //owner: req.session.user.owner,
       id: req.session.user.id,
     });
   }
@@ -190,13 +190,14 @@ router.route("/id/:userId/history").get(async (req, res) => {
     title: "History",
     courts: courtHistory,
     id: req.params.userId,
-    owner: req.session.user.owner,
+    //owner: req.session.user.owner,
   });
 });
 
 router.route("/id/:userId").get(async (req, res) => {
   let sessionId;
   let userId;
+  let isOwner = await checkIfOwner(req.params.userId);
   try {
     userId = validId(req.params.userId);
     sessionId = validId(req.session.user.id);
@@ -215,7 +216,7 @@ router.route("/id/:userId").get(async (req, res) => {
       auth: true,
       ownPage: userId == sessionId,
       reviewcount: user.reviews.length,
-      owner: req.session.user.owner,
+      owner: isOwner,
     });
   } catch (e) {
     return res
@@ -242,7 +243,7 @@ router
     let thisUser = await getUserById(req.params.userId);
     res.render("editProfile", {
       auth: true,
-      owner: req.session.user.owner,
+      //owner: req.session.user.owner,
       id: req.session.user.id,
       email: thisUser.email,
       state: thisUser.state,
@@ -269,7 +270,7 @@ router
     } else {
       updatedUser["userImage"] = "/public/images/No_Image_Available.jpg";
     }
-
+    //return res.json(updatedUser);
     let thisUser;
     let isAuth;
     if (req.session.user) {
@@ -283,7 +284,7 @@ router
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
-        owner: req.session.user.owner,
+       // owner: req.session.user.owner,
         id: req.session.user.id,
         email: thisUser.email,
         state: thisUser.state,
@@ -299,7 +300,7 @@ router
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
-        owner: req.session.user.owner,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
         email: thisUser.email,
         state: thisUser.state,
@@ -314,7 +315,7 @@ router
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
-        owner: req.session.user.owner,
+       // owner: req.session.user.owner,
         id: req.session.user.id,
         email: thisUser.email,
         state: thisUser.state,
@@ -329,7 +330,7 @@ router
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
-        owner: req.session.user.owner,
+       // owner: req.session.user.owner,
         id: req.session.user.id,
         email: thisUser.email,
         state: thisUser.state,
@@ -344,7 +345,7 @@ router
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
-        owner: req.session.user.owner,
+       // owner: req.session.user.owner,
         id: req.session.user.id,
         email: thisUser.email,
         state: thisUser.state,
@@ -367,7 +368,7 @@ router
         newZip,
         updatedUser.emailAddressInput,
         newLevel,
-        thisUser.owner,
+        //thisUser.owner,
         updatedUser.userImage
       );
       if (finalUser) {
@@ -376,7 +377,7 @@ router
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
-        owner: req.session.user.owner,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
         email: thisUser.email,
         state: thisUser.state,

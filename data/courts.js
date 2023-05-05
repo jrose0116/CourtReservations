@@ -219,6 +219,16 @@ const deleteCourt = async (id) => {
   return obj;
 };
 
+const checkIfOwner = async (ownerId) => { 
+  const courtCollection = await courts();
+  const result = await courtCollection.findOne({ ownerId: ownerId });
+  if (result) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export {
   createCourt,
   getAllCourts,
@@ -227,4 +237,5 @@ export {
   updateCourt,
   deleteCourt,
   getCourtExperience,
+  checkIfOwner
 };

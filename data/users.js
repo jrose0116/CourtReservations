@@ -111,7 +111,7 @@ const createUser = async (
     email: email.toLowerCase(),
     image: image,
     experience_level: experience_level,
-    // owner: owner,
+   // owner: false,
     reviews: [],
     history: [],
     overallRating: 0,
@@ -238,7 +238,7 @@ const updateUser = async (
   zip,
   email,
   experience_level,
-  owner,
+  //owner,
   image
 ) => {
   if (
@@ -254,9 +254,9 @@ const updateUser = async (
   ) {
     throw "Error: All inputs must be provided";
   }
-  if (owner === null) {
+  /*if (owner === null) {
     throw "Error: owner must be provided";
-  }
+  }*/
   if (!image) {
     image = "/public/images/No_Image_Available.jpg";
   } else {
@@ -306,7 +306,7 @@ const updateUser = async (
     throw e;
   }
  
-  if (typeof owner !== "boolean") {
+  /*if (typeof owner !== "boolean") {
     if (typeof owner === "string") {
       if (owner === "true") {
         owner = true;
@@ -318,7 +318,7 @@ const updateUser = async (
     } else {
       throw "Error: owner must be of type boolean";
     }
-  }
+  }*/
   let updatedUser = {
     firstName: firstName,
     lastName: lastName,
@@ -329,8 +329,7 @@ const updateUser = async (
     zip: zip,
     email: email,
     image: image,
-    experience_level: experience_level,
-    owner: owner,
+    experience_level: experience_level
   };
   const usersCollection = await users();
   const updateInfo = await usersCollection.findOneAndUpdate(
@@ -405,7 +404,7 @@ const checkUser = async (email, password) => {
     lastName: user.lastName,
     email: user.email,
     username: user.username,
-    owner: user.owner,
+    //owner: user.owner,
     id: user._id.toString(),
     zip: user.zip,
   };

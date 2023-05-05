@@ -2,7 +2,7 @@ import userRoutes from "./users.js";
 import courtRoutes from "./courts.js";
 import groupRoutes from "./groups.js";
 import authRoutes from "./auth.js";
-import { getAllCourts } from "../data/courts.js";
+import { getAllCourts, checkIfOwner } from "../data/courts.js";
 
 const constructor = (app) => {
   app.use("/", authRoutes);
@@ -14,6 +14,7 @@ const constructor = (app) => {
     if (!req.session || !req.session.user || !req.session.user.id) {
       return res.render("homepage", { auth: false, title: "Home" });
     }
+    let isOwner = await checkIfOwner(req.session.user.id);
     let courtList;
     try {
       courtList = await getAllCourts();
@@ -32,7 +33,7 @@ const constructor = (app) => {
       availableCourts: courtList,
       ownedCourts: ownedList,
       id: req.session.user.id,
-      owner: req.session.user.owner,
+      owner: isOwner,
     });
   });
 

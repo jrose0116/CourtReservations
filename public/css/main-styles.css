@@ -57,7 +57,8 @@ body {
   font-size: 13px;
 }
 
-.div1, .div2 {
+.div1,
+.div2 {
   flex: 1;
   padding: 10px;
 }
@@ -109,7 +110,6 @@ select {
   margin-bottom: 10px;
 }
 
- 
 .reg-parent {
   display: flex;
   flex-direction: row;
@@ -264,7 +264,7 @@ select {
   position: relative;
   flex: 2;
   overflow-y: scroll;
-  height: 300px;
+  height: 600px;
   margin-bottom: 40px;
 }
 
@@ -276,15 +276,16 @@ select {
 }
 
 .error {
-	color: red;
-	font-weight: bold;
+  color: red;
+  font-weight: bold;
 }
 
-#error-div {  
+#error-div {
   color: red;
 }
 
-#editCourt, #editProfile {
+#editCourt,
+#editProfile {
   margin: 20px;
 }
 
@@ -298,8 +299,8 @@ a {
 }
 
 #report-review {
-  color:red;
-  float:right;
+  color: red;
+  float: right;
   margin-right: 5px;
 }
 
@@ -341,4 +342,79 @@ a {
 
 #errors {
   color: red;
+}
+
+#filter-btn,
+#filter-modal button {
+  background-color: #333;
+  color: white;
+  padding: 10px 40px;
+  border: #6d6d6d solid 2px;
+  border-radius: 3px;
+}
+
+#avail-title {
+  margin-right: 60%;
+  display: inline;
+}
+
+#filter-modal {
+  position: fixed;
+  top: 15%;
+  right: 0;
+  left: 0;
+  margin: auto;
+  height: fit-content;
+  width: 30%;
+  background-color: #333;
+  padding: 20px;
+  border-radius: 20px;
+  z-index: 10;
+}
+
+#filter-modal label,
+#filter-modal button,
+#filter-modal p {
+  text-align: center;
+  color: white;
+  display: block;
+  margin: 10px auto;
+  width: 60%;
+}
+
+#filter-modal input {
+  text-align: center;
+  color: black;
+  display: block;
+  margin: 10px auto;
+  width: 50%;
+}
+
+#filter-modal select,
+#filter-modal option {
+  text-align: center;
+  color: white;
+  display: block;
+  margin: 10px auto;
+  width: fit-content;
+  background-color: #333;
+  border: white solid 2px;
+}
+
+#filter-modal button {
+  border: white solid 2px;
+}
+
+#filter-modal .inline {
+  display: inline;
+  margin: 0 0;
+  width: fit-content;
+}
+
+#filter-modal .filter-error {
+  background-color: rgb(255, 66, 66);
+  border-radius: 3px;
+  width: fit-content;
+  padding: 10px 5px;
+  display: none;
 }

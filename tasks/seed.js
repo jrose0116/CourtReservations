@@ -794,7 +794,7 @@ try {
   );
   let sched16 = await addToSchedule(
     court8._id.toString(),
-    user3._id,
+    user4._id,
     "06/27/2023",
     "14:00",
     "17:00",
@@ -802,7 +802,7 @@ try {
   );
   let sched17 = await addToSchedule(
     court8._id.toString(),
-    user5._id,
+    user4._id,
     "06/29/2023",
     "10:00",
     "12:00",
@@ -823,6 +823,14 @@ try {
     "11:00",
     "12:00",
     1
+  );
+  let sched20 = await addToSchedule(
+    court9._id.toString(),
+    user5._id,
+    "07/11/2023",
+    "10:00",
+    "11:00",
+    3
   );
 }
 catch (e)

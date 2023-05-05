@@ -423,3 +423,7 @@ a {
   padding: 10px 5px;
   display: none;
 }
+#expLvlPercent {
+  font-weight: bold;
+  color:darkgreen;
+}

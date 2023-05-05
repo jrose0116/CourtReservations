@@ -6,8 +6,8 @@
 {{/if}}
 
 <main>
-    <script
-    src="https://maps.googleapis.com/maps/api/js?key={{apiKey}}&callback=Function.prototype"></script>
+    {{!-- <script
+    src="https://maps.googleapis.com/maps/api/js?key={{apiKey}}&callback=Function.prototype"></script> --}}
     <form
     action="/courts/recommend/"
     method="POST"
@@ -23,22 +23,29 @@
         <br />
         <input type="submit" class="submit" />
     </form>
-    {{#if courts}}
-        <h2>{{courtType}} courts with mostly {{experienceLevel}} players</h2>
-        {{#each courts}}
-            <div class="court-card">
-                <h3>{{this.name}}</h3>
-                <p>{{this.type}}</p>
-                <p>
-                {{this.address}},
-                {{this.city}},
-                {{this.state}}
-                {{this.zip}}</p>
-                <p>{{this.distance}}</p>
-                <a href="/courts/{{this._id}}">Click for Details</a>
-            </div>
-        {{/each}}
+    {{#if submitted}}
+        <h2>{{courtType}} results</h2>
+        {{#if courts}}
+            {{#each courts}}
+                <div class="court-card">
+                    <p id="expLvlPercent">{{this.percent}}% of users are {{this.expLvl}} players</p>
+                    <h3>{{this.name}}</h3>
+                    <p>{{this.type}}</p>
+                    <p>
+                    {{this.address}},
+                    {{this.city}},
+                    {{this.state}}
+                    {{this.zip}}</p>
+                    <p>{{this.distance}}</p>
+                    <a href="/courts/{{this._id}}">Click for Details</a>
+                </div>
+            {{/each}}
+        {{else}}
+            <p>No Courts in your area matching your skillset.</p>
+        {{/if}}
     {{else}}
-        <p>No Courts Recommended at this time.</p>
+        <p>Fill out form to generate results.</p>
     {{/if}}
 </main>
+<a href="/user/id/{{{id}}}/">Courts not in your area? Need to update your experience level? <br>
+Click here to update your profile</a>

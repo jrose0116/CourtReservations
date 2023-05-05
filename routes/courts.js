@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { zipCodeDistance } from "zipcode-city-distance";
 import dotenv from "dotenv";
+import moment from "moment";
 dotenv.config();
 
 const router = Router();
@@ -62,7 +63,7 @@ router.route("/available").get(async (req, res) => {
     court.distance = Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
   });
   courtList = courtList.filter((court) => {
-    return court.distance <= 25;
+    return court.distance <= 50;
   });
   courtList.map((court) => {
     if (court.distance <= 1) court.distance = "Within 1 Mile";
@@ -223,7 +224,7 @@ router.route("/recommend")
     court.distance = Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
   });
   courtList = courtList.filter((court) => {
-    return court.distance <= 25;
+    return court.distance <= 50;
   });
   courtList.map((court) => {
     if (court.distance <= 1) court.distance = "Within 1 Mile";
@@ -245,16 +246,78 @@ router.route("/recommend")
     }
     return 0;
   });
+  //experience level checker algorithm
+  let expLevelPercent = 0;
+  let expLevelCounter = 0;
+  let numberOfBookingsCounter = 0;
+  let updatedCourtList = [];
+  let listOfCourtsPairedWithPercent = [];
+  let sixMonthMark = moment().add(6,'months');
+  console.log(sixMonthMark);
+  //sixMonthMark = sixMonthMark.format('MM/DD/YYYY');
+  try {
+    for (let i=0;i<courtList.length;i++)//for each court
+    {
+      let currentDate = moment();
+      while (currentDate.isSameOrBefore(sixMonthMark))//iterate all dates
+      {
+        let currentDateStr = currentDate.format('MM/DD/YYYY').toString();
+        if (courtList[i].schedule.hasOwnProperty(currentDateStr) == true)
+        {
+          for (let j=0;j<courtList[i].schedule[currentDateStr].length;j++)//iterate through a date array of bookings
+          {
+            let currentUserId = courtList[i].schedule[currentDateStr][j].userId;
+            let iterationUser;
+            try {
+              iterationUser = await getUserById(currentUserId);
+            }
+            catch (e)
+            {
+              return res.status(500).render("error", { error: e, status: 500 });
+            }
+            if (iterationUser.experience_level.localeCompare(user.experience_level) == 0)
+            {
+              //expLevelCounter++;
+              expLevelCounter = courtList[i].schedule[currentDateStr][j].capacity + expLevelCounter;
+            }
+            //numberOfBookingsCounter++;
+            numberOfBookingsCounter = courtList[i].schedule[currentDateStr][j].capacity + numberOfBookingsCounter;
+          }//end single date iteration of bookings
+        }
+        currentDate = currentDate.add(1,'day');
+      }//end 6 month iteration
+
+      if (numberOfBookingsCounter != 0)
+      {
+        expLevelPercent = (expLevelCounter/parseFloat(numberOfBookingsCounter))*100;
+      }
+      if (expLevelPercent >= 50)
+      {
+        expLevelPercent = Math.round(expLevelPercent);
+        courtList[i].percent = expLevelPercent;
+        courtList[i].expLvl = user.experience_level;
+        updatedCourtList.push(courtList[i]);
+      }
+      expLevelCounter = 0;
+      numberOfBookingsCounter = 0;
+      expLevelPercent = 0;
+    }//end of each court
+  }
+  catch (e) {
+    console.log(e);
+    return res.status(500).render("error", { error: e, auth: true }); //number is good
+  }
 
   return res.render("recommendedCourts", {
     title: "Recommend Courts",
-    courts: courtList,
+    courts: updatedCourtList,
     auth: true,
     id: req.session.user.id,
     owner: req.session.user.owner,
     experienceLevel: user.experience_level,
     courtType: req.body.courtType,
     apiKey: process.env.MAPS_API_KEY,
+    submitted: true
   });
 });
 

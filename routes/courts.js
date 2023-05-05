@@ -554,7 +554,7 @@ router.route("/:courtId/reserve")
 });
 
 // router.route("/:courtId/cancel")
-router.route("/:courtId/:historyId/:date/cancel")
+router.route("/:courtId/:historyId/cancel")
 .get(async (req, res) => {
   console.log("cancellll!!!")
   //remove from history and schedule

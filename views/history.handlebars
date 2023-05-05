@@ -2,6 +2,7 @@
 
 <main>
     <ul>
+      {{#if courts}}
         {{#each courts}}  
             <div>
                 <li> 
@@ -11,5 +12,10 @@
                 </li> 
             </div>
         {{/each}}
+      {{else}}
+        <div>
+          <p>Sorry, you have no history!</p>
+        </div>
+      {{/if}}
     </ul>
 </main>

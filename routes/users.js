@@ -1,8 +1,8 @@
 import { Router } from "express";
 const router = Router();
 import multer from "multer";
-const upload = multer({ dest: 'public/images' });
-import fs from 'fs';
+const upload = multer({ dest: "public/images" });
+import fs from "fs";
 import {
   createUser,
   getUserById,
@@ -13,7 +13,13 @@ import {
 import { createReview } from "../data/reviews.js";
 import { getHistory } from "../data/history.js";
 import { getCourtById } from "../data/courts.js";
-import { validExpLevel, validId, validState, validStr, validZip } from "../validation.js";
+import {
+  validExpLevel,
+  validId,
+  validState,
+  validStr,
+  validZip,
+} from "../validation.js";
 import { getAllUsers } from "../data/users.js";
 
 router
@@ -25,15 +31,13 @@ router
       currentId = validId(req.session.user.id);
       if (userId == currentId) throw "Cannot review your own profile";
     } catch (e) {
-      return res
-        .status(400)
-        .render("error", {
-          error: e,
-          auth: true,
-          status: 400,
-          owner: req.session.user.owner,
-          id: req.session.user.id,
-        });
+      return res.status(400).render("error", {
+        error: e,
+        auth: true,
+        status: 400,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+      });
     }
     let user;
     try {
@@ -222,7 +226,11 @@ router.route("/id/:userId").get(async (req, res) => {
 
 router.route("/explore").get(async (req, res) => {
   let userList = await getAllUsers();
-  res.render("explore", {auth: true, users: userList})
+  res.render("explore", {
+    auth: true,
+    users: userList,
+    id: req.session.user.id,
+  });
 });
 
 router
@@ -230,29 +238,33 @@ router
   .get(async (req, res) => {
     let thisUser = await getUserById(req.params.userId);
     res.render("editProfile", {
-    auth: true,
-    owner: req.session.user.owner,
-      id: req.session.user.id, 
+      auth: true,
+      owner: req.session.user.owner,
+      id: req.session.user.id,
       email: thisUser.email,
       state: thisUser.state,
       city: thisUser.city,
       zip: thisUser.zip,
-      level: thisUser.experience_level
-  });
+      level: thisUser.experience_level,
+    });
   })
-  .post(upload.single('userImage'), async (req, res) => {
+  .post(upload.single("userImage"), async (req, res) => {
     let updatedUser = req.body;
     let fileData = req.file;
     if (fileData) {
       fs.readFile(fileData.path, function (err, data) {
-      if (err) throw err;
-      fs.writeFile('public/images/' + fileData.originalname, data, function (err) {
         if (err) throw err;
+        fs.writeFile(
+          "public/images/" + fileData.originalname,
+          data,
+          function (err) {
+            if (err) throw err;
+          }
+        );
       });
-    });
-      updatedUser["userImage"] = '/public/images/' + fileData.originalname;
+      updatedUser["userImage"] = "/public/images/" + fileData.originalname;
     } else {
-      updatedUser["userImage"] = '/public/images/No_Image_Available.jpg';
+      updatedUser["userImage"] = "/public/images/No_Image_Available.jpg";
     }
 
     let thisUser;
@@ -263,7 +275,7 @@ router
       isAuth = false;
     }
 
-     try {
+    try {
       thisUser = await getUserById(req.params.userId);
     } catch (e) {
       return res.render("editProfile", {
@@ -275,7 +287,7 @@ router
         city: thisUser.city,
         zip: thisUser.zip,
         level: thisUser.experience_level,
-        bad: e
+        bad: e,
       });
     }
     let newCity, newState, newZip, newLevel, newOwner;
@@ -291,7 +303,7 @@ router
         city: thisUser.city,
         zip: thisUser.zip,
         level: thisUser.experience_level,
-        bad: e
+        bad: e,
       });
     }
     try {
@@ -306,7 +318,7 @@ router
         city: thisUser.city,
         zip: thisUser.zip,
         level: thisUser.experience_level,
-        bad: e
+        bad: e,
       });
     }
     try {
@@ -321,7 +333,7 @@ router
         city: thisUser.city,
         zip: thisUser.zip,
         level: thisUser.experience_level,
-        bad: e
+        bad: e,
       });
     }
     try {
@@ -336,27 +348,40 @@ router
         city: thisUser.city,
         zip: thisUser.zip,
         level: thisUser.experience_level,
-        bad: e
+        bad: e,
       });
     }
 
     try {
-      let finalUser = await updateUser(req.params.userId, thisUser.firstName, thisUser.lastName, thisUser.username, thisUser.age, newCity, newState, newZip, updatedUser.emailAddressInput, newLevel, thisUser.owner, updatedUser.userImage);
+      let finalUser = await updateUser(
+        req.params.userId,
+        thisUser.firstName,
+        thisUser.lastName,
+        thisUser.username,
+        thisUser.age,
+        newCity,
+        newState,
+        newZip,
+        updatedUser.emailAddressInput,
+        newLevel,
+        thisUser.owner,
+        updatedUser.userImage
+      );
       if (finalUser) {
         res.redirect(`/user/id/${req.params.userId}`);
       }
     } catch (e) {
       return res.render("editProfile", {
-      auth: isAuth,
-      owner: req.session.user.owner,
-      id: req.session.user.id, 
-      email: thisUser.email,
-      state: thisUser.state,
-      city: thisUser.city,
-      zip: thisUser.zip,
-      level: thisUser.experience_level,
-        bad: e
-      })
+        auth: isAuth,
+        owner: req.session.user.owner,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: e,
+      });
     }
   });
 

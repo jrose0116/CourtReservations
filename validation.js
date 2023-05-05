@@ -459,6 +459,7 @@ const checkPassword = (password) => {
 
 const validSport = (sport) => {
   sport = validStr(sport, "Sport").toLowerCase();
+  if (sport == "n/a") throw "Select a Sport";
 
   sports = ["basketball", "tennis", "pickleball", "volleyball"];
   if (!sports.includes(sport)) throw "Invalid Sport";

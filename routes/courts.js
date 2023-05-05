@@ -170,12 +170,52 @@ router
     return res.json({ create: newCourt });
   });
 
-router.route("/recommend").get((req, res) => {
-  // return res.json({ route: "Recommended courts page" });
+router.route("/recommend")
+.get((req, res) => {
+  var currentDate = new Date();
+  var year = currentDate.getFullYear();
+  var month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  var day = String(currentDate.getDate()).padStart(2, "0");
+  var currentDateStr = year + "-" + month + "-" + day;
+
+  var maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 1);
+  var maxYear = maxDate.getFullYear();
+  var maxMonth = String(maxDate.getMonth() + 6).padStart(2, "0");
+  var maxDay = String(maxDate.getDate()).padStart(2, "0");
+  var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
+
   return res.render("recommendedCourts", {
     auth: true,
     id: req.session.user.id,
     owner: req.session.user.owner,
+    mindate: currentDateStr,
+    maxdate: maxDateStr
+  });
+})
+.post((req, res) => {
+  // return res.json({ route: "Recommended courts page" });
+  console.log("post recommend");
+
+  var currentDate = new Date();
+  var year = currentDate.getFullYear();
+  var month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  var day = String(currentDate.getDate()).padStart(2, "0");
+  var currentDateStr = year + "-" + month + "-" + day;
+
+  var maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 1);
+  var maxYear = maxDate.getFullYear();
+  var maxMonth = String(maxDate.getMonth() + 6).padStart(2, "0");
+  var maxDay = String(maxDate.getDate()).padStart(2, "0");
+  var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
+
+  return res.render("recommendedCourts", {
+    auth: true,
+    id: req.session.user.id,
+    owner: req.session.user.owner,
+    mindate: currentDateStr,
+    maxdate: maxDateStr
   });
 });
 
@@ -222,7 +262,8 @@ router.route("/:courtId").get(async (req, res) => {
   });
 });
 
-router.route("/:courtId/reserve").get(async (req, res) => {
+router.route("/:courtId/reserve")
+.get(async (req, res) => {
   let thisCourt;
   try {
     let courtId = validId(req.params.courtId);
@@ -257,9 +298,8 @@ router.route("/:courtId/reserve").get(async (req, res) => {
     schedule: thisCourt.schedule,
     owner: req.session.user.owner,
   });
-});
-
-router.route("/:courtId/reserve").post(async (req, res) => {
+})
+.post(async (req, res) => {
   let thisCourt;
   try {
     //get court

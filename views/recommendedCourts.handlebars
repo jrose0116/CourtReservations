@@ -1,0 +1,45 @@
+<h1>Recommended Courts</h1>
+{{#if error}}
+  <div class="error">
+    <p>{{error}}</p>
+  </div>
+{{/if}}
+
+<main>
+    <form
+    action="/courts/recommend/"
+    method="POST"
+    id="recommendCourtsForm"
+  >
+    <label for="selectedDate">Select a date to play:</label>
+    <input
+      type="date"
+      id="selectedDate"
+      name="selectedDate"
+      value={{mindate}}
+      min={{mindate}}
+      max={{maxdate}}
+    />
+    <br />
+    {{!-- <label for="startTime">Select start time:</label>
+    <input type="time" id="startTime" name="startTime" />
+    <br />
+    <label for="endTime">Select end time:</label>
+    <input type="time" id="endTime" name="endTime" />
+    <br /> --}}
+    <label for="experienceLevel">Select an experience level:</label>
+    <select name="experienceLevel" id="experienceLevel">
+	    <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+    </select>
+    <br />
+    <label for="courtType">Select a court type:</label>
+    <select name="courtType" id="courtType">
+	    <option value="basketball">Basketball</option>
+        <option value="tennis">Tennis</option>
+    </select>
+    <br />
+    <input type="submit" class="submit" />
+  </form>
+</main>

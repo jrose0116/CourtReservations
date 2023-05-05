@@ -285,7 +285,8 @@ select {
 }
 
 #editCourt,
-#editProfile {
+#editProfile,
+#create-court {
   margin: 20px;
 }
 

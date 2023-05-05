@@ -87,8 +87,10 @@
       <label for="courtClosing">Court Closing Time</label>
       <input name="courtClosing" id="courtClosing" type="time" />
       <br />
-      <button type="submit">Submit</button>
+      <div id="error-div" class="centered"></div>
+      <div id="errors">{{bad}}</div>
+      <button id="create-court" type="submit">Submit</button>
     </form>
-    <p>{{bad}}</p>
+    <script src="/public/js/createCourt.js"></script>
   </div>
 </main>

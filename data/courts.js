@@ -10,6 +10,7 @@ import {
   validZip,
   validTime,
 } from "../validation.js";
+import { getUserById } from "./users.js";
 
 const createCourt = async (
   name,
@@ -100,6 +101,53 @@ const getCourtById = async (id) => {
   return court;
 };
 
+const getCourtExperience = async (id) => {
+  try {
+    id = validId(id, "courtId");
+  } catch (e) {
+    throw "Error (data/courts.js :: getCourtExperience(id)):" + e;
+  }
+
+  const courtsCollection = await courts();
+  const court = await courtsCollection.findOne({ _id: new ObjectId(id) });
+
+  if (court === null)
+    throw "Error (data/courts.js :: getCourtById(id)): No court found";
+
+  court._id = court._id.toString();
+  let res = 0;
+  let count = 0;
+  for (let i of Object.keys(court.schedule)) {
+    if (i != "_id") {
+      for (let j of court.schedule[i]) {
+        try {
+          let user = await getUserById(j.userId);
+          count++;
+          res +=
+            user.experience_level == "beginner"
+              ? 1
+              : user.experience_level == "intermediate"
+              ? 2
+              : user.experience_level == "advanced"
+              ? 3
+              : 0;
+        } catch (e) {
+          throw e;
+        }
+      }
+    }
+  }
+  res = Math.round(res / count);
+  switch (res) {
+    case 2:
+      return "intermediate";
+    case 3:
+      return "advanced";
+    default:
+      return "beginner";
+  }
+};
+
 const getCourtsByName = async (courtName) => {
   courtName = validStr(courtName);
 
@@ -123,7 +171,7 @@ const updateCourt = async (
   courtOpening,
   courtClosing,
   ownerId
-) => { 
+) => {
   name = validStr(name, "Name");
   validNumber(capacity, "Capacity", true, 0, Infinity);
   courtOpening = validTime(courtOpening, false);
@@ -136,14 +184,14 @@ const updateCourt = async (
     capacity,
     courtOpening,
     courtClosing,
-    ownerId
+    ownerId,
   };
 
   const courtCollection = await courts();
   const updateInfo = await courtCollection.findOneAndUpdate(
     { _id: new ObjectId(id) },
     { $set: updatedCourt },
-    { returnDocument: 'after' }
+    { returnDocument: "after" }
   );
 
   if (updateInfo.lastErrorObject.n === 0) throw "Error: Update failed";
@@ -153,22 +201,30 @@ const updateCourt = async (
 
 // todo: recommend courts function
 const deleteCourt = async (id) => {
-  if (!id) throw 'You must provide an id to search for';
-  if (typeof id !== 'string') throw 'Id must be a string';
+  if (!id) throw "You must provide an id to search for";
+  if (typeof id !== "string") throw "Id must be a string";
   if (id.trim().length === 0)
-    throw 'Id cannot be an empty string or just spaces';
+    throw "Id cannot be an empty string or just spaces";
   id = id.trim();
-  if (!ObjectId.isValid(id)) throw 'invalid object ID';
+  if (!ObjectId.isValid(id)) throw "invalid object ID";
   const courtCollection = await courts();
-    const deletionInfo = await courtCollection.findOneAndDelete({
-      _id: new ObjectId(id)
-    });
+  const deletionInfo = await courtCollection.findOneAndDelete({
+    _id: new ObjectId(id),
+  });
 
-    if (deletionInfo.lastErrorObject.n === 0) {
-      throw `Could not delete court with id of ${id}`;
-    }
+  if (deletionInfo.lastErrorObject.n === 0) {
+    throw `Could not delete court with id of ${id}`;
+  }
   let obj = { bandId: deletionInfo.value._id, deleted: "true" };
   return obj;
-}
+};
 
-export { createCourt, getAllCourts, getCourtById, getCourtsByName, updateCourt, deleteCourt };
+export {
+  createCourt,
+  getAllCourts,
+  getCourtById,
+  getCourtsByName,
+  updateCourt,
+  deleteCourt,
+  getCourtExperience,
+};

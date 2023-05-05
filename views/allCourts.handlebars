@@ -47,7 +47,7 @@
   </div>
 
   <div id="filter-modal" hidden>
-    <form id="filter-form" method="get" action="/courts/available">
+    <form id="filter-form" method="post" action="/courts/available">
       <p>Filter By:</p>
       <label for="zip-checkbox">
         <input
@@ -67,12 +67,13 @@
         />
         Player Level
       </label>
+
       <label for="sport-checkbox">
         <input
           type="checkbox"
           id="sport-checkbox"
           class="inline"
-          name="level-checkbox"
+          name="sport-checkbox"
         />
         Sport
       </label>

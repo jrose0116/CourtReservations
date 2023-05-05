@@ -107,7 +107,7 @@ filterButton.onclick = () => {
 
 closeModal.onclick = () => {
   modal.style.display = "none";
-  filterButton.style.display = "block";
+  filterButton.style.display = "inline";
 };
 
 zipBox.addEventListener("change", (event) => {

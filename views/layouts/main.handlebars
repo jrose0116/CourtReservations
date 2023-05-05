@@ -2,7 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    {{#if title}}
     <title>{{{title}}}</title>
+    {{else}}
+    <title>Court Reservations</title>
+    {{/if}}
     <link rel="stylesheet" href="/public/css/main-styles.css" />
   </head>
   <body>

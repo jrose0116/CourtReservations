@@ -467,6 +467,14 @@ const validSport = (sport) => {
   return sport;
 };
 
+const validUsername = (username) => {
+  username = validStr(username, "Username");
+  if (username.length < 10) {
+    throw 'Username must be at least 10 characters'
+  }
+  return username;
+};
+
 export {
   isAuth,
   validId,
@@ -484,4 +492,5 @@ export {
   validImageUrl,
   checkPassword,
   validSport,
+  validUsername
 };

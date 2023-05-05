@@ -135,6 +135,14 @@ const validLevel = (level) => {
     }
 }
 
+const validUsername = (username) => {
+    username = validStr(username, "Username");
+    if (username.length < 10) {
+      throw 'Username must be at least 10 characters'
+    }
+    return username;
+};
+
 if (registerForm) {
   registerForm.addEventListener('submit', (event) => {    
     errorDiv.hidden = false;
@@ -204,7 +212,7 @@ if (registerForm) {
     }
     if (!emptyUsername) {
         try {
-            username.value = validStr(username.value, "Username");
+            username.value = validUsername(username.value, "Username");
         }
         catch (e) {
             event.preventDefault();

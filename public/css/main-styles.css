@@ -136,6 +136,7 @@ select {
 .extra-info {
   color: #6d6d6d;
   font-size: 12px;
+  text-align: center;
 }
 
 #login-form {

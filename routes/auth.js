@@ -2,7 +2,7 @@ import { Router } from "express";
 import { createUser, checkUser } from "../data/users.js";
 const router = Router();
 import { users } from "../config/mongoCollections.js";
-import { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl, checkPassword} from "../validation.js";
+import { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl, checkPassword, validUsername} from "../validation.js";
 
 router
   .route("/login")
@@ -108,7 +108,7 @@ router.route("/register")
     try {
       firstName = validStr(firstName, "First name");
       lastName = validStr(lastName, "Last name");
-      username = validStr(username, "Username");
+      username = validUsername(username, "Username");
       city = validStr(city, "City");
       age = validNumber(age, "Age");
       state = validState(state);

@@ -9,7 +9,8 @@ import {
   getCourtById,
   getAllCourts,
   getCourtsByName,
-  updateCourt
+  updateCourt, 
+  deleteCourt
 } from "../data/courts.js";
 import {
   addToSchedule,
@@ -448,7 +449,8 @@ router
       courtName: thisCourt.name,
       capacity: thisCourt.capacity,
       opening: thisCourt.courtOpening,
-      closing: thisCourt.courtClosing
+      closing: thisCourt.courtClosing,
+      courtId: req.params.courtId
     });
   })
   .post(async (req, res) => {
@@ -530,5 +532,43 @@ router
     });
     }
   });
+
+router.route("/:courtId/editCourt/deleting")
+  .post(async (req, res) => {
+   let thisCourt;
+    let isAuth;
+    if (req.session.user) {
+      isAuth = true;
+    } else {
+      isAuth = false;
+    }
+    try {
+      thisCourt = await getCourtById(req.params.courtId);
+    } catch (e) {
+      return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing, 
+      bad: e
+    });
+    }
+  try {
+    let deleted = await deleteCourt(req.params.courtId);
+    if (deleted) {
+      res.redirect("/");
+    }
+  } catch (e) {
+     return res.render("editCourt", {
+      auth: isAuth,
+      courtName: thisCourt.name,
+      capacity: thisCourt.capacity,
+      opening: thisCourt.courtOpening,
+      closing: thisCourt.courtClosing, 
+      bad: e
+    });
+  }
+});
 
 export default router;

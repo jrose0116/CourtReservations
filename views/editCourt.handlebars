@@ -1,15 +1,7 @@
 <main>
-    <script>
-    window.addEventListener('load', function() {
-      document.getElementById('name').value = "{{{courtName}}}";
-      document.getElementById('capacity').value = '{{capacity}}';
-      document.getElementById('courtOpening').value = '{{opening}}';
-      document.getElementById('courtClosing').value = '{{closing}}';
-    });
-  </script>
   <div class="centered">
     <h1>Edit {{courtName}}</h1>
-    <form id="form" method="post" class="centered">
+    <form action="/courts/{{courtId}}/editCourt" id="form" method="post" class="centered">
       <label for="name">Court Name:</label>
       <input id="name" name="name" type="text" />
       <br />
@@ -24,6 +16,26 @@
       <br />
       <button type="submit">Save Changes</button>
     </form>
+    <br>
+  <form action="/courts/{{courtId}}/editCourt/deleting" id="delete-court" method="post" class="centered">
+    <button id="delete-court">Delete Court</button>
+  </form>
+  <script>
+      const deleteButton = document.getElementById("delete-court");
+      deleteButton.addEventListener("click", handleDeleteClick);
+
+      function handleDeleteClick() {
+        const confirmed = confirm("Are you sure you want to delete this court? All reservations will be canceled.");
+      }
+    </script>
+  <script>
+    window.addEventListener('load', function() {
+      document.getElementById('name').value = "{{{courtName}}}";
+      document.getElementById('capacity').value = '{{capacity}}';
+      document.getElementById('courtOpening').value = '{{opening}}';
+      document.getElementById('courtClosing').value = '{{closing}}';
+    });
+  </script>
     <p>{{bad}}</p>
   </div>
 </main>

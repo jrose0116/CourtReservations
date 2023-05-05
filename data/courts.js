@@ -152,5 +152,23 @@ const updateCourt = async (
 };
 
 // todo: recommend courts function
+const deleteCourt = async (id) => {
+  if (!id) throw 'You must provide an id to search for';
+  if (typeof id !== 'string') throw 'Id must be a string';
+  if (id.trim().length === 0)
+    throw 'Id cannot be an empty string or just spaces';
+  id = id.trim();
+  if (!ObjectId.isValid(id)) throw 'invalid object ID';
+  const courtCollection = await courts();
+    const deletionInfo = await courtCollection.findOneAndDelete({
+      _id: new ObjectId(id)
+    });
 
-export { createCourt, getAllCourts, getCourtById, getCourtsByName, updateCourt };
+    if (deletionInfo.lastErrorObject.n === 0) {
+      throw `Could not delete court with id of ${id}`;
+    }
+  let obj = { bandId: deletionInfo.value._id, deleted: "true" };
+  return obj;
+}
+
+export { createCourt, getAllCourts, getCourtById, getCourtsByName, updateCourt, deleteCourt };

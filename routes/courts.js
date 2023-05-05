@@ -87,6 +87,7 @@ router
       return res.status(500).render("error", { error: e, status: 500 });
     }
 
+    // console.log('upcomingList: ')
     // console.log(upcomingList)
 
     return res.render("allCourts", {
@@ -671,14 +672,16 @@ router
     });
   });
 
-// router.route("/:courtId/cancel")
-router.route("/:courtId/:historyId/:date/cancel").get(async (req, res) => {
-  console.log("cancellll!!!");
+router.route("/:courtId/:historyId/cancel").get(async (req, res) => {
+  // console.log("CANCEL!!!");
   //remove from history and schedule
   try {
+    let date = (await getHistoryItem(req.params.historyId)).date;
     await deleteHistoryItem(req.params.historyId);
-    //await removeFromSchedule(req.params.courtId, req.session.user.id, req.params.date);
+    // console.log("history " + req.params.historyId);
+    await removeFromSchedule(req.params.courtId, req.session.user.id, date);
   } catch (e) {
+    console.log(e)
     return res.status(500).json({
       error: "Your booking was not successfully cancelled, please try again.",
     });

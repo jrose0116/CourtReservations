@@ -345,6 +345,10 @@ a {
   color: red;
 }
 
+#filter-btn {
+  display: inline;
+}
+
 #filter-btn,
 #filter-modal button {
   background-color: #333;

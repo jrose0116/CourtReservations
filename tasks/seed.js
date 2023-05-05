@@ -36,7 +36,7 @@ import {
   updateOverallRating,
 } from "../data/reviews.js";
 
-let printUsers = false;
+let printUsers = true;
 let printCourts = false;
 let printHistory = false;
 let printReviews = false;
@@ -67,8 +67,8 @@ try {
     "NY",
     "07030",
     "  iBelLarOSE1@gmaiL.coM  ",
-    " begINNer ",
-    true
+    " begINNer "
+    //true
   );
   if (printUsers) console.log(user1);
 } catch (e) {
@@ -113,8 +113,8 @@ try {
     "NJ",
     "07030",
     "  rgIOv123@gMAiL.coM  ",
-    " INtermEdiate   ",
-    false
+    " INtermEdiate   "
+    //false
   );
   if (printUsers) console.log(user2);
 } catch (e) {
@@ -209,14 +209,53 @@ try {
     "NJ",
     "07751",
     "jrose0116@gmail.com",
-    "beginner",
-    true
+    "beginner"
+    //true
   );
   if (printUsers) console.log(user3);
 } catch (e) {
   if (printUsers) console.log(e);
 }
 
+let user4;
+try {
+  user4 = await createUser(
+    "John",
+    "Smith",
+    "jsmitty33",
+    "Chicken27%",
+    22,
+    "Piscataway",
+    "NJ",
+    "08855",
+    "33smitty@outlook.com",
+    "advanced"
+    //true
+  );
+  if (printUsers) console.log(user4);
+} catch (e) {
+  if (printUsers) console.log(e);
+}
+
+let user5;
+try {
+  user5 = await createUser(
+    "Patrick",
+    "Hill",
+    "graffixnyc",
+    "Goated123?",
+    32,
+    "Hoboken",
+    "NJ",
+    "07030",
+    "phill@stevens.edu",
+    "beginner"
+    //true
+  );
+  if (printUsers) console.log(user5);
+} catch (e) {
+  if (printUsers) console.log(e);
+}
 // TODO: Seed Courts ************************************************************************************************************
 try {
   court1 = await createCourt(

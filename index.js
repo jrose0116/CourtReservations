@@ -48,7 +48,7 @@ app.use("/register", (req, res, next) => {
 });
 
 app.use("/", (req, res, next) => {
-  console.log(req.originalUrl);
+  console.log(req.method, req.originalUrl);
   if (
     req.originalUrl.substring(0, 6) != "/login" &&
     req.originalUrl.substring(0, 9) != "/register" &&

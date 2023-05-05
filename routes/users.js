@@ -1,6 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import multer from "multer";
+import { ObjectId } from "mongodb";
 const upload = multer({ dest: "public/images" });
 import fs from "fs";
 import {
@@ -227,6 +228,8 @@ router.route("/id/:userId").get(async (req, res) => {
 
 router.route("/explore").get(async (req, res) => {
   let userList = await getAllUsers();
+  //take current user out of userList
+  userList = userList.filter((obj) => obj._id.toString() !== req.session.user.id);
   res.render("explore", {
     auth: true,
     users: userList,

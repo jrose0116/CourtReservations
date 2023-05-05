@@ -8,6 +8,7 @@ let age = document.getElementById('ageInput');
 let state = document.getElementById('stateInput');
 let city = document.getElementById('cityInput');
 let zip = document.getElementById('zipInput');
+let level = document.getElementById('levelInput');
 let password = document.getElementById('passwordInput');
 let confirmPassword = document.getElementById('confirmPasswordInput');
 let errorDiv = document.getElementById('error-div');
@@ -128,6 +129,12 @@ const checkPassword = (password) => {
     return password;
   }
 
+const validLevel = (level) => {
+    if (level.toLowerCase().trim() != "beginner" && level.toLowerCase().trim() != "intermediate" && level.toLowerCase().trim() != "advanced") {
+        throw 'Invalid level';
+    }
+}
+
 if (registerForm) {
   registerForm.addEventListener('submit', (event) => {    
     errorDiv.hidden = false;
@@ -140,6 +147,7 @@ if (registerForm) {
     let emptyState = false;
     let emptyCity = false;
     let emptyZip = false;
+    let emptyLevel = false;
     let emptyPassword = false;
     let emptyConfirmPassword = false;
     let goodPass = false;
@@ -307,6 +315,27 @@ if (registerForm) {
             errorDiv.appendChild(message);        
         }
     }
+
+     //check level
+     if (level.value.trim() === "" || level.value.toLowerCase().trim()==="select level") {
+        console.log("LEVEL")
+        event.preventDefault();
+        emptyLevel = true;
+        let message = document.createElement('p');
+        message.innerHTML = "Level is required"
+        errorDiv.appendChild(message);
+    }
+    // if (!emptyLevel) {
+    //     try {
+    //         level.value = validLevel(level.value);
+    //     }
+    //     catch (e) {
+    //         event.preventDefault();
+    //         let message = document.createElement('p');
+    //         message.innerHTML = "Level is not valid"
+    //         errorDiv.appendChild(message);        
+    //     }
+    // }
 
     // check password
     if (password.value.trim() === "") {

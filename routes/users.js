@@ -252,6 +252,7 @@ router
   .post(upload.single("userImage"), async (req, res) => {
     let updatedUser = req.body;
     let fileData = req.file;
+    let currentUser = await getUserById(req.params.userId);
     if (fileData) {
       fs.readFile(fileData.path, function (err, data) {
         if (err) throw err;
@@ -265,9 +266,8 @@ router
       });
       updatedUser["userImage"] = "/public/images/" + fileData.originalname;
     } else {
-      updatedUser["userImage"] = "/public/images/No_Image_Available.jpg";
+      updatedUser["userImage"] = currentUser.image;
     }
-    //return res.json(updatedUser);
     let thisUser;
     let isAuth;
     if (req.session.user) {

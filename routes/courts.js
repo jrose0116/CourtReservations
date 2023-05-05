@@ -32,6 +32,7 @@ import {
   validTime,
   validTimeInRange,
   validDate,
+  validSport,
 } from "../validation.js";
 import {
   appendToHistory,
@@ -40,6 +41,13 @@ import {
   getHistoryItem,
   getUpcomingHistory,
 } from "../data/history.js";
+import {
+  createUser,
+  getUserById,
+  getUserByName,
+  getUserByUsername,
+  updateUser,
+} from "../data/users.js";
 
 router.route("/available").get(async (req, res) => {
   let courtList;
@@ -172,50 +180,81 @@ router
 
 router.route("/recommend")
 .get((req, res) => {
-  var currentDate = new Date();
-  var year = currentDate.getFullYear();
-  var month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  var day = String(currentDate.getDate()).padStart(2, "0");
-  var currentDateStr = year + "-" + month + "-" + day;
-
-  var maxDate = new Date();
-  maxDate.setMonth(maxDate.getMonth() + 1);
-  var maxYear = maxDate.getFullYear();
-  var maxMonth = String(maxDate.getMonth() + 6).padStart(2, "0");
-  var maxDay = String(maxDate.getDate()).padStart(2, "0");
-  var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
-
   return res.render("recommendedCourts", {
+    title: "Recommend Courts",
     auth: true,
     id: req.session.user.id,
-    owner: req.session.user.owner,
-    mindate: currentDateStr,
-    maxdate: maxDateStr
+    owner: req.session.user.owner
   });
 })
-.post((req, res) => {
+.post(async (req, res) => {
   // return res.json({ route: "Recommended courts page" });
   console.log("post recommend");
+  try {
+    validSport(req.body.courtType);
+  }
+  catch (e)
+  {
+    return res.status(404).render("error", { error: e, status: 404 });
+  }
 
-  var currentDate = new Date();
-  var year = currentDate.getFullYear();
-  var month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  var day = String(currentDate.getDate()).padStart(2, "0");
-  var currentDateStr = year + "-" + month + "-" + day;
-
-  var maxDate = new Date();
-  maxDate.setMonth(maxDate.getMonth() + 1);
-  var maxYear = maxDate.getFullYear();
-  var maxMonth = String(maxDate.getMonth() + 6).padStart(2, "0");
-  var maxDay = String(maxDate.getDate()).padStart(2, "0");
-  var maxDateStr = maxYear + "-" + maxMonth + "-" + maxDay;
+  if (!req || !req.body) {
+    const strError =
+      "This error occurred because in the /recommend route, it had no req body.";
+    return res.status(400).render("error", { error: strError, auth: true }); //number is good
+  }
+  let courtList;
+  try {
+    courtList = await getAllCourts();
+  } 
+  catch (e) {
+    return res.status(500).render("error", { error: e, status: 500 });
+  }
+  let user;
+  try {
+    user = await getUserById(req.session.user.id);
+  }
+  catch (e)
+  {
+    return res.status(500).render("error", { error: e, status: 500 });
+  }
+  let zip = req.session.user.zip;
+  courtList.map((court) => {
+    court.distance = Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
+  });
+  courtList = courtList.filter((court) => {
+    return court.distance <= 25;
+  });
+  courtList.map((court) => {
+    if (court.distance <= 1) court.distance = "Within 1 Mile";
+    else {
+      court.distance = `${court.distance} Miles Away`;
+    }
+  });
+  courtList = courtList.filter((court) => {
+    return (court.type.localeCompare(req.body.courtType) == 0);
+  });
+  courtList.sort((a,b) => {
+    if (a.distance < b.distance)
+    {
+      return -1;
+    }
+    if (a.distance > b.distance)
+    {
+      return 1;
+    }
+    return 0;
+  });
 
   return res.render("recommendedCourts", {
+    title: "Recommend Courts",
+    courts: courtList,
     auth: true,
     id: req.session.user.id,
     owner: req.session.user.owner,
-    mindate: currentDateStr,
-    maxdate: maxDateStr
+    experienceLevel: user.experience_level,
+    courtType: req.body.courtType,
+    apiKey: process.env.MAPS_API_KEY,
   });
 });
 

@@ -6,40 +6,39 @@
 {{/if}}
 
 <main>
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key={{apiKey}}&callback=Function.prototype"></script>
     <form
     action="/courts/recommend/"
     method="POST"
     id="recommendCourtsForm"
-  >
-    <label for="selectedDate">Select a date to play:</label>
-    <input
-      type="date"
-      id="selectedDate"
-      name="selectedDate"
-      value={{mindate}}
-      min={{mindate}}
-      max={{maxdate}}
-    />
-    <br />
-    {{!-- <label for="startTime">Select start time:</label>
-    <input type="time" id="startTime" name="startTime" />
-    <br />
-    <label for="endTime">Select end time:</label>
-    <input type="time" id="endTime" name="endTime" />
-    <br /> --}}
-    <label for="experienceLevel">Select an experience level:</label>
-    <select name="experienceLevel" id="experienceLevel">
-	    <option value="beginner">Beginner</option>
-        <option value="intermediate">Intermediate</option>
-        <option value="advanced">Advanced</option>
-    </select>
-    <br />
-    <label for="courtType">Select a court type:</label>
-    <select name="courtType" id="courtType">
-	    <option value="basketball">Basketball</option>
-        <option value="tennis">Tennis</option>
-    </select>
-    <br />
-    <input type="submit" class="submit" />
-  </form>
+    >
+        <label for="courtType">Select a court type:</label>
+        <select name="courtType" id="courtType">
+            <option value="basketball">Basketball</option>
+            <option value="tennis">Tennis</option>
+            <option value="pickleball">Pickleball</option>
+            <option value="volleyball">Volleyball</option>
+        </select>
+        <br />
+        <input type="submit" class="submit" />
+    </form>
+    {{#if courts}}
+        <h2>{{courtType}} courts with mostly {{experienceLevel}} players</h2>
+        {{#each courts}}
+            <div class="court-card">
+                <h3>{{this.name}}</h3>
+                <p>{{this.type}}</p>
+                <p>
+                {{this.address}},
+                {{this.city}},
+                {{this.state}}
+                {{this.zip}}</p>
+                <p>{{this.distance}}</p>
+                <a href="/courts/{{this._id}}">Click for Details</a>
+            </div>
+        {{/each}}
+    {{else}}
+        <p>No Courts Recommended at this time.</p>
+    {{/if}}
 </main>

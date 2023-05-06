@@ -111,8 +111,22 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
   return num;
 };
 
-const validAddress = (address) => {
+const validAddress = async (courtName, addressLine, city, state, zip) => {
   //todo
+  courtName = validStr(courtName);
+  addressLine = validStr(addressLine);
+  city = validStr(city);
+  state = validStr(state);
+  zip = validStr(zip);
+
+  try {
+
+    return true;
+  } catch (e) {
+    //console.error(e);
+    console.log("ERRORHERE");
+    return false;
+  }
 };
 
 const validState = (state) => {

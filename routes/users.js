@@ -15,6 +15,7 @@ import { createReview } from "../data/reviews.js";
 import { getHistory } from "../data/history.js";
 import { getCourtById, checkIfOwner } from "../data/courts.js";
 import {
+  validAddress,
   validExpLevel,
   validId,
   validState,
@@ -354,6 +355,20 @@ router
         zip: thisUser.zip,
         level: thisUser.experience_level,
         bad: e,
+      });
+    }
+
+    let address = await validAddress("", newCity, newState, newZip);
+    if (address === false) {
+      return res.render("editProfile", {
+        auth: isAuth,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: "Invalid address",
       });
     }
 

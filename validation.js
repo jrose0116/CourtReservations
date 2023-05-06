@@ -1,5 +1,21 @@
 import { ObjectId } from "mongodb";
 import moment from "moment";
+import NodeGeocoder from "node-geocoder";
+
+const options = {
+  provider: 'openstreetmap'
+};
+
+const geocoder = NodeGeocoder(options);
+
+// const address = 'Hoboken, HI';
+
+
+// //const NodeGeocoder = require('geocoder');
+// const geocoder = NodeGeocoder({
+//   provider: 'openstreetmap' // Choose your preferred provider here
+// });
+
 
 const isAuth = (session) => {
   let isAuth;
@@ -111,20 +127,38 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
   return num;
 };
 
-// const validAddress = async (addressLine, city, state, zip) => {
-//   //todo
-//   addressLine = validStr(addressLine);
-//   city = validStr(city);
-//   state = validStr(state);
-//   zip = validStr(zip);
-
+const validAddress = async (addressLine, city, state, zip) => {
   
-// };
+  // addressLine = validStr(addressLine);
+  city = validStr(city);
+  state = validStr(state);
+  zip = validStr(zip);
 
-const validAddress = async (street, city, state, zipCode, credentialsKey) => {
-  
-}
+  if (typeof city != "string")
+  {
+    throw `Error: city is not a string`;
+  }
+  city = city.trim();
+  state = validState(state);
+  zip = validZip(zip);
 
+  let address =  addressLine + " " + city + " " + state + " " + zip;
+
+  try {
+    const res = await geocoder.geocode(address);
+    if (res.length === 0)
+    {
+      return false;
+    }
+    const { latitude, longitude } = res[0];
+    console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
+    return true;
+  }
+  catch (e) {
+    console.error(e);
+    return false;
+  }
+};
 
 const validState = (state) => {
   /*

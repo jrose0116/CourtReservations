@@ -210,8 +210,8 @@ router
     newCourt["ownerId"] = req.session.user.id;
     let name, type;
     try {
-      name = validStr(newCourt.name);
-      type = validStr(newCourt.type);
+      name = validStr(xss(newCourt.name));
+      type = validStr(xss(newCourt.type));
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -222,9 +222,9 @@ router
     }
     let capacity, length, width;
     try {
-      capacity = validNumber(Number(newCourt.capacity));
-      length = validNumber(Number(newCourt.length));
-      width = validNumber(Number(newCourt.width));
+      capacity = validNumber(Number(xss(newCourt.capacity)));
+      length = validNumber(Number(xss(newCourt.length)));
+      width = validNumber(Number(xss(newCourt.width)));
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -235,8 +235,9 @@ router
     }
     let courtOpening, courtClosing;
     try {
-      courtOpening = validTime(newCourt.courtOpening, false);
-      courtClosing = validTime(newCourt.courtClosing, true);
+      courtOpening = validTime(xss(newCourt.courtOpening), false);
+      courtClosing = validTime(xss(newCourt.courtClosing), true);
+      validTimeInRange(courtOpening, courtClosing, "00:00", "24:00");
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -247,8 +248,8 @@ router
     }
     let state, zip;
     try {
-      state = validState(newCourt.state);
-      zip = validZip(newCourt.zip);
+      state = validState(xss(newCourt.state));
+      zip = validZip(xss(newCourt.zip));
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -257,12 +258,22 @@ router
         bad: e,
       });
     }
+
+    let address = await validAddress(xss(newCourt.address), xss(newCourt.city), state, zip);
+    if (address === false) {
+      return res.status(400).render("createCourt", {
+        auth: true,
+        id: req.session.user.id,
+        owner: req.session.user.owner,
+        bad: "Invalid address",
+      });
+    }
     try {
       let court = await createCourt(
         name,
         type,
-        newCourt.address,
-        newCourt.city,
+        xss(newCourt.address),
+        xss(newCourt.city),
         state,
         zip,
         capacity,
@@ -270,7 +281,7 @@ router
         width,
         courtOpening,
         courtClosing,
-        newCourt.ownerId
+        xss(newCourt.ownerId)
       );
       if (court) {
         return res.redirect("/");

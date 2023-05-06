@@ -8,15 +8,6 @@ const options = {
 
 const geocoder = NodeGeocoder(options);
 
-// const address = 'Hoboken, HI';
-
-
-// //const NodeGeocoder = require('geocoder');
-// const geocoder = NodeGeocoder({
-//   provider: 'openstreetmap' // Choose your preferred provider here
-// });
-
-
 const isAuth = (session) => {
   let isAuth;
   if (session) {
@@ -127,18 +118,17 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
   return num;
 };
 
-const validAddress = async (addressLine, city, state, zip) => {
-  
-  // addressLine = validStr(addressLine);
-  city = validStr(city);
-  state = validStr(state);
-  zip = validStr(zip);
+const validAddressLine = (line) => {
+  line = validStr(line, "Adress line");
+  let newLine = line.split(" ");
+  let num = newLine[0];
+  num = validNumber(parseInt(num.trim()), "Street number", true, 0, 99999);
+  return line;
+}
 
-  if (typeof city != "string")
-  {
-    throw `Error: city is not a string`;
-  }
-  city = city.trim();
+const validAddress = async (addressLine, city, state, zip) => {
+  addressLine = validAddressLine(addressLine);
+  city = validStr(city, "City");
   state = validState(state);
   zip = validZip(zip);
 
@@ -526,6 +516,7 @@ export {
   validStr,
   validStrArr,
   validNumber,
+  validAddressLine,
   validAddress,
   validState,
   validZip,
@@ -539,3 +530,5 @@ export {
   validSport,
   validUsername
 };
+// console.log(await validAddress("1000  WashiNGton Street   ", "hOBOkeN", "nj  ", "07030"))
+// console.log(validAddressLine("kdjfn   washINGton   street"))

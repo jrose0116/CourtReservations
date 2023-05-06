@@ -127,27 +127,34 @@ const validAddressLine = (line) => {
 }
 
 const validAddress = async (addressLine, city, state, zip) => {
-  addressLine = validAddressLine(addressLine);
+  if (addressLine != "") {
+    addressLine = validAddressLine(addressLine);
+  }
+  else {
+    addressLine = "";
+  }
   city = validStr(city, "City");
   state = validState(state);
   zip = validZip(zip);
 
   let address =  addressLine + " " + city + " " + state + " " + zip;
+  // console.log(address)
 
   try {
     const res = await geocoder.geocode(address);
     if (res.length === 0)
     {
+      // console.log("inner");
       return false;
     }
     const { latitude, longitude } = res[0];
     // console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
-    return true;
   }
   catch (e) {
     console.error(e);
     return false;
   }
+  return true;
 };
 
 const validState = (state) => {
@@ -530,5 +537,5 @@ export {
   validSport,
   validUsername
 };
-// console.log(await validAddress("1000  WashiNGton Street   ", "hOBOkeN", "nj  ", "07030"))
+// console.log(await validAddress("", "staten island", "HI  ", "10309"))
 // console.log(validAddressLine("kdjfn   washINGton   street"))

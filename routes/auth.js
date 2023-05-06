@@ -79,15 +79,11 @@ router.route("/register")
     let zip = xss(req.body.zipInput);
     let email = xss(req.body.emailAddressInput);
     let experience_level = xss(req.body.levelInput);
-    // let owner;
-    // if (ownerString.charAt(0) === "Y") {
-    //   owner = true;
-    // }
-    // else {
-    //   owner = false;
-    // }
+
+    let address;
+    
     let errors = "";
-    let hasErrors = false;
+    // let hasErrors = false;
 
     if (
       !firstName ||
@@ -98,8 +94,8 @@ router.route("/register")
       !city ||
       !state ||
       !zip ||
-      !email
-      // !experience_level
+      !email ||
+      !experience_level
     ) 
     {
       errors += "All inputs must be provided";
@@ -110,9 +106,15 @@ router.route("/register")
       lastName = validStr(lastName, "Last name");
       username = validUsername(username, "Username");
       city = validStr(city, "City");
-      age = validNumber(age, "Age");
       state = validState(state);
       zip = validZip(zip);
+      address = await validAddress("", city, state, zip);
+      // console.log(address)
+      if (address === false) {
+        // console.log("false")
+        errors += ' - ' + "Invalid address";
+      }
+      age = validNumber(age, "Age", true, 13, 122);
       email = validEmail(email);
       experience_level = validExpLevel(experience_level);
       password = checkPassword(password);
@@ -120,6 +122,7 @@ router.route("/register")
     catch (e) {
       errors += ' - ' + e;
     }
+
 
     const usersCollection = await users();
     // check if username already exists
@@ -137,7 +140,7 @@ router.route("/register")
       errors += " - this email is already associated with an account";
     }
 
-    if (hasErrors) {
+    if (errors != "") {
       return res.render("register", {auth: false, bad: errors});
     }
 

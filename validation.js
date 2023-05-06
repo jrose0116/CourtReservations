@@ -141,7 +141,7 @@ const validAddress = async (addressLine, city, state, zip) => {
       return false;
     }
     const { latitude, longitude } = res[0];
-    console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
+    // console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
     return true;
   }
   catch (e) {

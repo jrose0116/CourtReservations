@@ -253,7 +253,7 @@ if (registerForm) {
     }
     if (!emptyAge) {
         try {
-            age.value = validNumber(parseInt(age.value), "Age", true, 13, Infinity);
+            age.value = validNumber(parseInt(age.value), "Age", true, 13, 122);
         }
         catch (e) {
             console.log(e)

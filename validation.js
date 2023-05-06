@@ -111,23 +111,20 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
   return num;
 };
 
-const validAddress = async (courtName, addressLine, city, state, zip) => {
-  //todo
-  courtName = validStr(courtName);
-  addressLine = validStr(addressLine);
-  city = validStr(city);
-  state = validStr(state);
-  zip = validStr(zip);
+// const validAddress = async (addressLine, city, state, zip) => {
+//   //todo
+//   addressLine = validStr(addressLine);
+//   city = validStr(city);
+//   state = validStr(state);
+//   zip = validStr(zip);
 
-  try {
+  
+// };
 
-    return true;
-  } catch (e) {
-    //console.error(e);
-    console.log("ERRORHERE");
-    return false;
-  }
-};
+const validAddress = async (street, city, state, zipCode, credentialsKey) => {
+  
+}
+
 
 const validState = (state) => {
   /*

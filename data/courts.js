@@ -40,6 +40,7 @@ const createCourt = async (
 
   //address = validAddress(address);
   //city = validCity(city);
+
   if (typeof city != "string")
   {
     throw `Error: city is not a string`;
@@ -53,8 +54,8 @@ const createCourt = async (
     throw `Error: address is not a string`;
   }
   address = address.trim();
-  try 
-  {
+
+  try {
     await validAddress(name, address, city, state, zip);
   }
   catch (e)

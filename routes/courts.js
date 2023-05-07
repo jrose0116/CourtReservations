@@ -475,6 +475,13 @@ router.route("/:courtId").get(async (req, res) => {
   let schedule = thisCourt.schedule;
   delete schedule["_id"];
 
+  let schedExists = false;
+  if (Object.keys(schedule).length > 0) {
+    schedExists = true;
+  }
+  // console.log(schedule)
+  // console.log(Object.keys(schedule).length )
+
   // let isBooked;
   let history = await getUpcomingHistory(req.session.user.id);
   let historyList = [];
@@ -498,6 +505,7 @@ router.route("/:courtId").get(async (req, res) => {
     apiKey: process.env.MAPS_API_KEY,
     ownCourt: thisCourt.ownerId == req.session.user.id,
     schedule: schedule,
+    scheduleExists: schedExists,
     totalCapacity: thisCourt.capacity,
   });
 });

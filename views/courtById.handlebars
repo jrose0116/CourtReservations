@@ -22,19 +22,26 @@
         <p>Capacity: {{court.capacity}} people</p>
         <p>Dimensions(LxW): {{court.length}} x {{court.width}} ft</p>
         <p>Operating Hours: {{court.courtOpening}}-{{court.courtClosing}}</p>
-        <p>Schedule: </p>
-        {{#each schedule}}
-        <div>
-          <p>{{@key}}</p>
-          <ul>
-          {{#each this}}
-           <li>{{startTime}} - {{endTime}} ({{capacity}} spots have been reserved!)</li>
-          {{/each}}
-          </ul>
+        <div class="schedule">
+          <p class="centered">Schedule: </p>
+          {{#if scheduleExists}}
+            {{#each schedule}}
+              <div>
+                <p>{{@key}}</p>
+                <ul>
+                {{#each this}}
+                <li>{{startTime}} - {{endTime}} ({{capacity}} spots have been reserved!)</li>
+                {{/each}}
+                </ul>
+              </div>
+            {{/each}}          
+          {{else}}
+            <p>No times are booked yet!</p>
+          {{/if}}
         </div>
-        {{/each}}
-
+        
         {{! should owner be allowed to reserve own court? }}
+        <br>
         <a href="/courts/{{court._id}}/reserve">Make Reservation</a>
         <br>
         {{!-- {{#if ownCourt}}

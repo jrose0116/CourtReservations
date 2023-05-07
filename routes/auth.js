@@ -70,6 +70,7 @@ router.route("/register")
   })
   .post(async (req, res) => {
     let firstName = xss(req.body.firstNameInput);
+    // let firstName = req.body.firstNameInput;
     let lastName = xss(req.body.lastNameInput);
     let username = xss(req.body.usernameInput);
     let password = xss(req.body.passwordInput);

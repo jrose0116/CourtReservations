@@ -12,7 +12,7 @@ import {
   updateUser,
 } from "../data/users.js";
 import { createReview } from "../data/reviews.js";
-import { getHistory } from "../data/history.js";
+import { getHistory, getPastHistory } from "../data/history.js";
 import { getCourtById, checkIfOwner } from "../data/courts.js";
 import {
   validAddress,
@@ -179,6 +179,12 @@ router.route("/id/:userId/history").get(async (req, res) => {
   }
   for (let i = 0; i < courtHistory.length; i++) {
     let court;
+    // if (courtHistory[i].date in future) {
+    //   courtHistory[i]['upcoming'] = true;
+    // }
+    // else {
+    //   courtHistory[i]['upcoming'] = false;
+    // }
     try {
       court = await getCourtById(courtHistory[i].court_id);
     } catch (e) {

@@ -2,6 +2,7 @@ import { courts } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import { validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validDate} from "../validation.js";
 import * as courtDataFunctions from './courts.js';
+import * as historyDataFunctions from './history.js';
 import { getUserById } from "./users.js";
 import moment from 'moment';
 
@@ -192,6 +193,11 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   {
     throw 'Each court has a max of 1 reservation per day per user';
   }
+  let userOverlapString = await userHasOverlappingTime(userId, date, startTime, endTime);
+  if (userOverlapString.length > 0)
+  {
+    throw userOverlapString;
+  }
 
   const courtCollection = await courts();
 
@@ -372,24 +378,54 @@ const userHasReservationOnDate = async (courtId, userId, date) => {
   return false;//should be false to insert in db
 };
 
-const userHasOverlappingTime = async (courtId, userId, date) => {
-  //TODO
+const userHasOverlappingTime = async (userId, date, startTime, endTime) => {
   //returns true if the time for scheduling overlaps a user's existing booking
   //params should be valid since called internally
-  courtId = validId(courtId);
-  userId = validId(userId);
-  date = validDate(date);
+  let userHistory = await historyDataFunctions.getHistory(userId);//TODO
+  console.log(userHistory);
+  let overlappingTimes = [];
+  let errorString = "";
 
-  // let schedDateArr = await getScheduleDate(courtId, date);
-  // for (let i=0;i<schedDateArr.length;i++)
+  for (let i=0;i<userHistory.length;i++)
+  {
+    let historyDate = userHistory[i].date;
+    let historyStartTime = userHistory[i].startTime;
+    let historyEndTime = userHistory[i].endTime;
+
+    let momentHStart = moment(historyStartTime, 'kk:mm', 'en', true);
+    let momentHEnd = moment(historyEndTime, 'kk:mm', 'en', true);
+
+    let momentInsertingStartTime = moment(startTime, 'kk:mm', 'en', true);
+    let momentInsertingEndTime = moment(endTime, 'kk:mm', 'en', true);
+    //let momentCurrentTime = momentInsertingStartTime;
+
+    if (historyDate.localeCompare(date) == 0)
+    {
+      //start is the same or after Hend = valid
+      //end is the same or before Hstart = valid
+      if (momentInsertingStartTime.isBefore(momentHEnd) && momentInsertingStartTime.isSameOrAfter(momentHStart))
+      {
+        let court = await courtDataFunctions.getCourtById(userHistory[i].court_id);
+        errorString = `Error: Conflicts with your reservation at ${court.name} from ${historyStartTime} to ${historyEndTime}`;
+        // overlappingTimes.push(historyStartTime);
+        // overlappingTimes.push(historyEndTime);
+        //throw "Error: invalid, overlapping times"
+      }
+      if (momentInsertingEndTime.isAfter(momentHStart) && momentInsertingEndTime.isSameOrBefore(momentHEnd))
+      {
+        let court = await courtDataFunctions.getCourtById(userHistory[i].court_id);
+        errorString = `Error: Conflicts with your reservation at ${court.name} from ${historyStartTime} to ${historyEndTime}`;
+        // overlappingTimes.push(historyStartTime);
+        // overlappingTimes.push(historyEndTime);
+        //throw "Error: invalid, overlapping times"
+      }
+    }
+  }
+  // if (errorString.length > 0)
   // {
-  //   if (schedDateArr[i].userId.localeCompare(userId) === 0)
-  //   {
-  //     return true;//true is bad, conflicting times
-  //   }
+  //   throw errorString;
   // }
-  // return false;//return false is good, no conflicting times
-  return true;
+  return errorString;
 };
 
-export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule, getScheduleDate, getBooking, checkBookingCapacity};
+export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule, getScheduleDate, getBooking, checkBookingCapacity, userHasOverlappingTime};

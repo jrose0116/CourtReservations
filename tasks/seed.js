@@ -793,7 +793,7 @@ try {
   let sched13 = await addToSchedule(
     court6._id.toString(),
     user4._id,
-    "06/30/2023",
+    "07/30/2023",
     "11:00",
     "12:45",
     2
@@ -801,7 +801,7 @@ try {
   let history13 = await appendToHistory(
     user4._id.toString(),
     court6._id.toString(),
-    "06/30/2023",
+    "07/30/2023",
     "11:00",
     "12:45"
   );
@@ -857,7 +857,7 @@ try {
   let sched17 = await addToSchedule(
     court8._id.toString(),
     user4._id,
-    "06/29/2023",
+    "08/29/2023",
     "10:00",
     "12:00",
     2
@@ -865,7 +865,7 @@ try {
   let history17 = await appendToHistory(
     user4._id.toString(),
     court8._id.toString(),
-    "06/29/2023",
+    "08/29/2023",
     "10:00",
     "12:00"
   );

@@ -190,7 +190,7 @@ select {
 }
 
 .profile-page {
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   text-align: center;
   align-items: center;
 }
@@ -216,6 +216,7 @@ select {
 }
 
 #p-experience {
+  text-transform: capitalize;
   font-size: large;
 }
 

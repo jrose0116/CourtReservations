@@ -68,7 +68,7 @@ router
         Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
     });
     courtList = courtList.filter((court) => {
-      return court.distance <= 50;
+      return court.distance <= 100;
     });
     courtList.map((court) => {
       if (court.distance <= 1) court.distance = "Within 1 Mile";
@@ -338,17 +338,10 @@ router
       court.distance =
         Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
     });
+    //console.log(zipCodeDistance(zip, "07030", "M"));
+    //console.log(courtList);
     courtList = courtList.filter((court) => {
-      return court.distance <= 50;
-    });
-    courtList.map((court) => {
-      if (court.distance <= 1) court.distance = "Within 1 Mile";
-      else {
-        court.distance = `${court.distance} Miles Away`;
-      }
-    });
-    courtList = courtList.filter((court) => {
-      return court.type.localeCompare(xss(req.body.courtType)) == 0;
+      return court.distance <= 100;
     });
     courtList.sort((a, b) => {
       if (a.distance < b.distance) {
@@ -359,6 +352,16 @@ router
       }
       return 0;
     });
+    courtList.map((court) => {
+      if (court.distance <= 1) court.distance = "Within 1 Mile";
+      else {
+        court.distance = `${court.distance} Miles Away`;
+      }
+    });
+    console.log("AFTER MAP2");
+    courtList = courtList.filter((court) => {
+      return court.type.localeCompare(xss(req.body.courtType)) == 0;
+    });
     //experience level checker algorithm
     let expLevelPercent = 0;
     let expLevelCounter = 0;
@@ -366,7 +369,7 @@ router
     let updatedCourtList = [];
     let listOfCourtsPairedWithPercent = [];
     let sixMonthMark = moment().add(6, "months");
-    console.log(sixMonthMark);
+    //console.log(sixMonthMark);
     //sixMonthMark = sixMonthMark.format('MM/DD/YYYY');
     try {
       for (

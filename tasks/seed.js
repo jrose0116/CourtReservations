@@ -39,7 +39,7 @@ import {
 let printUsers = false;
 let printCourts = false;
 let printHistory = false;
-let printReviews = true;
+let printReviews = false;
 let printSchedule = false;
 
 // TODO: Open Db Connection
@@ -120,14 +120,14 @@ catch (e) {
 let user4;
 try {
   user4 = await createUser(
-    "John",
-    "Smith",
+    "Julian",
+    "Perez",
     "jsmitty33",
     "Chicken27%",
     22,
     "Piscataway",
     "NJ",
-    "08855",
+    "08854",//08855
     "33smitty@outlook.com",
     "advanced"
     //true
@@ -421,6 +421,89 @@ try {
   if (printCourts) console.log(e);
 }
 
+let court10;
+try {
+  court10 = await createCourt(
+    "Camp Olympic Park",
+    "pickleball",
+    "3120 S Cedar Crest Blvd",
+    "Emmaus",
+    "PA",
+    "18049",
+    8,
+    100,
+    180,
+    "08:00",
+    "23:00",
+    user4._id.toString()
+  );
+  if (printCourts) console.log(court10);
+} catch (e) {
+  if (printCourts) console.log(e);
+}
+
+let court11;
+try {
+  court11 = await createCourt(
+    "Elysian Park",
+    "basketball",
+    "1001 Hudson St",
+    "Hoboken",
+    "NJ",
+    "07030",
+    10,
+    60,
+    90,
+    "09:00",
+    "18:00",
+    user4._id.toString()
+  );
+  if (printCourts) console.log(court11);
+} catch (e) {
+  if (printCourts) console.log(e);
+}
+
+let court12;
+try {
+  court12 = await createCourt(
+    "Volleyball Court at Washington Park",
+    "volleyball",
+    "524 Central Ave",
+    "Jersey City",
+    "NJ",
+    "07307",
+    16,
+    60,
+    90,
+    "07:00",
+    "18:00",
+    user4._id.toString()
+  );
+  if (printCourts) console.log(court12);
+} catch (e) {
+  if (printCourts) console.log(e);
+}
+
+let court13;
+try {
+  court13 = await createCourt(
+    "Terrace Avenue Public Tennis Court",
+    "tennis",
+    "524 Central Ave",
+    "Jersey City",
+    "NJ",
+    "07307",
+    12,
+    60,
+    90,
+    "07:00",
+    "18:00",
+    user4._id.toString()
+  );
+  if (printCourts) console.log(court13);
+} catch (e) {
+  if (printCourts) console.log(e);
+}
 // TODO: seed schedules ************************************************************************************************************
 try {
   let sched6 = await addToSchedule(
@@ -662,6 +745,128 @@ try {
     "10:00",
     "11:00"
   );
+  //new seeding
+  let sched21 = await addToSchedule(
+    court10._id.toString(),
+    user2._id,
+    "08/11/2023",
+    "10:00",
+    "11:00",
+    3
+  );
+  let history21 = await appendToHistory(
+    user2._id.toString(),
+    court10._id.toString(),
+    "08/11/2023",
+    "10:00",
+    "11:00"
+  );
+  let sched22 = await addToSchedule(
+    court10._id.toString(),
+    user4._id,
+    "08/14/2023",
+    "10:00",
+    "11:00",
+    3
+  );
+  let history22 = await appendToHistory(
+    user4._id.toString(),
+    court10._id.toString(),
+    "08/14/2023",
+    "10:00",
+    "11:00"
+  );
+  let sched23 = await addToSchedule(
+    court11._id.toString(),
+    user4._id,
+    "06/14/2023",
+    "13:00",
+    "14:00",
+    3
+  );
+  let history23 = await appendToHistory(
+    user4._id.toString(),
+    court11._id.toString(),
+    "06/14/2023",
+    "13:00",
+    "14:00"
+  );
+  let sched24 = await addToSchedule(
+    court11._id.toString(),
+    user2._id,
+    "06/22/2023",
+    "13:00",
+    "14:00",
+    3
+  );
+  let history24 = await appendToHistory(
+    user2._id.toString(),
+    court11._id.toString(),
+    "06/22/2023",
+    "13:00",
+    "14:00"
+  );
+  let sched25 = await addToSchedule(
+    court12._id.toString(),
+    user2._id,
+    "06/21/2023",
+    "15:00",
+    "15:30",
+    3
+  );
+  let history25 = await appendToHistory(
+    user2._id.toString(),
+    court12._id.toString(),
+    "06/21/2023",
+    "15:00",
+    "15:30"
+  );
+  let sched26 = await addToSchedule(
+    court12._id.toString(),
+    user4._id,
+    "06/30/2023",
+    "12:00",
+    "13:00",
+    3
+  );
+  let history26 = await appendToHistory(
+    user4._id.toString(),
+    court12._id.toString(),
+    "06/30/2023",
+    "12:00",
+    "13:00"
+  );
+  let sched27 = await addToSchedule(
+    court13._id.toString(),
+    user4._id,
+    "06/04/2023",
+    "11:00",
+    "13:00",
+    3
+  );
+  let history27 = await appendToHistory(
+    user4._id.toString(),
+    court13._id.toString(),
+    "06/04/2023",
+    "11:00",
+    "13:00"
+  );
+  let sched28 = await addToSchedule(
+    court13._id.toString(),
+    user2._id,
+    "06/07/2023",
+    "14:00",
+    "14:45",
+    3
+  );
+  let history28 = await appendToHistory(
+    user2._id.toString(),
+    court13._id.toString(),
+    "06/07/2023",
+    "14:00",
+    "14:45"
+  );
+
 }
 catch (e)
 {

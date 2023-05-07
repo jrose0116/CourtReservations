@@ -114,6 +114,10 @@ select {
   flex-direction: row;
 }
 
+li {
+  list-style: none;
+}
+
 .reg-parent {
   display: flex;
   flex-direction: row;

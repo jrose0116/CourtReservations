@@ -6,46 +6,45 @@
 {{/if}}
 
 <main>
-    {{!-- <script
+  {{!-- <script
     src="https://maps.googleapis.com/maps/api/js?key={{apiKey}}&callback=Function.prototype"></script> --}}
-    <form
-    action="/courts/recommend/"
-    method="POST"
-    id="recommendCourtsForm"
-    >
-        <label for="courtType">Select a court type:</label>
-        <select name="courtType" id="courtType">
-            <option value="basketball">Basketball</option>
-            <option value="tennis">Tennis</option>
-            <option value="pickleball">Pickleball</option>
-            <option value="volleyball">Volleyball</option>
-        </select>
-        <br />
-        <input type="submit" class="submit" />
-    </form>
-    {{#if submitted}}
-        <h2>{{courtType}} results</h2>
-        {{#if courts}}
-            {{#each courts}}
-                <div class="court-card">
-                    <p id="expLvlPercent">{{this.percent}}% of currently booked users are your level ({{this.expLvl}})</p>
-                    <h3>{{this.name}}</h3>
-                    <p>{{this.type}}</p>
-                    <p>
-                    {{this.address}},
-                    {{this.city}},
-                    {{this.state}}
-                    {{this.zip}}</p>
-                    <p>{{this.distance}}</p>
-                    <a href="/courts/{{this._id}}">Click for Details</a>
-                </div>
-            {{/each}}
-        {{else}}
-            <p>No Courts in your area matching your skillset.</p>
-        {{/if}}
+  <form action="/courts/recommend/" method="POST" id="recommendCourtsForm">
+    <label for="courtType">Select a court type:</label>
+    <select name="courtType" id="courtType">
+      <option value="basketball">Basketball</option>
+      <option value="tennis">Tennis</option>
+      <option value="pickleball">Pickleball</option>
+      <option value="volleyball">Volleyball</option>
+    </select>
+    <br />
+    <input type="submit" class="submit" />
+  </form>
+  {{#if submitted}}
+    <h2 class="caps">{{courtType}} results</h2>
+    {{#if courts}}
+      {{#each courts}}
+        <div class="court-card">
+          <p id="expLvlPercent">{{this.percent}}% of currently booked users are
+            your level ({{this.expLvl}})</p>
+          <h3>{{this.name}}</h3>
+          <p>{{this.type}}</p>
+          <p>
+            {{this.address}},
+            {{this.city}},
+            {{this.state}}
+            {{this.zip}}</p>
+          <p>{{this.distance}}</p>
+          <a href="/courts/{{this._id}}">Click for Details</a>
+        </div>
+      {{/each}}
     {{else}}
-        <p>Fill out form to generate results.</p>
+      <p>No Courts in your area matching your skillset.</p>
     {{/if}}
+  {{else}}
+    <p>Fill out form to generate results.</p>
+  {{/if}}
 </main>
-<a href="/user/id/{{{id}}}/">Courts not in your area? Need to update your experience level? <br>
-Click here to update your profile</a>
+<a href="/user/id/{{{id}}}/">Courts not in your area? Need to update your
+  experience level?
+  <br />
+  Click here to update your profile</a>

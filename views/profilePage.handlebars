@@ -23,13 +23,9 @@
       <div class="child1">
         {{! <ul> }}
         {{#each reviews}}
-          <div class="review">
+           <div class="review review-{{this._id}}">
             {{! <li> }}
-            <button
-              onclick="showReportForm()"
-              id="report-review"
-            >Report</button>
-            <p>Reviewer:
+           <button onclick="showReportForm('{{this._id}}')" id="report-review">Report</button>            <p>Reviewer:
               <a
                 href="/user/id/{{this.reviewer_id}}"
               >{{this.reviewerUsername}}</a></p>
@@ -37,7 +33,7 @@
             <p>{{this.comment}}</p>
             <p>Rating: {{this.rating}}</p>
             <p>Date Posted: {{this.date}}</p>
-            <div id="report-form" style="display:none;">
+        <div id="report-form-{{this._id}}" style="display:none;">
               <h3>Report Review</h3>
               <form id="report-form">
                 <label for="inappropriate">Inappropriate Content
@@ -75,8 +71,9 @@
     {{/if}}
   </div>
   <script>
-    function showReportForm() { var reportForm =
-    document.getElementById("report-form"); reportForm.style.display = "block";
-    }
+    function showReportForm(reviewId) {
+  var reportForm = document.getElementById("report-form-" + reviewId);
+  reportForm.style.display = "block";
+}
   </script>
 </main>

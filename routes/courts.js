@@ -37,6 +37,7 @@ import {
   validDate,
   validSport,
   validExpLevel,
+  militaryToStandard,
 } from "../validation.js";
 import {
   appendToHistory,
@@ -89,6 +90,12 @@ router
     }
 
     // console.log('upcomingList: ')
+    // console.log(upcomingList)
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i].startTime = militaryToStandard(upcomingList[i].startTime);
+      upcomingList[i].endTime = militaryToStandard(upcomingList[i].endTime);
+    }
+
     // console.log(upcomingList)
 
     return res.render("allCourts", {
@@ -179,6 +186,13 @@ router
     } catch (e) {
       return res.status(500).render("error", { error: e, status: 500 });
     }
+
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i].startTime = militaryToStandard(upcomingList[i].startTime);
+      upcomingList[i].endTime = militaryToStandard(upcomingList[i].endTime);
+    }
+
+    // console.log(upcomingList)
 
     return res.render("allCourts", {
       title: "Courts",

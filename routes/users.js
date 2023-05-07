@@ -103,8 +103,9 @@ router
       }
     } catch (e) {
       return res.status(400).render("createReview", {
-        bad: e,
-       // owner: req.session.user.owner,
+        error: e,
+        auth: true,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
       });
     }

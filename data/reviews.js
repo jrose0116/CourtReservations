@@ -18,19 +18,18 @@ const createReview = async (revieweeId, reviewerId, rating, comment) => {
     _id: new ObjectId(revieweeId),
   });
 
+  const reviewer = await usersCollection.findOne({
+    _id: new ObjectId(reviewerId),
+  });
   if (reviewee === null)
     throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): Reviewed user not found";
 
   let reviews = reviewee.reviews;
   for (let i of reviews) {
-    if (i.reviewee_id.toString() == revieweeId) {
+    if (i.reviewer_id.toString() == reviewerId) {
       throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): User already contains review from user (delete review to create a new one)";
     }
   }
-
-  const reviewer = await usersCollection.findOne({
-    _id: new ObjectId(reviewerId),
-  });
 
   if (reviewee === null)
     throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): Review poster not found";
@@ -154,6 +153,8 @@ const updateOverallRating = async (userId) => {
     res += i.rating;
   }
   res = reviews.length == 0 ? 0 : res / reviews.length;
+
+  res = Math.round(res * 100) / 100
 
   const updatedInfo = await usersCollection.findOneAndUpdate(
     { _id: new ObjectId(userId) },

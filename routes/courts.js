@@ -745,7 +745,7 @@ router.route("/:courtId/:historyId/cancel").get(async (req, res) => {
       error: "Your booking was not successfully cancelled, please try again.",
     });
   }
-  return res.redirect("/courts/available");
+  return res.redirect("back");
 });
 
 router

@@ -89,9 +89,20 @@ const checkBookingCapacity = async (courtId, date, startTime, endTime, capacity)
 
   return exceededTimes;
 }
-const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity) => {
+const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity, allowedToBeInPast) => {
   //note: max 3 hrs for booking
+  //allowedToBeInPast = false -> is only allowed for past history, not scheduling
+  //allowedToBeInPast = true -> allowed for past history
+  //allowedToBeInPast = undefined -> set to false, only future dates
 
+  if (!allowedToBeInPast)
+  {
+    allowedToBeInPast = false;
+  }
+  if (typeof allowedToBeInPast != "boolean")
+  {
+    throw "Error: allowedToBeInPast must be a boolean";
+  }
   courtId = validId(courtId);
   userId = validId(userId);
   date = validDate(date);
@@ -164,9 +175,12 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   let combinedDateAndStartTime = date + " " + startTime;
   let momentDateScheduled = moment(combinedDateAndStartTime, 'MM/DD/YYYY kk:mm', 'en', true);//already verified in validation
 
-  if (momentCurrentDateTime.diff(momentDateScheduled) >= 0)//past.diff(future) = positive #
+  if (allowedToBeInPast == false)
   {
-    throw `Booking with date and time ${combinedDateAndStartTime} is in the past`;
+    if (momentCurrentDateTime.diff(momentDateScheduled) >= 0)//past.diff(future) = positive #
+    {
+      throw `Booking with date and time ${combinedDateAndStartTime} is in the past`;
+    }
   }
   let sixMonthsAheadMark = momentCurrentDateTime.add(6, 'months');
   if (momentDateScheduled.diff(sixMonthsAheadMark) >= 0)

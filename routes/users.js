@@ -12,7 +12,7 @@ import {
   updateUser,
 } from "../data/users.js";
 import { createReview } from "../data/reviews.js";
-import { getHistory, getPastHistory } from "../data/history.js";
+import { getHistory, getPastHistory, getUpcomingHistory } from "../data/history.js";
 import { getCourtById, checkIfOwner } from "../data/courts.js";
 import {
   validAddress,
@@ -165,10 +165,12 @@ router.route("/id/:userId/history").get(async (req, res) => {
       id: req.session.user.id,
     });
   }
-  let courtHistory;
+  let pastHistory, upcomingHistory;
   try {
-    courtHistory = await getHistory(userId);
-  } catch (e) {
+    pastHistory = await getPastHistory(userId);
+    upcomingHistory = await getUpcomingHistory(userId);
+  } 
+  catch (e) {
     return res.status(404).render("error", {
       error: e,
       status: 404,
@@ -177,27 +179,38 @@ router.route("/id/:userId/history").get(async (req, res) => {
       id: req.session.user.id,
     });
   }
-  for (let i = 0; i < courtHistory.length; i++) {
+  for (let i = 0; i < pastHistory.length; i++) {
     let court;
-    // if (courtHistory[i].date in future) {
-    //   courtHistory[i]['upcoming'] = true;
-    // }
-    // else {
-    //   courtHistory[i]['upcoming'] = false;
-    // }
     try {
-      court = await getCourtById(courtHistory[i].court_id);
-    } catch (e) {
+      court = await getCourtById(pastHistory[i].court_id);
+    } 
+    catch (e) {
       res.status(404).render("error", { error: e, status: 404, auth: true });
     }
-    courtHistory[i].court_name = court.name;
+    pastHistory[i].court_name = court.name;
   }
-  // console.log(courtHistory)
+  for (let i = 0; i < upcomingHistory.length; i++) {
+    let court;
+    try {
+      court = await getCourtById(upcomingHistory[i].court_id);
+    } 
+    catch (e) {
+      res.status(404).render("error", { error: e, status: 404, auth: true });
+    }
+    upcomingHistory[i].court_name = court.name;
+  }
+  // console.log(pastHistory)
   // let link = `/user/id/${req.params.userId}/`;
+  let isHistory = true;
+  if (pastHistory.length === 0 && upcomingHistory.length === 0) {
+    isHistory = false;
+  }
   return res.render("history", {
     auth: true,
     title: "History",
-    courts: courtHistory,
+    past: pastHistory,
+    upcoming: upcomingHistory,
+    history: isHistory,
     id: req.params.userId,
     //owner: req.session.user.owner,
   });

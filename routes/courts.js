@@ -584,7 +584,7 @@ router
         }
       }
       newCap = parseInt(xss(req.body.capacity));
-      newCap = validNumber(newCap, "capacity", true, 0, thisCourt.capacity);
+      newCap = validNumber(newCap, "number of players", true, 0, thisCourt.capacity);
     } catch (e) {
       //const strError = e;
       //return res.status(404).json({ error: e });

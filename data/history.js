@@ -8,6 +8,7 @@ import {
   validTime,
   validDate,
 } from "../validation.js";
+import { getAllUsers } from "../data/users.js";
 
 const appendToHistory = async (userId, courtId, date, startTime, endTime) => {
   try {
@@ -218,11 +219,28 @@ const getHistoryItem = async (historyItemId) => {
   throw "Error (data/history.js :: getHistoryItem(historyItemId): History Item not found";
 };
 
+const removeCourtFromHistory = async (courtId) => {
+   try {
+    courtId = validId(courtId, "courtId");
+  } catch (e) {
+    throw "Error (data/history.js :: removeFromHistory(courtId)):" + e;
+  }
+  let allUsers = await getAllUsers();
+  for (let i = 0; i < allUsers.length; i++){
+    for (let j = 0; j < allUsers[i].history.length; j++){
+      if (allUsers[i].history[j].court_id === courtId) {
+        await deleteHistoryItem((allUsers[i].history[j]._id).toString());
+      }
+    }
+  }
+}
+
 export {
   appendToHistory,
   deleteHistoryItem,
   getHistory,
   getHistoryItem,
   getUpcomingHistory,
-  getPastHistory
+  getPastHistory, 
+  removeCourtFromHistory
 };

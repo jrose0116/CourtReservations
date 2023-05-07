@@ -1,6 +1,7 @@
 <h1>{{title}}</h1>
 
 <main>
+  <div class="centered">
     <ul>
       {{#if history}}
         {{#each past}}  
@@ -11,10 +12,11 @@
                     <p>Booked: {{this.startTime}} to {{this.endTime}}</p>
                 </li> 
             </div>
+            <br>
         {{/each}}
       {{!-- {{#if upcoming}} --}}
         {{#each upcoming}}  
-        <div>
+          <div>
             <li> 
                 <div class="row">
                   <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
@@ -23,6 +25,7 @@
                 <p>Date: {{this.date}}</p>
                 <p>Booked: {{this.startTime}} to {{this.endTime}}</p> 
             </li> 
+            <br>
         </div>
         {{/each}}
       {{else}}
@@ -31,5 +34,6 @@
         </div>
       {{/if}}
     </ul>
+    </div>
 </main>
 

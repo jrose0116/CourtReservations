@@ -506,6 +506,178 @@ try {
 }
 // TODO: seed schedules ************************************************************************************************************
 try {
+  //add to past
+  let pastsched1 = await addToSchedule(
+    court3._id.toString(),
+    user1._id,
+    "04/08/2023",
+    "12:00",
+    "12:45",
+    2,
+    true
+  );
+  let pasthistory1 = await appendToHistory(
+    user1._id.toString(),
+    court3._id.toString(),
+    "04/08/2023",
+    "12:00",
+    "12:45"
+  );
+
+  let pastsched1a = await addToSchedule(
+    court4._id.toString(),
+    user1._id,
+    "03/12/2023",
+    "12:00",
+    "13:00",
+    1,
+    true
+  );
+  let pasthistory1a = await appendToHistory(
+    user1._id.toString(),
+    court4._id.toString(),
+    "03/12/2023",
+    "12:00",
+    "13:00"
+  );
+
+  let pastsched2 = await addToSchedule(
+    court2._id.toString(),
+    user2._id,
+    "01/15/2022",
+    "13:00",
+    "14:00",
+    1,
+    true
+  );
+  let pasthistory2 = await appendToHistory(
+    user2._id.toString(),
+    court2._id.toString(),
+    "01/15/2022",
+    "13:00",
+    "14:00"
+  );
+
+  let pastsched2a = await addToSchedule(
+    court9._id.toString(),
+    user2._id,
+    "02/19/2023",
+    "14:00",
+    "15:00",
+    1,
+    true
+  );
+  let pasthistory2a = await appendToHistory(
+    user2._id.toString(),
+    court9._id.toString(),
+    "02/19/2023",
+    "14:00",
+    "15:00"
+  );
+
+  let pastsched3 = await addToSchedule(
+    court3._id.toString(),
+    user3._id,
+    "03/19/2023",
+    "14:00",
+    "15:00",
+    1,
+    true
+  );
+  let pasthistory3 = await appendToHistory(
+    user3._id.toString(),
+    court3._id.toString(),
+    "03/19/2023",
+    "14:00",
+    "15:00"
+  );
+
+  let pastsched3a = await addToSchedule(
+    court10._id.toString(),
+    user3._id,
+    "03/19/2023",
+    "13:00",
+    "14:00",
+    1,
+    true
+  );
+  let pasthistory3a = await appendToHistory(
+    user3._id.toString(),
+    court10._id.toString(),
+    "03/19/2023",
+    "13:00",
+    "14:00"
+  );
+
+  let pastsched4 = await addToSchedule(
+    court4._id.toString(),
+    user4._id,
+    "02/27/2023",
+    "13:00",
+    "14:30",
+    1,
+    true
+  );
+  let pasthistory4 = await appendToHistory(
+    user4._id.toString(),
+    court4._id.toString(),
+    "02/27/2023",
+    "13:00",
+    "14:30"
+  );
+
+  let pastsched4a = await addToSchedule(
+    court8._id.toString(),
+    user4._id,
+    "03/12/2023",
+    "12:30",
+    "14:30",
+    5,
+    true
+  );
+  let pasthistory4a = await appendToHistory(
+    user4._id.toString(),
+    court8._id.toString(),
+    "03/12/2023",
+    "12:30",
+    "14:30"
+  );
+
+  let pastsched5 = await addToSchedule(
+    court11._id.toString(),
+    user5._id,
+    "01/12/2023",
+    "12:30",
+    "14:30",
+    5,
+    true
+  );
+  let pasthistory5 = await appendToHistory(
+    user5._id.toString(),
+    court11._id.toString(),
+    "01/12/2023",
+    "12:30",
+    "14:30"
+  );
+
+  let pastsched5a = await addToSchedule(
+    court13._id.toString(),
+    user5._id,
+    "05/01/2023",
+    "11:30",
+    "12:30",
+    5,
+    true
+  );
+  let pasthistory5a = await appendToHistory(
+    user5._id.toString(),
+    court13._id.toString(),
+    "05/01/2023",
+    "11:30",
+    "12:30"
+  );
+
+
   let sched6 = await addToSchedule(
     court3._id.toString(),
     user5._id,

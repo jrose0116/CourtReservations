@@ -39,7 +39,7 @@ import {
 let printUsers = false;
 let printCourts = false;
 let printHistory = false;
-let printReviews = false;
+let printReviews = true;
 let printSchedule = false;
 
 // TODO: Open Db Connection
@@ -71,33 +71,8 @@ try {
     //true
   );
   if (printUsers) console.log(user1);
-} catch (e) {
-  if (printUsers) console.log(e);
-}
-
-try {
-  check1 = await checkUser("ibellarose1@gmail.com", "jwhef:LSJ1");
-  if (printUsers) console.log(check1);
-} catch (e) {
-  if (printUsers) console.log(e);
-}
-
-//try to add duplicate username to user1
-try {
-  user1 = await createUser(
-    "Bella  ",
-    "  Stone",
-    "IstOnE  ",
-    "jwhef:LSJ",
-    20,
-    "Staten Island",
-    "NY",
-    "07030",
-    "  iBelLarOSE1@gmaiL.coM  ",
-    " begINNer "
-  );
-  if (printUsers) console.log(user1);
-} catch (e) {
+} 
+catch (e) {
   if (printUsers) console.log(e);
 }
 
@@ -121,82 +96,6 @@ try {
   if (printUsers) console.log(e);
 }
 
-//invalid firstName
-try {
-  user2 = await createUser(
-    true,
-    "Giovanniello",
-    "rGIoV22  ",
-    "fiuwefvjksfhe",
-    21,
-    "Hoboken",
-    "NJ",
-    "07030",
-    "  rgIOv123@gMAiL.coM  ",
-    " INtermEdiate   "
-  );
-  if (printUsers) console.log(user2);
-} catch (e) {
-  if (printUsers) console.log(e);
-}
-
-//invalid last name
-try {
-  user2 = await createUser(
-    "  Ryan  ",
-    ["Giovanniello"],
-    "rGIoV22  ",
-    "fiuwefvjksfhe",
-    21,
-    "Hoboken",
-    "NJ",
-    "07030",
-    "  rgIOv123@gMAiL.coM  ",
-    " INtermEdiate   "
-  );
-  if (printUsers) console.log(user2);
-} catch (e) {
-  if (printUsers) console.log(e);
-}
-
-//invalid username
-try {
-  user2 = await createUser(
-    "  Ryan  ",
-    "Giovanniello",
-    100,
-    "fiuwefvjksfhe",
-    "21",
-    "Hoboken",
-    "NJ",
-    "07030",
-    "  rgIOv123@gMAiL.coM  ",
-    " INtermEdiate   "
-  );
-  if (printUsers) console.log(user2);
-} catch (e) {
-  if (printUsers) console.log(e);
-}
-
-//invalid age
-try {
-  user2 = await createUser(
-    "  Ryan  ",
-    "Giovanniello",
-    "rGIoV22  ",
-    "fiuwefvjksfhe",
-    "21",
-    "Hoboken",
-    "NJ",
-    "07030",
-    "  rgIOv123@gMAiL.coM  ",
-    " INtermEdiate   "
-  );
-  if (printUsers) console.log(user2);
-} catch (e) {
-  if (printUsers) console.log(e);
-}
-
 let user3;
 try {
   user3 = await createUser(
@@ -213,7 +112,8 @@ try {
     //true
   );
   if (printUsers) console.log(user3);
-} catch (e) {
+} 
+catch (e) {
   if (printUsers) console.log(e);
 }
 
@@ -233,7 +133,8 @@ try {
     //true
   );
   if (printUsers) console.log(user4);
-} catch (e) {
+} 
+catch (e) {
   if (printUsers) console.log(e);
 }
 
@@ -253,9 +154,11 @@ try {
     //true
   );
   if (printUsers) console.log(user5);
-} catch (e) {
+} 
+catch (e) {
   if (printUsers) console.log(e);
 }
+
 // TODO: Seed Courts ************************************************************************************************************
 try {
   court1 = await createCourt(
@@ -275,8 +178,7 @@ try {
   let courtId = court1._id.toString();
   let sched = await getSchedule(courtId);
   if (printCourts) console.log(court1);
-  //console.log(sched);
-  //console.log("Schedule TEST");
+
   let sched2 = await addToSchedule(
     court1._id.toString(),
     user1._id,
@@ -285,9 +187,14 @@ try {
     "11:00",
     4
   );
-  //console.log("seed sched 2 result:");
-  //console.log(sched2);
-  //console.log("end");
+  let history2 = await appendToHistory(
+    user1._id.toString(),
+    court1._id.toString(),
+    "06/05/2023",
+    "10:00",
+    "11:00"
+  );
+  
   let sched3 = await addToSchedule(
     court1._id.toString(),
     user1._id,
@@ -296,8 +203,14 @@ try {
     "17:00",
     2
   );
-  //console.log("seed sched 3 result:");
-  //console.log(sched3);
+  let history3 = await appendToHistory(
+    user1._id.toString(),
+    court1._id.toString(),
+    "06/18/2023",
+    "16:00",
+    "17:00"
+  );
+
   let sched4 = await addToSchedule(
     court1._id.toString(),
     user3._id,
@@ -306,57 +219,18 @@ try {
     "13:00",
     1
   );
-
-  //let schedFail = await addToSchedule(court1._id.toString(), user1._id, "04/16/2023", "10:30", "12:00", 1);
-  //let schedFail2 = await addToSchedule(court1._id.toString(), user1._id, "02/16/2024", "10:30", "12:00", 1);
-  //console.log("seed sched 4 result:");
-  //console.log(sched4);
-
-  //remove from schedule
-  //let bookingId = sched2["04/25/2023"][0]._id.toString();
-  // let bookingId = sched2[0]._id.toString();
-
-  // let remSched = await removeFromSchedule(courtId, user1._id, "06/05/2023");
-  // console.log("removed1:");
-  // console.log(remSched);
-
-  // bookingId = sched3[0]._id.toString();
-  // let remSched2 = await removeFromSchedule(courtId, user3._id, "06/18/2023");
-  // console.log("removed2:");
-  // console.log(remSched2);
-
-  //clear schedule
-  //let clearedSched = await clearSchedule(courtId, "06/18/2023");
-  //console.log(clearedSched);
-
-  //invalid date testing
-  //let sched5 = await addToSchedule(court1._id.toString(), user1._id, "02/30/2023", "13:00", "14:00", 1);
-  //console.log("seed sched 5 result:");
-  //console.log(sched5);
-
-  //getScheduleDate
-  //let getSchedDate = await getScheduleDate(courtId,"06/18/2023");
-  //console.log(getSchedDate);
-
-  //getBooking
-  // console.log("GET BOOKING: ");
-  // let booking = await getBooking(courtId, user1._id, "06/05/2023");
-  // console.log(booking);
-
-  //checkBookingCapacity this example is meant to error
-  // let checkBookCap = await addToSchedule(
-  //   court1._id.toString(),
-  //   user1._id,
-  //   "06/18/2023",
-  //   "15:15",
-  //   "16:30",
-  //   7
-  // );
-  // console.log(checkBookCap);
-} catch (e) {
-  // if (printCourts)
+  let history4 = await appendToHistory(
+    user3._id.toString(),
+    court1._id.toString(),
+    "06/18/2023",
+    "12:00",
+    "13:00"
+  );
+} 
+catch (e) {
   console.log(e);
 }
+
 try {
   let sched5 = await addToSchedule(
     court1._id.toString(),
@@ -366,10 +240,16 @@ try {
     "13:00",
     1
   );
+  let history5 = await appendToHistory(
+    user1._id.toString(),
+    court1._id.toString(),
+    "06/18/2023",
+    "12:00",
+    "13:00"
+  );
 }
 catch (e)
 {
-  //console.log("Successful Erroring - max 1 reservation per person per date");
   if (printCourts)
     console.log(e);
 }
@@ -388,174 +268,6 @@ try {
     "12:00",
     "18:00",
     user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid name
-try {
-  court2 = await createCourt(
-    ["court"],
-    "tennis",
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    5,
-    80,
-    200,
-    "12:00",
-    "18:00",
-    user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid type
-try {
-  court2 = await createCourt(
-    "Court 2",
-    true,
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    5,
-    80,
-    200,
-    "12:00",
-    "18:00",
-    user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid capacity
-try {
-  court2 = await createCourt(
-    "Court 2",
-    "tennis",
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    "5",
-    80,
-    200,
-    "12:00",
-    "18:00",
-    user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid length
-try {
-  court2 = await createCourt(
-    "Court 2",
-    "tennis",
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    5,
-    [80],
-    200,
-    "12:00",
-    "18:00",
-    user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid width
-try {
-  court2 = await createCourt(
-    "Court 2",
-    "tennis",
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    5,
-    80,
-    "200",
-    "12:00",
-    "18:00",
-    user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid open time
-try {
-  court2 = await createCourt(
-    "Court 2",
-    "tennis",
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    5,
-    80,
-    200,
-    "9:00",
-    "18:00",
-    user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid close time
-try {
-  court2 = await createCourt(
-    "Court 2",
-    "tennis",
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    5,
-    80,
-    200,
-    "12:00",
-    2,
-    user4._id.toString()
-  );
-  if (printCourts) console.log(court2);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid owner id
-try {
-  court2 = await createCourt(
-    "Court 2",
-    "tennis",
-    "500 Jackson Street",
-    "Hoboken",
-    "NJ",
-    "07030",
-    5,
-    80,
-    200,
-    "12:00",
-    "18:00",
-    [a,b,c]
   );
   if (printCourts) console.log(court2);
 } catch (e) {
@@ -710,7 +422,6 @@ try {
 }
 
 // TODO: seed schedules ************************************************************************************************************
-//some more scheds by court 1 but whatever
 try {
   let sched6 = await addToSchedule(
     court3._id.toString(),
@@ -720,6 +431,14 @@ try {
     "12:45",
     2
   );
+  let history6 = await appendToHistory(
+    user5._id.toString(),
+    court3._id.toString(),
+    "06/21/2023",
+    "12:00",
+    "12:45"
+  );
+
   let sched7 = await addToSchedule(
     court3._id.toString(),
     user1._id,
@@ -728,6 +447,14 @@ try {
     "14:00",
     3
   );
+  let history7 = await appendToHistory(
+    user1._id.toString(),
+    court3._id.toString(),
+    "06/28/2023",
+    "13:00",
+    "14:00"
+  );
+
   let sched8 = await addToSchedule(
     court4._id.toString(),
     user4._id,
@@ -736,6 +463,14 @@ try {
     "12:00",
     2
   );
+  let history8 = await appendToHistory(
+    user4._id.toString(),
+    court4._id.toString(),
+    "06/29/2023",
+    "10:00",
+    "12:00"
+  );
+
   let sched9 = await addToSchedule(
     court4._id.toString(),
     user5._id,
@@ -744,6 +479,14 @@ try {
     "12:30",
     1
   );
+  let history9 = await appendToHistory(
+    user5._id.toString(),
+    court4._id.toString(),
+    "06/22/2023",
+    "10:00",
+    "12:30"
+  );
+
   let sched10 = await addToSchedule(
     court5._id.toString(),
     user4._id,
@@ -752,6 +495,14 @@ try {
     "14:30",
     2
   );
+  let history10 = await appendToHistory(
+    user4._id.toString(),
+    court5._id.toString(),
+    "06/12/2023",
+    "14:00",
+    "14:30"
+  );
+
   let sched11 = await addToSchedule(
     court5._id.toString(),
     user5._id,
@@ -760,6 +511,14 @@ try {
     "12:30",
     3
   );
+  let history11 = await appendToHistory(
+    user5._id.toString(),
+    court5._id.toString(),
+    "06/14/2023",
+    "12:00",
+    "12:30"
+  );
+
   let sched12 = await addToSchedule(
     court6._id.toString(),
     user4._id,
@@ -768,6 +527,14 @@ try {
     "12:45",
     4
   );
+  let history12 = await appendToHistory(
+    user4._id.toString(),
+    court6._id.toString(),
+    "06/21/2023",
+    "12:00",
+    "12:45"
+  );
+
   let sched13 = await addToSchedule(
     court6._id.toString(),
     user4._id,
@@ -776,6 +543,14 @@ try {
     "12:45",
     2
   );
+  let history13 = await appendToHistory(
+    user4._id.toString(),
+    court6._id.toString(),
+    "06/30/2023",
+    "11:00",
+    "12:45"
+  );
+
   let sched14 = await addToSchedule(
     court7._id.toString(),
     user4._id,
@@ -784,6 +559,14 @@ try {
     "12:45",
     4
   );
+  let history14 = await appendToHistory(
+    user4._id.toString(),
+    court7._id.toString(),
+    "06/04/2023",
+    "12:00",
+    "12:45"
+  );
+
   let sched15 = await addToSchedule(
     court7._id.toString(),
     user5._id,
@@ -792,6 +575,14 @@ try {
     "12:45",
     2
   );
+  let history15 = await appendToHistory(
+    user5._id.toString(),
+    court7._id.toString(),
+    "06/05/2023",
+    "11:00",
+    "12:45"
+  );
+
   let sched16 = await addToSchedule(
     court8._id.toString(),
     user4._id,
@@ -800,6 +591,14 @@ try {
     "17:00",
     4
   );
+  let history16 = await appendToHistory(
+    user4._id.toString(),
+    court8._id.toString(),
+    "06/27/2023",
+    "14:00",
+    "17:00"
+  );
+
   let sched17 = await addToSchedule(
     court8._id.toString(),
     user4._id,
@@ -808,6 +607,14 @@ try {
     "12:00",
     2
   );
+  let history17 = await appendToHistory(
+    user4._id.toString(),
+    court8._id.toString(),
+    "06/29/2023",
+    "10:00",
+    "12:00"
+  );
+
   let sched18 = await addToSchedule(
     court9._id.toString(),
     user4._id,
@@ -816,6 +623,14 @@ try {
     "12:45",
     2
   );
+  let history18 = await appendToHistory(
+    user4._id.toString(),
+    court9._id.toString(),
+    "06/02/2023",
+    "10:00",
+    "12:45"
+  );
+
   let sched19 = await addToSchedule(
     court9._id.toString(),
     user5._id,
@@ -824,6 +639,14 @@ try {
     "12:00",
     1
   );
+  let history19 = await appendToHistory(
+    user5._id.toString(),
+    court9._id.toString(),
+    "06/15/2023",
+    "11:00",
+    "12:00"
+  );
+
   let sched20 = await addToSchedule(
     court9._id.toString(),
     user5._id,
@@ -832,6 +655,13 @@ try {
     "11:00",
     3
   );
+  let history20 = await appendToHistory(
+    user5._id.toString(),
+    court9._id.toString(),
+    "07/11/2023",
+    "10:00",
+    "11:00"
+  );
 }
 catch (e)
 {
@@ -839,60 +669,22 @@ catch (e)
   console.log(e);
 }
 
-// TODO: seed history ************************************************************************************************************
-if (printHistory) console.log("--- History ---");
-try {
-  //valid calls
-  let history1 = await appendToHistory(
-    user1._id.toString(),
-    court1._id.toString(),
-    "04/28/2023",
-    "18:00",
-    "19:00"
-  );
-  if (printHistory) console.log(history1);
-  let history2 = await appendToHistory(
-    user1._id.toString(),
-    court1._id.toString(),
-    "04/29/2023",
-    "18:00",
-    "19:00"
-  );
-  if (printHistory) console.log(history1);
-  let history3 = await appendToHistory(
-    user1._id.toString(),
-    court1._id.toString(),
-    "04/16/2023",
-    "18:00",
-    "19:00"
-  );
-  if (printHistory) console.log(history3);
-
-  let historyGetUser = await getHistory(user1._id.toString());
-  if (printHistory) console.log(historyGetUser);
-
-  let historyGetItem = await getHistoryItem(history2._id.toString());
-  if (printHistory) console.log(historyGetItem);
-
-  let historyUpcoming = await getUpcomingHistory(user1._id.toString()); // Should not have history 3.
-  if (printHistory) console.log(historyUpcoming);
-
-  let deletedHistory1 = await deleteHistoryItem(history2._id.toString());
-} catch (e) {
-  if (printHistory) console.log(e);
-}
-
-//invalid calls
-
 // TODO: seed reviews ************************************************************************************************************
 try {
   let review1 = await createReview(
     user1._id.toString(),
     user2._id.toString(),
     5,
-    "This person plays great!"
+    "This person plays really great!"
   );
   if (printReviews) console.log(review1);
+  // let review1a = await createReview(
+  //   user1._id.toString(),
+  //   user3._id.toString(),
+  //   4,
+  //   "They are really nice"
+  // );
+  // if (printReviews) console.log(review1a);
 
   let review2 = await createReview(
     user2._id.toString(),
@@ -901,67 +693,66 @@ try {
     "This person was not nice on the courts!"
   );
   if (printReviews) console.log(review2);
-  if (printReviews) console.log(await getUserById(user1._id.toString()));
+  // let review2a = await createReview(
+  //   user2._id.toString(),
+  //   user5._id.toString(),
+  //   1,
+  //   "This person was not nice on the courts!"
+  // );
+  // if (printReviews) console.log(review2a);
+  // if (printReviews) console.log(await getUserById(user1._id.toString()));
 
-  let delete2 = await deleteReview(review2._id.toString());
-  console.log(delete2);
+  let review3 = await createReview(
+    user3._id.toString(),
+    user5._id.toString(),
+    5,
+    "Great player! Looking forward to playing with them again!"
+  );
+  if (printReviews) console.log(review3);
+  // let review3a = await createReview(
+  //   user3._id.toString(),
+  //   user2._id.toString(),
+  //   4.5,
+  //   "Had a great time with this player today"
+  // );
+  // if (printReviews) console.log(review3a);
+
+  let review4 = await createReview(
+    user4._id.toString(),
+    user2._id.toString(),
+    3.2,
+    "Good player, but had a bad attitude"
+  );
+  // if (printReviews) console.log(review4);
+  // let review4a = await createReview(
+  //   user4._id.toString(),
+  //   user3._id.toString(),
+  //   2,
+  //   "They were very rude to me"
+  // );
+  // if (printReviews) console.log(review4a);
+
+  let review5 = await createReview(
+    user5._id.toString(),
+    user4._id.toString(),
+    4,
+    "Had lots of fun with them"
+  );
+  if (printReviews) console.log(review5);
+  // let review5a = await createReview(
+  //   user5._id.toString(),
+  //   user1._id.toString(),
+  //   5,
+  //   "Can't wait to play with them again!"
+  // );
+  // if (printReviews) console.log(review5a);
+
+  // let delete2 = await deleteReview(review2._id.toString());
+  // console.log(delete2);
 } catch (e) {
   if (printReviews) console.log(e);
 }
-// TODO: test user getters ************************************************************************************************************
 
-// TODO: test court getters ************************************************************************************************************
-//get all
-//working
-try {
-  let courts = await getAllCourts();
-  // console.log('***********************************');
-  if (printCourts) console.log(courts);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-// find court by id
-//working
-try {
-  let court = await getCourtById(court1._id.toString());
-  if (printCourts) console.log(court);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//invalid id
-try {
-  let court = await getCourtById("badinput");
-  if (printCourts) console.log(court);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//id not found
-try {
-  let court = await getCourtById("643617375f52b6748b06c321");
-  if (printCourts) console.log(court);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//find court by name
-//working
-try {
-  let court = await getCourtsByName(" cOUrT 2  ");
-  if (printCourts) console.log(court);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
-
-//not found
-try {
-  let court = await getCourtsByName(" no court Like THIs  ");
-  if (printCourts) console.log(court);
-} catch (e) {
-  if (printCourts) console.log(e);
-}
 
 // TODO: Close Connection
 await closeConnection();

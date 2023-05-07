@@ -3,6 +3,7 @@ import { createUser, checkUser } from "../data/users.js";
 const router = Router();
 import { users } from "../config/mongoCollections.js";
 import { isAuth, validId, validStr, validStrArr, validNumber, validAddress, validState, validZip, validTime, validTimeInRange, validEmail, validExpLevel, validDate, validImageUrl, checkPassword, validUsername} from "../validation.js";
+import xss from 'xss';
 
 router
   .route("/login")
@@ -13,11 +14,11 @@ router
     let emailAddress, password;
     try {
       emailAddress = validStr(
-        req.body.emailAddressInput,
+        xss(req.body.emailAddressInput),
         "Email"
       ).toLowerCase();
-      password = validStr(req.body.passwordInput, "Password");
-      if (password.length != req.body.passwordInput.length)
+      password = validStr(xss(req.body.passwordInput), "Password");
+      if (password.length != xss(req.body.passwordInput.length))
         throw "Password must not contain whitespace.";
       if (password.length < 8)
         throw "Password must be at least 8 characters long";
@@ -68,26 +69,21 @@ router.route("/register")
     return res.render("register", { auth: false, bad: "" });
   })
   .post(async (req, res) => {
-    let firstName = req.body.firstNameInput;
-    let lastName = req.body.lastNameInput;
-    let username = req.body.usernameInput;
-    let password = req.body.passwordInput;
-    let age = parseInt(req.body.ageInput);
-    let city = req.body.cityInput;
-    let state = req.body.stateInput;
-    let zip = req.body.zipInput;
-    let email = req.body.emailAddressInput;
-    let experience_level = req.body.levelInput;
-    // let ownerString = req.body.ownerInput;
-    // let owner;
-    // if (ownerString.charAt(0) === "Y") {
-    //   owner = true;
-    // }
-    // else {
-    //   owner = false;
-    // }
+    let firstName = xss(req.body.firstNameInput);
+    let lastName = xss(req.body.lastNameInput);
+    let username = xss(req.body.usernameInput);
+    let password = xss(req.body.passwordInput);
+    let age = parseInt(xss(req.body.ageInput));
+    let city = xss(req.body.cityInput);
+    let state = xss(req.body.stateInput);
+    let zip = xss(req.body.zipInput);
+    let email = xss(req.body.emailAddressInput);
+    let experience_level = xss(req.body.levelInput);
+
+    let address;
+    
     let errors = "";
-    let hasErrors = false;
+    // let hasErrors = false;
 
     if (
       !firstName ||
@@ -98,8 +94,8 @@ router.route("/register")
       !city ||
       !state ||
       !zip ||
-      !email
-      // !experience_level
+      !email ||
+      !experience_level
     ) 
     {
       errors += "All inputs must be provided";
@@ -110,9 +106,15 @@ router.route("/register")
       lastName = validStr(lastName, "Last name");
       username = validUsername(username, "Username");
       city = validStr(city, "City");
-      age = validNumber(age, "Age");
       state = validState(state);
       zip = validZip(zip);
+      address = await validAddress("", city, state, zip);
+      // console.log(address)
+      if (address === false) {
+        // console.log("false")
+        errors += ' - ' + "Invalid address";
+      }
+      age = validNumber(age, "Age", true, 13, 122);
       email = validEmail(email);
       experience_level = validExpLevel(experience_level);
       password = checkPassword(password);
@@ -120,6 +122,7 @@ router.route("/register")
     catch (e) {
       errors += ' - ' + e;
     }
+
 
     const usersCollection = await users();
     // check if username already exists
@@ -137,7 +140,7 @@ router.route("/register")
       errors += " - this email is already associated with an account";
     }
 
-    if (hasErrors) {
+    if (errors != "") {
       return res.render("register", {auth: false, bad: errors});
     }
 

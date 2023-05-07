@@ -1,5 +1,12 @@
 import { ObjectId } from "mongodb";
 import moment from "moment";
+import NodeGeocoder from "node-geocoder";
+
+const options = {
+  provider: 'openstreetmap'
+};
+
+const geocoder = NodeGeocoder(options);
 
 const isAuth = (session) => {
   let isAuth;
@@ -111,8 +118,43 @@ const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
   return num;
 };
 
-const validAddress = (address) => {
-  //todo
+const validAddressLine = (line) => {
+  line = validStr(line, "Adress line");
+  let newLine = line.split(" ");
+  let num = newLine[0];
+  num = validNumber(parseInt(num.trim()), "Street number", true, 0, 99999);
+  return line;
+}
+
+const validAddress = async (addressLine, city, state, zip) => {
+  if (addressLine != "") {
+    addressLine = validAddressLine(addressLine);
+  }
+  else {
+    addressLine = "";
+  }
+  city = validStr(city, "City");
+  state = validState(state);
+  zip = validZip(zip);
+
+  let address =  addressLine + " " + city + " " + state + " " + zip;
+  // console.log(address)
+
+  try {
+    const res = await geocoder.geocode(address);
+    if (res.length === 0)
+    {
+      // console.log("inner");
+      return false;
+    }
+    const { latitude, longitude } = res[0];
+    // console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
+  }
+  catch (e) {
+    console.error(e);
+    return false;
+  }
+  return true;
 };
 
 const validState = (state) => {
@@ -475,12 +517,30 @@ const validUsername = (username) => {
   return username;
 };
 
+const militaryToStandard = (militaryTime) => {
+  let arr = militaryTime.split(':');
+  let hours = parseInt(arr[0]);
+  let minutes = arr[1];
+  let amPm = (hours < 12) ? "AM" : "PM";
+  
+  if (hours === 0) {
+    hours = 12;
+  } 
+  else if (hours > 12) {
+    hours -= 12;
+  }
+  
+  let standard = hours + ':' + minutes + ' ' + amPm;
+  return standard;
+}
+
 export {
   isAuth,
   validId,
   validStr,
   validStrArr,
   validNumber,
+  validAddressLine,
   validAddress,
   validState,
   validZip,
@@ -492,5 +552,8 @@ export {
   validImageUrl,
   checkPassword,
   validSport,
-  validUsername
+  validUsername,
+  militaryToStandard
 };
+// console.log(await validAddress("", "staten island", "HI  ", "10309"))
+// console.log(validAddressLine("kdjfn   washINGton   street"))

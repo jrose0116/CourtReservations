@@ -62,7 +62,7 @@ const createReview = async (revieweeId, reviewerId, rating, comment) => {
     reviewee_id: revieweeId,
     rating: rating,
     comment: comment,
-    date: dateString,
+    date: dateString
   };
 
   reviews.push(reviewObject);

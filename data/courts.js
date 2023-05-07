@@ -1,6 +1,7 @@
 import { courts } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import {
+  isAuth,
   validId,
   validStr,
   validStrArr,
@@ -9,6 +10,13 @@ import {
   validState,
   validZip,
   validTime,
+  validTimeInRange,
+  validEmail,
+  validExpLevel,
+  validDate,
+  validImageUrl,
+  checkPassword,
+  validSport
 } from "../validation.js";
 import { getUserById } from "./users.js";
 
@@ -28,11 +36,32 @@ const createCourt = async (
 ) => {
   name = validStr(name, "Name");
   type = validStr(type, "Type of court");
+  type = validSport(type);
 
   //address = validAddress(address);
   //city = validCity(city);
-  //state = validState(state);
-  //zip = validZip(zip);
+
+  if (typeof city != "string")
+  {
+    throw `Error: city is not a string`;
+  }
+  city = city.trim();
+
+  state = validState(state);
+  zip = validZip(zip);
+  if (typeof address != "string")
+  {
+    throw `Error: address is not a string`;
+  }
+  address = address.trim();
+  // try 
+  // {
+  //   await validAddress(address, city, state, zip);
+  // }
+  // catch (e)
+  // {
+  //   throw e;
+  // }
 
   validNumber(capacity, "Capacity", true, 0, Infinity);
   validNumber(length, "Length", false, 0, Infinity);

@@ -428,3 +428,9 @@ a {
   font-weight: bold;
   color:darkgreen;
 }
+
+.schedule {
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+}

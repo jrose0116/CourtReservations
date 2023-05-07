@@ -15,6 +15,7 @@ import { createReview } from "../data/reviews.js";
 import { getHistory } from "../data/history.js";
 import { getCourtById, checkIfOwner } from "../data/courts.js";
 import {
+  validAddress,
   validExpLevel,
   validId,
   validState,
@@ -22,6 +23,7 @@ import {
   validZip,
 } from "../validation.js";
 import { getAllUsers } from "../data/users.js";
+import xss from 'xss';
 
 router
   .route("/id/:userId/createReview")
@@ -92,11 +94,11 @@ router
     reviewInfo["reviewer_id"] = reviewerId;
     reviewInfo["reviewee_id"] = revieweeId;
     try {
-      let review = await createReview(
-        reviewInfo.reviewee_id,
-        reviewInfo.reviewer_id,
-        Number(reviewInfo.rating),
-        reviewInfo.comment
+      let review = await createReview (
+        xss(reviewInfo.reviewee_id),
+        xss(reviewInfo.reviewer_id),
+        Number(xss(reviewInfo.rating)),
+        xss(reviewInfo.comment)
       );
       if (review) {
         return res.redirect(`/user/id/${revieweeId}`);
@@ -110,7 +112,7 @@ router
       });
     }
     /*try {
-      let review = await createReview(reviewInfo.reviewee_id, reviewInfo.reviewer_id, reviewInfo.rating, reviewInfo.comment);
+      let review = await createReview(xss(reviewInfo.reviewee_id), xss(reviewInfo.reviewer_id), xss(reviewInfo.rating), xss(reviewInfo.comment));
        res.json({ create: reviewInfo });
     } catch (e) {
         return res.status(400).render('createReview', {bad: e});
@@ -231,6 +233,28 @@ router.route("/explore").get(async (req, res) => {
   let userList = await getAllUsers();
   //take current user out of userList
   userList = userList.filter((obj) => obj._id.toString() !== req.session.user.id);
+  //sort alphabetically
+
+  userList.sort((a,b) => {
+    if (a.firstName < b.firstName) {
+      return -1;
+    }
+    if (a.firstName > b.firstName) {
+      return 1;
+    }
+    return 0;
+  });
+
+  userList.sort((a,b) => {
+    if (a.lastName < b.lastName) {
+      return -1;
+    }
+    if (a.lastName > b.lastName) {
+      return 1;
+    }
+    return 0;
+  });
+
   res.render("explore", {
     auth: true,
     users: userList,
@@ -297,7 +321,7 @@ router
     }
     let newCity, newState, newZip, newLevel, newOwner;
     try {
-      newCity = validStr(updatedUser.cityInput);
+      newCity = validStr(xss(updatedUser.cityInput));
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
@@ -312,7 +336,7 @@ router
       });
     }
     try {
-      newState = validState(updatedUser.stateInput);
+      newState = validState(xss(updatedUser.stateInput));
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
@@ -327,7 +351,7 @@ router
       });
     }
     try {
-      newZip = validZip(updatedUser.zipInput);
+      newZip = validZip(xss(updatedUser.zipInput));
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
@@ -342,7 +366,7 @@ router
       });
     }
     try {
-      newLevel = validExpLevel(updatedUser.levelInput);
+      newLevel = validExpLevel(xss(updatedUser.levelInput));
     } catch (e) {
       return res.render("editProfile", {
         auth: isAuth,
@@ -357,6 +381,20 @@ router
       });
     }
 
+    let address = await validAddress("", newCity, newState, newZip);
+    if (address === false) {
+      return res.render("editProfile", {
+        auth: isAuth,
+        id: req.session.user.id,
+        email: thisUser.email,
+        state: thisUser.state,
+        city: thisUser.city,
+        zip: thisUser.zip,
+        level: thisUser.experience_level,
+        bad: "Invalid address",
+      });
+    }
+
     try {
       let finalUser = await updateUser(
         req.params.userId,
@@ -367,10 +405,10 @@ router
         newCity,
         newState,
         newZip,
-        updatedUser.emailAddressInput,
+        xss(updatedUser.emailAddressInput),
         newLevel,
         //thisUser.owner,
-        updatedUser.userImage
+        xss(updatedUser.userImage)
       );
       if (finalUser) {
         res.redirect(`/user/id/${req.params.userId}`);

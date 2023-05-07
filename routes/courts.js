@@ -2,6 +2,7 @@ import { Router } from "express";
 import { zipCodeDistance } from "zipcode-city-distance";
 import dotenv from "dotenv";
 import moment from "moment";
+import xss from 'xss';
 dotenv.config();
 
 const router = Router();
@@ -36,6 +37,7 @@ import {
   validDate,
   validSport,
   validExpLevel,
+  militaryToStandard,
 } from "../validation.js";
 import {
   appendToHistory,
@@ -89,6 +91,12 @@ router
 
     // console.log('upcomingList: ')
     // console.log(upcomingList)
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i].startTime = militaryToStandard(upcomingList[i].startTime);
+      upcomingList[i].endTime = militaryToStandard(upcomingList[i].endTime);
+    }
+
+    // console.log(upcomingList)
 
     return res.render("allCourts", {
       title: "Courts",
@@ -111,8 +119,8 @@ router
     let distance = 50;
     if (req.body["zip-checkbox"] == "on") {
       try {
-        zip = validZip(req.body.zip);
-        distance = validNumber(parseInt(req.body.distance));
+        zip = validZip(xss(req.body.zip));
+        distance = validNumber(parseInt(xss(req.body.distance)));
       } catch (e) {
         return res.status(400).render("error", { status: 400, error: e });
       }
@@ -135,7 +143,7 @@ router
     if (req.body["level-checkbox"] == "on") {
       let experience_level;
       try {
-        experience_level = validExpLevel(req.body.levelInput);
+        experience_level = validExpLevel(xss(req.body.levelInput));
 
         // If court experience level is implemented
 
@@ -159,7 +167,7 @@ router
     if (req.body["sport-checkbox"] == "on") {
       let sport;
       try {
-        sport = validSport(req.body.sport);
+        sport = validSport(xss(req.body.sport));
 
         courtList = courtList.filter((court) => {
           return sport.trim().toLowerCase() == court.type.trim().toLowerCase();
@@ -178,6 +186,13 @@ router
     } catch (e) {
       return res.status(500).render("error", { error: e, status: 500 });
     }
+
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i].startTime = militaryToStandard(upcomingList[i].startTime);
+      upcomingList[i].endTime = militaryToStandard(upcomingList[i].endTime);
+    }
+
+    // console.log(upcomingList)
 
     return res.render("allCourts", {
       title: "Courts",
@@ -209,8 +224,8 @@ router
     newCourt["ownerId"] = req.session.user.id;
     let name, type;
     try {
-      name = validStr(newCourt.name);
-      type = validStr(newCourt.type);
+      name = validStr(xss(newCourt.name));
+      type = validStr(xss(newCourt.type));
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -221,9 +236,9 @@ router
     }
     let capacity, length, width;
     try {
-      capacity = validNumber(Number(newCourt.capacity));
-      length = validNumber(Number(newCourt.length));
-      width = validNumber(Number(newCourt.width));
+      capacity = validNumber(Number(xss(newCourt.capacity)));
+      length = validNumber(Number(xss(newCourt.length)));
+      width = validNumber(Number(xss(newCourt.width)));
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -234,8 +249,9 @@ router
     }
     let courtOpening, courtClosing;
     try {
-      courtOpening = validTime(newCourt.courtOpening, false);
-      courtClosing = validTime(newCourt.courtClosing, true);
+      courtOpening = validTime(xss(newCourt.courtOpening), false);
+      courtClosing = validTime(xss(newCourt.courtClosing), true);
+      validTimeInRange(courtOpening, courtClosing, "00:00", "24:00");
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -246,8 +262,8 @@ router
     }
     let state, zip;
     try {
-      state = validState(newCourt.state);
-      zip = validZip(newCourt.zip);
+      state = validState(xss(newCourt.state));
+      zip = validZip(xss(newCourt.zip));
     } catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -256,12 +272,22 @@ router
         bad: e,
       });
     }
+
+    let address = await validAddress(xss(newCourt.address), xss(newCourt.city), state, zip);
+    if (address === false) {
+      return res.status(400).render("createCourt", {
+        auth: true,
+        id: req.session.user.id,
+        owner: req.session.user.owner,
+        bad: "Invalid address",
+      });
+    }
     try {
       let court = await createCourt(
         name,
         type,
-        newCourt.address,
-        newCourt.city,
+        xss(newCourt.address),
+        xss(newCourt.city),
         state,
         zip,
         capacity,
@@ -269,7 +295,7 @@ router
         width,
         courtOpening,
         courtClosing,
-        newCourt.ownerId
+        xss(newCourt.ownerId)
       );
       if (court) {
         return res.redirect("/");
@@ -299,7 +325,7 @@ router
     // return res.json({ route: "Recommended courts page" });
     console.log("post recommend");
     try {
-      validSport(req.body.courtType);
+      validSport(xss(req.body.courtType));
     } catch (e) {
       return res.status(404).render("error", { error: e, status: 404 });
     }
@@ -336,7 +362,7 @@ router
       }
     });
     courtList = courtList.filter((court) => {
-      return court.type.localeCompare(req.body.courtType) == 0;
+      return court.type.localeCompare(xss(req.body.courtType)) == 0;
     });
     courtList.sort((a, b) => {
       if (a.distance < b.distance) {
@@ -427,7 +453,7 @@ router
       id: req.session.user.id,
       owner: req.session.user.owner,
       experienceLevel: user.experience_level,
-      courtType: req.body.courtType,
+      courtType: xss(req.body.courtType),
       apiKey: process.env.MAPS_API_KEY,
       submitted: true,
     });
@@ -448,6 +474,13 @@ router.route("/:courtId").get(async (req, res) => {
   }
   let schedule = thisCourt.schedule;
   delete schedule["_id"];
+
+  let schedExists = false;
+  if (Object.keys(schedule).length > 0) {
+    schedExists = true;
+  }
+  // console.log(schedule)
+  // console.log(Object.keys(schedule).length )
 
   // let isBooked;
   let history = await getUpcomingHistory(req.session.user.id);
@@ -472,6 +505,7 @@ router.route("/:courtId").get(async (req, res) => {
     apiKey: process.env.MAPS_API_KEY,
     ownCourt: thisCourt.ownerId == req.session.user.id,
     schedule: schedule,
+    scheduleExists: schedExists,
     totalCapacity: thisCourt.capacity,
   });
 });
@@ -549,30 +583,30 @@ router
       );
       //console.log(req.session.user.id);
 
-      let dateArr = req.body.selectedDate.split("-");
+      let dateArr = xss(req.body.selectedDate).split("-");
       newDateStr = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
       newDateStr = validDate(newDateStr);
 
-      req.body.startTime = validTime(req.body.startTime, false);
-      req.body.endTime = validTime(req.body.endTime, true);
+      req.body.startTime = validTime(xss(req.body.startTime), false);
+      req.body.endTime = validTime(xss(req.body.endTime), true);
 
       validTimeInRange(
-        req.body.startTime,
-        req.body.endTime,
+        xss(req.body.startTime),
+        xss(req.body.endTime),
         thisCourt.courtOpening,
         thisCourt.courtClosing
       );
 
-      for (let i = 0; i < req.body.capacity.length; i++) {
+      for (let i = 0; i < xss(req.body.capacity.length); i++) {
         if (
-          req.body.capacity.charCodeAt(i) < 48 ||
-          req.body.capacity.charCodeAt(i) > 57
+          xss(req.body.capacity.charCodeAt(i)) < 48 ||
+          xss(req.body.capacity.charCodeAt(i)) > 57
         ) {
           throw `Error: capacity must contain all digits`;
         }
       }
-      newCap = parseInt(req.body.capacity);
-      newCap = validNumber(newCap, "capacity", true, 0, thisCourt.capacity);
+      newCap = parseInt(xss(req.body.capacity));
+      newCap = validNumber(newCap, "number of players", true, 0, thisCourt.capacity);
     } catch (e) {
       //const strError = e;
       //return res.status(404).json({ error: e });
@@ -609,8 +643,8 @@ router
         req.params.courtId, //courtId,
         req.session.user.id,
         newDateStr,
-        req.body.startTime,
-        req.body.endTime,
+        xss(req.body.startTime),
+        xss(req.body.endTime),
         newCap
       );
     } catch (e) {
@@ -636,8 +670,8 @@ router
         req.session.user.id,
         req.params.courtId, //courtId,
         newDateStr,
-        req.body.startTime,
-        req.body.endTime
+        xss(req.body.startTime),
+        xss(req.body.endTime)
       );
     } catch (e) {
       console.log("Error on history data call");
@@ -666,8 +700,8 @@ router
       schedule: thisCourt.schedule,
       owner: req.session.user.owner,
       reserveDate: newDateStr,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
+      startTime: xss(req.body.startTime),
+      endTime: xss(req.body.endTime),
       bookedForNumber: newCap,
     });
   });

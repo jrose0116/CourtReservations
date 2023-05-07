@@ -45,6 +45,7 @@ import {
   getHistory,
   getHistoryItem,
   getUpcomingHistory,
+  removeCourtFromHistory
 } from "../data/history.js";
 import {
   createUser,

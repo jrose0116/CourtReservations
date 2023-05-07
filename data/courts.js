@@ -19,6 +19,7 @@ import {
   validSport
 } from "../validation.js";
 import { getUserById } from "./users.js";
+import { removeCourtFromHistory } from "./history.js";
 
 const createCourt = async (
   name,
@@ -244,6 +245,7 @@ const deleteCourt = async (id) => {
   if (deletionInfo.lastErrorObject.n === 0) {
     throw `Could not delete court with id of ${id}`;
   }
+  await removeCourtFromHistory(id);
   let obj = { bandId: deletionInfo.value._id, deleted: "true" };
   return obj;
 };

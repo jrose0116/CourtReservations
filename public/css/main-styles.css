@@ -367,6 +367,7 @@ a {
   display: inline;
 }
 
+.btn,
 #filter-btn,
 #filter-modal button {
   background-color: #333;

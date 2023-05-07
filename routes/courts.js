@@ -37,6 +37,7 @@ import {
   validDate,
   validSport,
   validExpLevel,
+  militaryToStandard,
 } from "../validation.js";
 import {
   appendToHistory,
@@ -89,6 +90,12 @@ router
     }
 
     // console.log('upcomingList: ')
+    // console.log(upcomingList)
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i].startTime = militaryToStandard(upcomingList[i].startTime);
+      upcomingList[i].endTime = militaryToStandard(upcomingList[i].endTime);
+    }
+
     // console.log(upcomingList)
 
     return res.render("allCourts", {
@@ -179,6 +186,13 @@ router
     } catch (e) {
       return res.status(500).render("error", { error: e, status: 500 });
     }
+
+    for (let i = 0; i < upcomingList.length; i++) {
+      upcomingList[i].startTime = militaryToStandard(upcomingList[i].startTime);
+      upcomingList[i].endTime = militaryToStandard(upcomingList[i].endTime);
+    }
+
+    // console.log(upcomingList)
 
     return res.render("allCourts", {
       title: "Courts",
@@ -464,6 +478,13 @@ router.route("/:courtId").get(async (req, res) => {
   let schedule = thisCourt.schedule;
   delete schedule["_id"];
 
+  let schedExists = false;
+  if (Object.keys(schedule).length > 0) {
+    schedExists = true;
+  }
+  // console.log(schedule)
+  // console.log(Object.keys(schedule).length )
+
   // let isBooked;
   let history = await getUpcomingHistory(req.session.user.id);
   let historyList = [];
@@ -487,6 +508,7 @@ router.route("/:courtId").get(async (req, res) => {
     apiKey: process.env.MAPS_API_KEY,
     ownCourt: thisCourt.ownerId == req.session.user.id,
     schedule: schedule,
+    scheduleExists: schedExists,
     totalCapacity: thisCourt.capacity,
   });
 });

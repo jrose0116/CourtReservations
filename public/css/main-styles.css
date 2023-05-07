@@ -278,12 +278,12 @@ select {
 }
 
 .error {
-  color: red;
+  color: rgb(187, 18, 18);
   font-weight: bold;
 }
 
 #error-div {
-  color: red;
+  color: rgb(187, 18, 18);
 }
 
 #editCourt,
@@ -293,7 +293,7 @@ select {
 }
 
 .date {
-  color: rgb(30, 183, 101);
+  color: rgb(3, 125, 60);
   font-weight: bold;
 }
 
@@ -315,7 +315,7 @@ a {
 .bigger {
   font-size: larger;
   font-weight: bold;
-  color: darkcyan;
+  color: rgb(2, 99, 99);
 }
 
 .users {
@@ -340,7 +340,7 @@ a {
 
 .own-court {
   font-weight: bolder;
-  color: rgb(243, 164, 46);
+  color: rgb(23, 23, 217);
 }
 
 #errors {
@@ -428,4 +428,10 @@ a {
 #expLvlPercent {
   font-weight: bold;
   color:darkgreen;
+}
+
+.schedule {
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
 }

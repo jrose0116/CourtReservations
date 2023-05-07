@@ -105,8 +105,9 @@ router
       }
     } catch (e) {
       return res.status(400).render("createReview", {
-        bad: e,
-       // owner: req.session.user.owner,
+        error: e,
+        auth: true,
+        //owner: req.session.user.owner,
         id: req.session.user.id,
       });
     }
@@ -232,6 +233,28 @@ router.route("/explore").get(async (req, res) => {
   let userList = await getAllUsers();
   //take current user out of userList
   userList = userList.filter((obj) => obj._id.toString() !== req.session.user.id);
+  //sort alphabetically
+
+  userList.sort((a,b) => {
+    if (a.firstName < b.firstName) {
+      return -1;
+    }
+    if (a.firstName > b.firstName) {
+      return 1;
+    }
+    return 0;
+  });
+
+  userList.sort((a,b) => {
+    if (a.lastName < b.lastName) {
+      return -1;
+    }
+    if (a.lastName > b.lastName) {
+      return 1;
+    }
+    return 0;
+  });
+
   res.render("explore", {
     auth: true,
     users: userList,

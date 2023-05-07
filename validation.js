@@ -517,6 +517,23 @@ const validUsername = (username) => {
   return username;
 };
 
+const militaryToStandard = (militaryTime) => {
+  let arr = militaryTime.split(':');
+  let hours = parseInt(arr[0]);
+  let minutes = arr[1];
+  let amPm = (hours < 12) ? "AM" : "PM";
+  
+  if (hours === 0) {
+    hours = 12;
+  } 
+  else if (hours > 12) {
+    hours -= 12;
+  }
+  
+  let standard = hours + ':' + minutes + ' ' + amPm;
+  return standard;
+}
+
 export {
   isAuth,
   validId,
@@ -535,7 +552,8 @@ export {
   validImageUrl,
   checkPassword,
   validSport,
-  validUsername
+  validUsername,
+  militaryToStandard
 };
 // console.log(await validAddress("", "staten island", "HI  ", "10309"))
 // console.log(validAddressLine("kdjfn   washINGton   street"))

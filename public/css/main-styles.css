@@ -13,7 +13,7 @@
 
 body {
   margin: 0 20%;
-  margin-top: 80px;
+  margin-top: 60px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -161,6 +161,11 @@ select {
   width: 50%;
 }
 
+.w-100 {
+  box-sizing: border-box;
+  width: 100%;
+}
+
 .child2 {
   width: 50%;
   flex: 2;
@@ -221,7 +226,7 @@ select {
 }
 
 #p-reviewhead {
-  margin-top: 30px;
+  margin: 20px 0;
   font-size: x-large;
 }
 
@@ -289,7 +294,16 @@ select {
 #editCourt,
 #editProfile,
 #create-court {
-  margin: 20px;
+  background-color: #333;
+  height: 45px;
+  max-width: 300px;
+  text-align: center;
+  color: white;
+  display: block;
+  margin: 0 0;
+  width: 60%;
+  margin: 0 auto;
+  border-radius: 10px;
 }
 
 .date {
@@ -305,11 +319,13 @@ a {
   color: red;
   float: right;
   margin-right: 5px;
+  margin-top: 5px;
 }
 
 .review {
   border-radius: 5px;
   border: #333 solid 1px;
+  margin: 10px 0;
 }
 
 .bigger {
@@ -427,11 +443,15 @@ a {
 }
 #expLvlPercent {
   font-weight: bold;
-  color:darkgreen;
+  color: darkgreen;
 }
 
 .schedule {
   padding: 10px;
   border: 1px solid #000000;
   border-radius: 4px;
+}
+
+.caps {
+  text-transform: capitalize;
 }

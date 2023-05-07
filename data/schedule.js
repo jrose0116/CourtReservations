@@ -358,4 +358,24 @@ const userHasReservationOnDate = async (courtId, userId, date) => {
   return false;//should be false to insert in db
 };
 
+const userHasOverlappingTime = async (courtId, userId, date) => {
+  //TODO
+  //returns true if the time for scheduling overlaps a user's existing booking
+  //params should be valid since called internally
+  courtId = validId(courtId);
+  userId = validId(userId);
+  date = validDate(date);
+
+  // let schedDateArr = await getScheduleDate(courtId, date);
+  // for (let i=0;i<schedDateArr.length;i++)
+  // {
+  //   if (schedDateArr[i].userId.localeCompare(userId) === 0)
+  //   {
+  //     return true;//true is bad, conflicting times
+  //   }
+  // }
+  // return false;//return false is good, no conflicting times
+  return true;
+};
+
 export {getSchedule, addToSchedule, removeFromSchedule, clearSchedule, getScheduleDate, getBooking, checkBookingCapacity};

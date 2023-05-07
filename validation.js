@@ -4,6 +4,8 @@ import NodeGeocoder from "node-geocoder";
 
 const options = {
   provider: 'openstreetmap'
+  //provider: 'google',
+  //apiKey: 'AIzaSyA4UJGUMNxXEATNsR9D7tBQspRyLwTdHBY'
 };
 
 const geocoder = NodeGeocoder(options);
@@ -126,7 +128,8 @@ const validAddressLine = (line) => {
   return line;
 }
 
-const validAddress = async (addressLine, city, state, zip) => {
+const validAddress = async (addressLine, city, state, zip/*, key*/) => {
+
   if (addressLine != "") {
     addressLine = validAddressLine(addressLine);
   }
@@ -142,15 +145,17 @@ const validAddress = async (addressLine, city, state, zip) => {
 
   try {
     const res = await geocoder.geocode(address);
+    //console.log(res)
     if (res.length === 0)
     {
       // console.log("inner");
       return false;
     }
     const { latitude, longitude } = res[0];
-    // console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
+    //console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
   }
   catch (e) {
+    //console.log("Caught in validaddress")
     console.error(e);
     return false;
   }
@@ -555,5 +560,9 @@ export {
   validUsername,
   militaryToStandard
 };
-// console.log(await validAddress("", "staten island", "HI  ", "10309"))
+// console.log(await validAddress("not existing 15 Drive", "do not care", "MOO", "10309", 'AIzaSyA4UJGUMNxXEATNsR9D7tBQspRyLwTdHBY'));
 // console.log(validAddressLine("kdjfn   washINGton   street"))
+
+// console.log(await validAddress("this is terrible 100 Washington Street", "Hoboken", "HI", "07030", 'AIzaSyA4UJGUMNxXEATNsR9D7tBQspRyLwTdHBY'));
+
+// console.log(await validAddress("100 Washington Street", "Hoboken", "NJ", "07030"));

@@ -479,7 +479,7 @@ const validImageUrl = (url) => {
 };
 
 const checkPassword = (password) => {
-  password = validStr(password, "Password");
+  validStr(password, "Password");
 
   if (password.split(" ").length > 1) {
     throw `Error: Password cannot contain spaces`;

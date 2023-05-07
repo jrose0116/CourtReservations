@@ -506,6 +506,24 @@ try {
 }
 // TODO: seed schedules ************************************************************************************************************
 try {
+  //add to past
+  let pastsched1 = await addToSchedule(
+    court3._id.toString(),
+    user1._id,
+    "04/08/2023",
+    "12:00",
+    "12:45",
+    2,
+    true
+  );
+  let pasthistory1 = await appendToHistory(
+    user1._id.toString(),
+    court3._id.toString(),
+    "04/08/2023",
+    "12:00",
+    "12:45"
+  );
+
   let sched6 = await addToSchedule(
     court3._id.toString(),
     user5._id,

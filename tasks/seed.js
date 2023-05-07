@@ -678,13 +678,13 @@ try {
     "This person plays really great!"
   );
   if (printReviews) console.log(review1);
-  // let review1a = await createReview(
-  //   user1._id.toString(),
-  //   user3._id.toString(),
-  //   4,
-  //   "They are really nice"
-  // );
-  // if (printReviews) console.log(review1a);
+  let review1a = await createReview(
+    user1._id.toString(),
+    user3._id.toString(),
+    4,
+    "They are really nice"
+  );
+  if (printReviews) console.log(review1a);
 
   let review2 = await createReview(
     user2._id.toString(),
@@ -693,14 +693,14 @@ try {
     "This person was not nice on the courts!"
   );
   if (printReviews) console.log(review2);
-  // let review2a = await createReview(
-  //   user2._id.toString(),
-  //   user5._id.toString(),
-  //   1,
-  //   "This person was not nice on the courts!"
-  // );
-  // if (printReviews) console.log(review2a);
-  // if (printReviews) console.log(await getUserById(user1._id.toString()));
+  let review2a = await createReview(
+    user2._id.toString(),
+    user5._id.toString(),
+    1,
+    "This person was not nice on the courts!"
+  );
+  if (printReviews) console.log(review2a);
+  if (printReviews) console.log(await getUserById(user1._id.toString()));
 
   let review3 = await createReview(
     user3._id.toString(),
@@ -709,13 +709,13 @@ try {
     "Great player! Looking forward to playing with them again!"
   );
   if (printReviews) console.log(review3);
-  // let review3a = await createReview(
-  //   user3._id.toString(),
-  //   user2._id.toString(),
-  //   4.5,
-  //   "Had a great time with this player today"
-  // );
-  // if (printReviews) console.log(review3a);
+  let review3a = await createReview(
+    user3._id.toString(),
+    user2._id.toString(),
+    4.5,
+    "Had a great time with this player today"
+  );
+  if (printReviews) console.log(review3a);
 
   let review4 = await createReview(
     user4._id.toString(),
@@ -723,14 +723,14 @@ try {
     3.2,
     "Good player, but had a bad attitude"
   );
-  // if (printReviews) console.log(review4);
-  // let review4a = await createReview(
-  //   user4._id.toString(),
-  //   user3._id.toString(),
-  //   2,
-  //   "They were very rude to me"
-  // );
-  // if (printReviews) console.log(review4a);
+  if (printReviews) console.log(review4);
+  let review4a = await createReview(
+    user4._id.toString(),
+    user3._id.toString(),
+    2,
+    "They were very rude to me"
+  );
+  if (printReviews) console.log(review4a);
 
   let review5 = await createReview(
     user5._id.toString(),
@@ -739,13 +739,13 @@ try {
     "Had lots of fun with them"
   );
   if (printReviews) console.log(review5);
-  // let review5a = await createReview(
-  //   user5._id.toString(),
-  //   user1._id.toString(),
-  //   5,
-  //   "Can't wait to play with them again!"
-  // );
-  // if (printReviews) console.log(review5a);
+  let review5a = await createReview(
+    user5._id.toString(),
+    user1._id.toString(),
+    5,
+    "Can't wait to play with them again!"
+  );
+  if (printReviews) console.log(review5a);
 
   // let delete2 = await deleteReview(review2._id.toString());
   // console.log(delete2);

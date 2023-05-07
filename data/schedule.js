@@ -10,15 +10,15 @@ const getSchedule = async (courtId) => {
   let court = await courtDataFunctions.getCourtById(courtId);
   if (!court)
   {
-    throw "schedule.js: court with supplied id is null or undefined";
+    throw "Court with supplied id is null or undefined";
   }
   if (!court.schedule)
   {
-    throw "schedule.js: court has no schedule key";
+    throw "Court has no schedule key";
   }
   if (typeof court.schedule != "object")
   {
-    throw "schedule.js: getCourtById returns a court with a schedule that is not an object";
+    throw "getCourtById returns a court with a schedule that is not an object";
   }
   return court.schedule;
 };
@@ -44,7 +44,7 @@ const getBooking = async (courtId, userId, date) => {
       return schedDateArr[i];
     }
   }
-  throw `schedule.js: getBooking does not have booking with userId of ${userId} on ${date} for courtId ${courtId}`;
+  throw `getBooking does not have booking with userId of ${userId} on ${date} for courtId ${courtId}`;
 }
 const checkBookingCapacity = async (courtId, date, startTime, endTime, capacity) => {
   //checks to make sure a booking's capacity and all other booking capacities in that range do not exceed the court capacity
@@ -104,20 +104,20 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   }
   catch (e)
   {
-    throw "schedule.js: getCourtsById failed";
+    throw "getCourtsById failed";
   }
   
   if (!court)
   {
-    throw "schedule.js: court with supplied id is null or undefined";
+    throw "Court with supplied id is null or undefined";
   }
   if (!court.schedule || !court.capacity || !court.courtOpening || !court.courtClosing)
   {
-    throw "schedule.js: court attributes are null or undefined";
+    throw "Court attributes are null or undefined";
   }
   if (typeof court.schedule != "object")
   {
-    throw "schedule.js: getCourtById returns a court with a schedule that is not an object";
+    throw "getCourtById returns a court with a schedule that is not an object";
   }
 
   let user;
@@ -127,11 +127,11 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   }
   catch (e)
   {
-    throw "schedule.js: getUserById failed";
+    throw "getUserById failed";
   }
   if (!user)
   {
-    throw "schedule.js: user with supplied id is null or undefined";
+    throw "User with supplied id is null or undefined";
   }
 
   validTimeInRange(startTime, endTime, court.courtOpening, court.courtClosing);
@@ -156,7 +156,7 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   {
     if ((hourDifference == 3 && minDifference != 0) || hourDifference > 3)
     {
-      throw "schedule.js: maximum of 3 hours for a time booking";
+      throw "Maximum of 3 hours for a time booking";
     }
   }
 
@@ -166,17 +166,17 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
 
   if (momentCurrentDateTime.diff(momentDateScheduled) >= 0)//past.diff(future) = positive #
   {
-    throw `schedule.js: booking with date and time ${combinedDateAndStartTime} is in the past`;
+    throw `Booking with date and time ${combinedDateAndStartTime} is in the past`;
   }
   let sixMonthsAheadMark = momentCurrentDateTime.add(6, 'months');
   if (momentDateScheduled.diff(sixMonthsAheadMark) >= 0)
   {
-    throw `schedule.js: booking with date and time ${combinedDateAndStartTime} cannot be over 6 months in the future`;
+    throw `Booking with date and time ${combinedDateAndStartTime} cannot be over 6 months in the future`;
   }
   let isInvalidInsertion = await userHasReservationOnDate(courtId, userId, date);
   if (isInvalidInsertion)
   {
-    throw 'schedule.js: each court has a max of 1 reservation per day per user';
+    throw 'Each court has a max of 1 reservation per day per user';
   }
 
   const courtCollection = await courts();
@@ -195,7 +195,7 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
     /*
     if (insertInfo.modifiedCount === 0)
     {
-      throw "schedule.js: modifiedCount is 0";
+      throw "modifiedCount is 0";
     }*/
   }
   try {
@@ -203,12 +203,12 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   }
   catch (e)
   {
-    throw "schedule.js: getCourtById (2)";
+    throw "courtId does not exist";
   }  
 
   if (capacity > court.capacity)
   {
-    throw `schedule.js: ${capacity} exceeds ${court.capacity}`;
+    throw `${capacity} exceeds ${court.capacity}`;
   }
   let newBookingObj = {
     _id: new ObjectId(),
@@ -231,7 +231,7 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   }
   catch (e)
   {
-    throw "schedule.js: checkBookingCapacity failed, booking puts times over cap";
+    throw "checkBookingCapacity failed, booking puts times over cap";
   }
   
   if (timesOverCapArr.length > 0)
@@ -245,7 +245,7 @@ const addToSchedule = async (courtId, userId, date, startTime, endTime, capacity
   );
   if (insertInfo.modifiedCount === 0)
   {
-    throw "schedule.js: modifiedCount is 0";
+    throw "modifiedCount is 0";
   }
 
   let retArray;
@@ -274,7 +274,7 @@ const removeFromSchedule = async (courtId, userId, date) => {
   let newBookingsOnADayArray = [];
   if (!bookingsOnADayArray)
   {
-    throw `schedule.js: ${date} has no bookings`;
+    throw `${date} has no bookings`;
   }
 
   for (let i=0;i<bookingsOnADayArray.length;i++)
@@ -307,7 +307,7 @@ const removeFromSchedule = async (courtId, userId, date) => {
 
   if (modifiedInfo.modifiedCount === 0)
   {
-    throw "Error: modifiedCount is 0, court doesn't exist with that courtId";
+    throw "Error: court doesn't exist with that courtId";
   }
   // court = await courtDataFunctions.getCourtById(courtId);
   // return court.schedule;
@@ -325,7 +325,7 @@ const clearSchedule = async (courtId, date) => {
   let bookingsOnADayArray = court.schedule[date];
   if (!bookingsOnADayArray)
   {
-    throw `schedule.js: ${date} has no bookings`;
+    throw `${date} has no bookings`;
   }
   delete court.schedule[date];
 
@@ -336,7 +336,7 @@ const clearSchedule = async (courtId, date) => {
   
   if (modifiedInfo.modifiedCount === 0)
   {
-    throw "Error: modifiedCount is 0, court doesn't exist with that courtId";
+    throw "Error: court doesn't exist with that courtId";
   }
   court = await courtDataFunctions.getCourtById(courtId);
   return court.schedule;

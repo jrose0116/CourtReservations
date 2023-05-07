@@ -110,6 +110,10 @@ select {
   margin-bottom: 10px;
 }
 
+.row {
+  flex-direction: row;
+}
+
 .reg-parent {
   display: flex;
   flex-direction: row;

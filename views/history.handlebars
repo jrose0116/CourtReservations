@@ -2,8 +2,8 @@
 
 <main>
     <ul>
-      {{#if courts}}
-        {{#each courts}}  
+      {{#if history}}
+        {{#each past}}  
             <div>
                 <li> 
                     <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
@@ -12,12 +12,24 @@
                 </li> 
             </div>
         {{/each}}
+      {{!-- {{#if upcoming}} --}}
+        {{#each upcoming}}  
+        <div>
+            <li> 
+                <div class="row">
+                  <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
+                  <a href="/courts/{{this.court_id}}/{{this._id}}/cancel" class="error"> CANCEL</a>
+                </div>
+                <p>Date: {{this.date}}</p>
+                <p>Booked: {{this.startTime}} to {{this.endTime}}</p> 
+            </li> 
+        </div>
+        {{/each}}
       {{else}}
         <div>
-          <p>Sorry, you have no history!</p>
+          <p>Sorry, you have no history! Once you make a reservation it will apear here.</p>
         </div>
       {{/if}}
     </ul>
 </main>
 
-{{!-- <a href="/courts/{{this.court._id}}/{{this._id}}/cancel" class="error">Cancel</a> --}}

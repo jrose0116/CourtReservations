@@ -17,15 +17,19 @@
       <button type="submit">Save Changes</button>
     </form>
     <br>
-  <form action="/courts/{{courtId}}/editCourt/deleting" id="delete-court" method="post" class="centered">
-    <button id="delete-court">Delete Court</button>
-  </form>
+ <form action="/courts/{{courtId}}/editCourt/deleting" id="delete-court-form" method="post" class="centered">
+  <button id="delete-court-btn">Delete Court</button>
+</form>
   <script>
-      const deleteButton = document.getElementById("delete-court");
-      deleteButton.addEventListener("click", handleDeleteClick);
+       const deleteButton = document.getElementById("delete-court-btn");
+       deleteButton.addEventListener("click", handleDeleteClick);
 
-      function handleDeleteClick() {
+      function handleDeleteClick(event) {
+        event.preventDefault(); 
         const confirmed = confirm("Are you sure you want to delete this court? All reservations will be canceled.");
+        if (confirmed) {
+          document.getElementById("delete-court-form").submit();
+        }
       }
     </script>
   <script>

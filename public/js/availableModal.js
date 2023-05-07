@@ -15,6 +15,7 @@ let zipError = document.getElementById("zip-error");
 let distanceError = document.getElementById("distance-error");
 let levelError = document.getElementById("level-error");
 let sportError = document.getElementById("sport-error");
+let serverError = document.getElementById("serverError");
 
 const validSport = (sport) => {
   sport = validStr(sport, "Sport").toLowerCase();
@@ -138,13 +139,17 @@ sportBox.addEventListener("change", (event) => {
 });
 
 filterForm.addEventListener("submit", (event) => {
+  event.preventDefault();
   zipError.style.display = "none";
   distanceError.style.display = "none";
   levelError.style.display = "none";
   sportError.style.display = "none";
+  serverError.style.display = "none";
+  let failed = false;
   if (!zipBox.checked && !levelBox.checked && !sportBox.checked) {
     event.preventDefault();
     checkboxError.style.display = "block";
+    failed = true;
   }
 
   if (zipBox.checked) {
@@ -154,6 +159,7 @@ filterForm.addEventListener("submit", (event) => {
       event.preventDefault();
       zipError.style.display = "block";
       zipError.innerHTML = e;
+      failed = true;
     }
 
     try {
@@ -174,6 +180,7 @@ filterForm.addEventListener("submit", (event) => {
       event.preventDefault();
       distanceError.style.display = "block";
       distanceError.innerHTML = e;
+      failed = true;
     }
   }
 
@@ -184,6 +191,7 @@ filterForm.addEventListener("submit", (event) => {
       event.preventDefault();
       levelError.style.display = "block";
       levelError.innerHTML = e;
+      failed = true;
     }
   }
 
@@ -194,6 +202,29 @@ filterForm.addEventListener("submit", (event) => {
       event.preventDefault();
       sportError.style.display = "block";
       sportError.innerHTML = e;
+      failed = true;
     }
   }
+  if (!failed)
+    $.ajax({
+      method: "POST",
+      dataType: "html",
+      data: {
+        "zip-checkbox": zipBox.checked ? "on" : "off",
+        "level-checkbox": levelBox.checked ? "on" : "off",
+        "sport-checkbox": sportBox.checked ? "on" : "off",
+        zip: document.getElementById("zip").value,
+        distance: document.getElementById("distance").value,
+        levelInput: document.getElementById("levelInput").value,
+        sport: document.getElementById("sport").value,
+      },
+      success: (data) => {
+        let courtsList = $(data).find("#courtsList").html();
+        $("#courtsList").html(courtsList);
+      },
+      error: (obj, err, errT) => {
+        serverError.style.display = "block";
+        $("#serverError").html(obj.responseText);
+      },
+    });
 });

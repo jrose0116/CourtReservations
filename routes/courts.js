@@ -2,7 +2,7 @@ import { Router } from "express";
 import { zipCodeDistance } from "zipcode-city-distance";
 import dotenv from "dotenv";
 import moment from "moment";
-import xss from 'xss';
+import xss from "xss";
 dotenv.config();
 
 const router = Router();
@@ -120,7 +120,13 @@ router
     if (req.body["zip-checkbox"] == "on") {
       try {
         zip = validZip(xss(req.body.zip));
-        distance = validNumber(parseInt(xss(req.body.distance)));
+        distance = validNumber(
+          parseInt(xss(req.body.distance)),
+          "Distance",
+          true,
+          0,
+          250
+        );
       } catch (e) {
         return res.status(400).render("error", { status: 400, error: e });
       }
@@ -160,7 +166,7 @@ router
 
         console.log(courtList);
       } catch (e) {
-        return res.status(400).json({ error: e, status: 400 });
+        return res.status(400).render("error", { error: e, status: 400 });
       }
     }
 
@@ -173,7 +179,7 @@ router
           return sport.trim().toLowerCase() == court.type.trim().toLowerCase();
         });
       } catch (e) {
-        return res.status(400).json({ error: e, status: 400 });
+        return res.status(400).render("error", { error: e, status: 400 });
       }
     }
 
@@ -273,7 +279,12 @@ router
       });
     }
 
-    let address = await validAddress(xss(newCourt.address), xss(newCourt.city), state, zip);
+    let address = await validAddress(
+      xss(newCourt.address),
+      xss(newCourt.city),
+      state,
+      zip
+    );
     if (address === false) {
       return res.status(400).render("createCourt", {
         auth: true,
@@ -609,7 +620,13 @@ router
         }
       }
       newCap = parseInt(xss(req.body.capacity));
-      newCap = validNumber(newCap, "number of players", true, 0, thisCourt.capacity);
+      newCap = validNumber(
+        newCap,
+        "number of players",
+        true,
+        0,
+        thisCourt.capacity
+      );
     } catch (e) {
       //const strError = e;
       //return res.status(404).json({ error: e });
@@ -718,7 +735,7 @@ router.route("/:courtId/:historyId/cancel").get(async (req, res) => {
     // console.log("history " + req.params.historyId);
     await removeFromSchedule(req.params.courtId, req.session.user.id, date);
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.status(500).json({
       error: "Your booking was not successfully cancelled, please try again.",
     });

@@ -2,7 +2,7 @@
 <button id="filter-btn">Filter</button>
 <main>
   <div class="parent">
-    <div class="child2">
+    <div class="child2" id="courtsList">
       <h2>Available Courts</h2>
       {{#each courts}}
         <div class="court-card">
@@ -47,6 +47,7 @@
 
   <div id="filter-modal" hidden>
     <form id="filter-form" method="post" action="/courts/available">
+      <p id="serverError" class="filter-error"></p>
       <p>Filter By:</p>
       <label for="zip-checkbox">
         <input
@@ -116,5 +117,10 @@
     </form>
     <button id="close-modal">Close</button>
   </div>
+  <script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"
+  ></script>
   <script src="/public/js/availableModal.js"></script>
 </main>

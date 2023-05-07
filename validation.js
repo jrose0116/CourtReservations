@@ -5,7 +5,7 @@ import NodeGeocoder from "node-geocoder";
 const options = {
   provider: 'openstreetmap'
   //provider: 'google',
-  //apiKey: 'AIzaSyA4UJGUMNxXEATNsR9D7tBQspRyLwTdHBY'
+  //apiKey: 'TODO'
 };
 
 const geocoder = NodeGeocoder(options);

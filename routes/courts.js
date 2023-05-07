@@ -132,14 +132,16 @@ router
       }
     }
 
+    // courtList.map((court) => {});
+    courtList = courtList.filter((court) => {
+      return (
+        Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10 <= distance
+      );
+    });
     courtList.map((court) => {
       court.distance =
-        Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
-    });
-    courtList = courtList.filter((court) => {
-      return court.distance <= distance;
-    });
-    courtList.map((court) => {
+        Math.floor(zipCodeDistance(req.session.user.zip, court.zip, "M") * 10) /
+        10;
       if (court.distance <= 1) court.distance = "Within 1 Mile";
       else {
         court.distance = `${court.distance} Miles Away`;

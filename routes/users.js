@@ -232,6 +232,28 @@ router.route("/explore").get(async (req, res) => {
   let userList = await getAllUsers();
   //take current user out of userList
   userList = userList.filter((obj) => obj._id.toString() !== req.session.user.id);
+  //sort alphabetically
+
+  userList.sort((a,b) => {
+    if (a.firstName < b.firstName) {
+      return -1;
+    }
+    if (a.firstName > b.firstName) {
+      return 1;
+    }
+    return 0;
+  });
+
+  userList.sort((a,b) => {
+    if (a.lastName < b.lastName) {
+      return -1;
+    }
+    if (a.lastName > b.lastName) {
+      return 1;
+    }
+    return 0;
+  });
+
   res.render("explore", {
     auth: true,
     users: userList,

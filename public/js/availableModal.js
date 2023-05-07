@@ -146,11 +146,11 @@ filterForm.addEventListener("submit", (event) => {
   sportError.style.display = "none";
   serverError.style.display = "none";
   let failed = false;
-  if (!zipBox.checked && !levelBox.checked && !sportBox.checked) {
-    event.preventDefault();
-    checkboxError.style.display = "block";
-    failed = true;
-  }
+  // if (!zipBox.checked && !levelBox.checked && !sportBox.checked) {
+  //   event.preventDefault();
+  //   checkboxError.style.display = "block";
+  //   failed = true;
+  // }
 
   if (zipBox.checked) {
     try {

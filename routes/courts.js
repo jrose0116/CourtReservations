@@ -71,6 +71,7 @@ router
     courtList = courtList.filter((court) => {
       return court.distance <= 100;
     });
+    courtList.sort((a, b) => a.distance - b.distance);
     courtList.map((court) => {
       if (court.distance <= 1) court.distance = "Within 1 Mile";
       else {
@@ -134,10 +135,11 @@ router
 
     // courtList.map((court) => {});
     courtList = courtList.filter((court) => {
-      return (
-        Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10 <= distance
-      );
+      court.distance =
+        Math.floor(zipCodeDistance(zip, court.zip, "M") * 10) / 10;
+      return court.distance <= distance;
     });
+    courtList.sort((a, b) => a.distance - b.distance);
     courtList.map((court) => {
       court.distance =
         Math.floor(zipCodeDistance(req.session.user.zip, court.zip, "M") * 10) /

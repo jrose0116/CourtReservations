@@ -327,7 +327,7 @@ a {
 }
 
 .report-review {
-  color: red;
+  color: rgb(187, 18, 18);
   float: right;
   margin-right: 5px;
   margin-top: 5px;
@@ -370,7 +370,11 @@ a {
 }
 
 #errors {
-  color: red;
+  color: rgb(187, 18, 18);
+}
+
+.errors {
+  color:rgb(187, 18, 18);
 }
 
 #filter-btn {
@@ -446,7 +450,7 @@ a {
 }
 
 #filter-modal .filter-error {
-  background-color: rgb(255, 66, 66);
+  background-color: rgb(187, 18, 18);
   border-radius: 3px;
   width: fit-content;
   padding: 10px 5px;

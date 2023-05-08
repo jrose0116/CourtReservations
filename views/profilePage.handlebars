@@ -44,7 +44,8 @@
         <div id="report-form" style="display:none;">
               <br>
               <h2>Report Review</h2>
-              <form class="report-form" onsubmit="reportFormOnClick()">
+              <div id="error-div" class="error centered" hidden></div>
+              <form class="report-form">
                 <label for="reportReviewer">Select Reviewer to report:</label>
                 <select name="reportReviewer" id="reportReviewer">
                   {{#each reviews}}
@@ -78,13 +79,14 @@
                     value="irrelevant"
                   >
                 </label>
-                <input type="submit" name="submit" value="Submit">
+                {{!-- <input type="submit" name="submit" value="Submit"> --}}
+                <button type='button' onclick="reportFormOnClick()">Submit</button> 
                 {{!-- <a href="mailto:courtreservationreports@gmail.com?subject=Report%20Review%20&body=Please%20enter%20reviewer%20and%20reviewee%20here:">REPORT</a> --}}
                 {{!-- <a href="/user/{{this._id}}/{{this.reviewee_id}}/{{this.reviewer_id}}/report" class="error">REPORT</a> --}}
                 {{!-- <a href="/user/{{this._id}}{{this.reviewee_id}}/{{this.reviewer_id}}/{{this.rating}}/{{this.comment}}/{{this.reports}}/report" class="error">REPORT</a> --}}
               </form>
             </div>
-            <div id="error-div" class="error centered"></div>
+            
     {{#if ownPage}}{{else}}
       <button
         onclick="window.location.href='/user/id/{{user._id}}/createReview';"
@@ -98,10 +100,11 @@
       reportForm.style.display = "block";
     }
     function reportFormOnClick() {
-      if (document.querySelector('input[name="reason"]:checked').value == null)
+      if (document.querySelector('input[name="reason"]:checked') == null)
       {
         let errorDiv = document.getElementById("error-div");
         errorDiv.innerHTML = "Error: Must select a reason for report";
+        errorDiv.style.visibility = 'visible';
       }
       else
       {

@@ -52,10 +52,10 @@
                     id="harassment"
                     type="radio"
                     name="reason"
-                    value="other"
+                    value="harassment"
                   />
                 </label>
-                <input type="submit" value="Submit" />
+                <a href="/user/{{this._id}}{{this.reviewee_id}}/{{this.reviewer_id}}/{{this.rating}}/{{this.comment}}/{{this.reports}}/report" class="error">REPORT</a>
               </form>
             </div>
             {{! </li> }}
@@ -72,6 +72,7 @@
   </div>
   <script>
     function showReportForm(reviewId) {
+      console.log(reviewId)
   var reportForm = document.getElementById("report-form-" + reviewId);
   reportForm.style.display = "block";
 }

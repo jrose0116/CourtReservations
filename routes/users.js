@@ -447,4 +447,29 @@ router
     }
   });
 
+  router
+  .route("/:reviewId/:revieweeId/:reviewerId/:rating/:comment/:reportNum/report")
+  .get(async (req, res) => {
+    console.log("REPORT LINK ENTER");
+    console.log(req.params.userId);
+    try {
+      //let user = await getUserById(req.params.userId);
+      await reportReview(req.params.reviewId, req.params.revieweeId, req.params.reviewerId, req.params.rating, req.params.comment, req.params.reportNum);
+      return res.render("profilePage", {
+        id: req.session.user.id,
+        title: req.params.username,
+        user: user,
+        reviews: user.reviews,
+        auth: true,
+        ownPage: thisUser._id == sessionId,
+        reviewcount: user.reviews.length,
+        owner: isOwner,
+      });
+    } catch (e) {
+      return res
+        .status(404)
+        .render("error", { error: "User not found", auth: true, status: 404 });
+    }
+  });
+
 export default router;

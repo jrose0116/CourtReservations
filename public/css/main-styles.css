@@ -450,7 +450,7 @@ a {
   padding: 10px 5px;
   display: none;
 }
-#expLvlPercent {
+.expLvlPercent {
   font-weight: bold;
   color: darkgreen;
 }

@@ -2,17 +2,28 @@
   <div id="home-ctn">
     <h1 id="home-head">Court Reservations</h1>
     <p id="home-text">
-      This website will allow you to locate volleyball, pickleball, tennis, and basketball courts near you and reserve times to play at them!
-      If you own a court, you may also publish it on this site to allow others to reserve it.
+      This website will allow you to locate volleyball, pickleball, tennis, and
+      basketball courts near you and reserve times to play at them! If you own a
+      court, you may also publish it on this site to allow others to reserve it.
     </p>
   </div>
   {{#if auth}}
     <div class="parent center">
       <div class="child2">
         <h2>Available Courts</h2>
+      </div>
+      {{#if owner}}
+        <div class="child2">
+          <h2>Owned Courts</h2>
+        </div>
+      {{/if}}
+    </div>
+    <div class="parent center court-scroll1">
+      <div class="child2">
+        {{! <h2>Available Courts</h2> }}
         <div class="scroll-cards">
           {{#each availableCourts}}
-            <div class="court-card">
+            <div class="court-card white-bg">
               <h2>{{this.name}}</h2>
               <p>{{this.type}}</p>
               <p>
@@ -27,10 +38,10 @@
       </div>
       {{#if owner}}
         <div class="child2">
-          <h2>Owned Courts</h2>
+          {{! <h2>Owned Courts</h2> }}
           <div class="scroll-cards">
             {{#each ownedCourts}}
-              <div class="court-card">
+              <div class="court-card white-bg">
                 <h2>{{this.name}}</h2>
                 <p>{{this.type}}</p>
                 <p>

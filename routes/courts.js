@@ -284,20 +284,31 @@ router
       });
     }
 
-    let address = await validAddress(
-      xss(newCourt.address),
-      xss(newCourt.city),
-      state,
-      zip
-    );
-    if (address === false) {
+    try {
+      let address = await validAddress(
+        xss(newCourt.address),
+        xss(newCourt.city),
+        state,
+        zip
+      );
+      if (address === false) {
+        return res.status(400).render("createCourt", {
+          auth: true,
+          id: req.session.user.id,
+          owner: req.session.user.owner,
+          bad: "Invalid address",
+        });
+      }
+    }
+    catch (e) {
       return res.status(400).render("createCourt", {
         auth: true,
         id: req.session.user.id,
         owner: req.session.user.owner,
-        bad: "Invalid address",
+        bad: e,
       });
     }
+    
     try {
       let court = await createCourt(
         name,

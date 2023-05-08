@@ -129,7 +129,6 @@ const validAddressLine = (line) => {
 }
 
 const validAddress = async (addressLine, city, state, zip/*, key*/) => {
-
   if (addressLine != "") {
     addressLine = validAddressLine(addressLine);
   }

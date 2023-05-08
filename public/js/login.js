@@ -79,17 +79,16 @@ if (loginForm) {
       message.innerHTML = "Password is required";
       errorDiv.appendChild(message);
     }
-
-    if (!emptyPassword) {
-        try {
-            password.value = checkPassword(password.value);
-        }
-        catch (e) {
-            event.preventDefault();
-            let message = document.createElement('p');
-            message.innerHTML = "Password is not valid"
-            errorDiv.appendChild(message);
-        }
-    }
+    // if (!emptyPassword) {
+    //     try {
+    //         password.value = checkPassword(password.value);
+    //     }
+    //     catch (e) {
+    //         event.preventDefault();
+    //         let message = document.createElement('p');
+    //         message.innerHTML = "Password is not valid"
+    //         errorDiv.appendChild(message);
+    //     }
+    // }
   });
 }

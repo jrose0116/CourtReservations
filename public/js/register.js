@@ -160,6 +160,27 @@ if (registerForm) {
     let emptyConfirmPassword = false;
     let goodPass = false;
     let goodConfirmPass = false;
+    
+    //check username
+    if (username.value.trim() === "") {
+        event.preventDefault();
+        emptyUsername = true;
+        let message = document.createElement('p');
+        message.innerHTML = "Username is required"
+        errorDiv.appendChild(message);
+    }
+    if (!emptyUsername) {
+        try {
+            username.value = validUsername(username.value, "Username");
+        }
+        catch (e) {
+            event.preventDefault();
+            let message = document.createElement('p');
+            message.innerHTML = "Username is not valid"
+            console.log(e)
+            errorDiv.appendChild(message);
+        }
+    }
 
     //check first name
     if (firstName.value.trim() === "") {
@@ -199,27 +220,6 @@ if (registerForm) {
             let message = document.createElement('p');
             message.innerHTML = "Last name is not valid"
             errorDiv.appendChild(message);        
-        }
-    }
-
-    //check username
-    if (username.value.trim() === "") {
-        event.preventDefault();
-        emptyUsername = true;
-        let message = document.createElement('p');
-        message.innerHTML = "Username is required"
-        errorDiv.appendChild(message);
-    }
-    if (!emptyUsername) {
-        try {
-            username.value = validUsername(username.value, "Username");
-        }
-        catch (e) {
-            event.preventDefault();
-            let message = document.createElement('p');
-            message.innerHTML = "Username is not valid"
-            console.log(e)
-            errorDiv.appendChild(message);
         }
     }
 

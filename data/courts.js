@@ -96,7 +96,7 @@ const createCourt = async (
 
   //make sure can't add court to address already used
   const sameZip = await courtCollection.find({zip: zip}).toArray();
-  console.log(sameZip)
+  //console.log(sameZip)
   for (let i = 0; i < sameZip.length; i++) {
     let compareAddress = sameZip[i].address;
     let words = compareAddress.split(" ");

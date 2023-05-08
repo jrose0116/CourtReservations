@@ -382,7 +382,7 @@ const userHasOverlappingTime = async (userId, date, startTime, endTime) => {
   //returns true if the time for scheduling overlaps a user's existing booking
   //params should be valid since called internally
   let userHistory = await historyDataFunctions.getHistory(userId);//TODO
-  console.log(userHistory);
+  //console.log(userHistory);
   let overlappingTimes = [];
   let errorString = "";
 

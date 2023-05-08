@@ -11,6 +11,7 @@ import {
   getUserByName,
   getUserByUsername,
   updateUser,
+  addReportedByUser
 } from "../data/users.js";
 import { createReview, reportReview } from "../data/reviews.js";
 import { getHistory, getPastHistory, getUpcomingHistory } from "../data/history.js";

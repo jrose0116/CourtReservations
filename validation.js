@@ -515,8 +515,8 @@ const validSport = (sport) => {
 
 const validUsername = (username) => {
   username = validStr(username, "Username");
-  if (username.length < 10) {
-    throw 'Username must be at least 10 characters'
+  if (username.length < 6) {
+    throw 'Username must be at least 6 characters'
   }
   return username;
 };

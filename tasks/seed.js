@@ -12,6 +12,7 @@ import {
   getUserByUsername,
   updateUser,
   checkUser,
+  addReportedByUser
 } from "../data/users.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 import {
@@ -102,7 +103,7 @@ try {
   user3 = await createUser(
     "Jacob",
     "Rose",
-    "Jrose",
+    "Jrosen",
     "Password!1",
     20,
     "Marlboro",

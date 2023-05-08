@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import {
   validId,
   validStr,
+  validUsername,
   validNumber,
   validState,
   validZip,
@@ -62,6 +63,12 @@ const createUser = async (
     throw e;
   }
   try {
+    username = validUsername(username);
+  }
+  catch (e) {
+    throw e;
+  }
+  try {
     age = validNumber(age, "Age");
   } catch (e) {
     throw e;
@@ -115,6 +122,7 @@ const createUser = async (
     reviews: [],
     history: [],
     overallRating: 0,
+    reportedBy: []
   };
   const usersCollection = await users();
   // check if username already exists
@@ -410,6 +418,31 @@ const checkUser = async (email, password) => {
   };
 };
 
+const addReportedByUser = async (userId, reportedByUsername) => {
+  reportedByUsername = validStr(reportedByUsername);
+  let user = await getUserById(userId);
+  let buildReportedArray = user.reportedBy;
+  for (let i=0; i<buildReportedArray.length;i++)
+  {
+    if (buildReportedArray[i].localeCompare(reportedByUsername) == 0)
+    {
+      throw "Error: Already reported this user";
+    }
+  }
+  buildReportedArray.push(reportedByUsername);
+
+  const usersCollection = await users();
+
+  const updateInfo = await usersCollection.findOneAndUpdate(
+    { _id: new ObjectId(userId) },
+    { $set: {reportedBy: buildReportedArray} },
+    { returnDocument: "after" }
+  );
+  if (updateInfo.lastErrorObject.n === 0) throw "Error: Update failed";
+
+  return buildReportedArray;
+};
+
 export {
   createUser,
   getUserById,
@@ -418,4 +451,5 @@ export {
   getUserByUsername,
   updateUser,
   checkUser,
+  addReportedByUser
 };

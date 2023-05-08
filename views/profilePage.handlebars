@@ -25,7 +25,8 @@
         {{#each reviews}}
            <div class="review review-{{this._id}}">
             {{! <li> }}
-           <button onclick="showReportForm('{{this._id}}')" class="report-review">Report</button>            <p>Reviewer:
+           <button onclick="showReportForm('{{this._id}}')" id="report-button-{{this._id}}" class="report-review">Report</button>            
+            <p>Reviewer:
               <a
                 href="/user/id/{{this.reviewer_id}}"
               >{{this.reviewerUsername}}</a></p>
@@ -74,9 +75,9 @@
   </div>
   <script>
     function showReportForm(reviewId) {
-      console.log(reviewId)
-  var reportForm = document.getElementById("report-form-" + reviewId);
-  reportForm.style.display = "block";
-}
+      //console.log(reviewId)
+      var reportForm = document.getElementById("report-form-" + reviewId);
+      reportForm.style.display = "block";
+    }
   </script>
 </main>

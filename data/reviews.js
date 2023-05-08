@@ -35,7 +35,8 @@ const createReview = async (revieweeId, reviewerId, rating, comment, reportNum) 
   let reviews = reviewee.reviews;
   for (let i of reviews) {
     if (i.reviewer_id.toString() == reviewerId) {
-      throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): User already contains review from user (delete review to create a new one)";
+      //throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): User already contains review from user (delete review to create a new one)";
+      throw `Error: You already reviewed ${reviewee.username}`;
     }
   }
 

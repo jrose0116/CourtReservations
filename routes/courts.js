@@ -283,7 +283,6 @@ router
         bad: e,
       });
     }
-
     try {
       let address = await validAddress(
         xss(newCourt.address),
@@ -299,14 +298,14 @@ router
           bad: "Invalid address",
         });
       }
-    }
+    } 
     catch (e) {
       return res.status(400).render("createCourt", {
-        auth: true,
-        id: req.session.user.id,
-        owner: req.session.user.owner,
-        bad: e,
-      });
+          auth: true,
+          id: req.session.user.id,
+          owner: req.session.user.owner,
+          bad: "Invalid address",
+        });
     }
     
     try {

@@ -349,6 +349,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
 
 .court-card2 {
@@ -357,9 +358,7 @@ a {
   border: #333 solid 1px;
   padding: 10px 0;
   text-transform: capitalize;
-  margin-bottom: 5px;
   width: 50%;
-  margin: 0 auto;
   text-align: center;
 }
 
@@ -491,4 +490,8 @@ a {
 
 .white-bg {
   background-color: white;
+}
+
+#createCourtParent .child2 input {
+  margin-bottom: 25px;
 }

@@ -25,7 +25,7 @@
         {{#each reviews}}
            <div class="review review-{{this._id}}">
             {{! <li> }}
-           <button onclick="showReportForm('{{this._id}}')" id="report-review">Report</button>            <p>Reviewer:
+           <button onclick="showReportForm('{{this._id}}')" class="report-review">Report</button>            <p>Reviewer:
               <a
                 href="/user/id/{{this.reviewer_id}}"
               >{{this.reviewerUsername}}</a></p>
@@ -35,21 +35,21 @@
             <p>Date Posted: {{this.date}}</p>
         <div id="report-form-{{this._id}}" style="display:none;">
               <h3>Report Review</h3>
-              <form id="report-form">
-                <label for="inappropriate">Inappropriate Content
+              <form class="report-form">
+                <label>Inappropriate Content
                   <input
-                    id="inappropriate"
+                    class="inappropriate"
                     type="radio"
                     name="reason"
                     value="inappropriate"
                   />
                 </label>
-                <label for="spam">Spam
-                  <input id="spam" type="radio" name="reason" value="spam" />
+                <label>Spam
+                  <input class="spam" type="radio" name="reason" value="spam" />
                 </label>
-                <label for="harassment">Harassment
+                <label>Harassment
                   <input
-                    id="harassment"
+                    class="harassment"
                     type="radio"
                     name="reason"
                     value="harassment"

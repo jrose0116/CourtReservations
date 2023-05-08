@@ -324,7 +324,7 @@ a {
   text-decoration: none;
 }
 
-#report-review {
+.report-review {
   color: red;
   float: right;
   margin-right: 5px;

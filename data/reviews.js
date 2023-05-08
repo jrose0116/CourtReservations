@@ -192,4 +192,4 @@ const reportReview = async (reviewId, revieweeId, reviewerId, rating, comment, r
   await createReview(revieweeId, reviewerId, rating, comment, reportNum + 1);
 };
 
-export { createReview, deleteReview, updateOverallRating };
+export { createReview, deleteReview, updateOverallRating, reportReview };

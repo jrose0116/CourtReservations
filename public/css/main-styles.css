@@ -264,6 +264,8 @@ li {
 }
 
 .big-btn {
+  color: #000000;
+  padding: 6px;
   width: 25%;
   height: 10%;
   font-size: x-large;

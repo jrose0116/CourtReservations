@@ -1,14 +1,13 @@
 <main>
-    <h1>Explore</h1>
-    <div class="users">
-        {{#each users}}
-        <div class="court-card2">
-            <p class="bigger">{{this.firstName}} {{this.lastName}}</p>
-            <a href="/user/id/{{this._id}}">{{this.username}}</a>
-            <p>{{this.experience_level}}</p>
-            <p>Rating: {{this.overallRating}}</p>
-        </div>
-        <br>
-        {{/each}}
-    </div>
+  <h1>Explore</h1>
+  <div class="users">
+    {{#each users}}
+      <div class="court-card2">
+        <p class="bigger">{{this.firstName}} {{this.lastName}}</p>
+        <a href="/user/id/{{this._id}}">{{this.username}}</a>
+        <p>{{this.experience_level}}</p>
+        <p>Rating: {{this.overallRating}}</p>
+      </div>
+    {{/each}}
+  </div>
 </main>

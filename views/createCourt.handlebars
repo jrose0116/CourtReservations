@@ -2,21 +2,21 @@
   <div class="centered">
     <h1>Create a Court</h1>
     <form id="form" method="post" class="centered">
-      <div class="parent">
+      <div class="parent" id="createCourtParent">
         <div class="child2">
 
           <label for="name">Court Name</label>
           <input class="w-100" id="name" name="name" type="text" />
-          <br />
+
           <label for="type">Court Type</label>
           <input class="w-100" name="type" id="type" type="text" />
-          <br />
+
           <label for="address">Address</label>
           <input class="w-100" name="address" id="address" type="text" />
-          <br />
+
           <label for="city">City</label>
           <input class="w-100" name="city" id="city" type="text" />
-          <br />
+
           <label for="state">State</label>
           <select name="state" id="state">
             <option value="AL">AL</option>
@@ -70,20 +70,20 @@
             <option value="WI">WI</option>
             <option value="WY">WY</option>
           </select>
-          <br />
+
           <label for="zip">Zip Code</label>
           <input class="w-100" name="zip" id="zip" type="text" />
         </div>
         <div class="child2">
           <label for="capacity">Capacity</label>
           <input class="w-100" name="capacity" id="capacity" type="text" />
-          <br />
+
           <label for="length">Length</label>
           <input class="w-100" name="length" id="length" type="text" />
-          <br />
+
           <label for="width">Width</label>
           <input class="w-100" name="width" id="width" type="text" />
-          <br />
+
           <label for="courtOpening">Court Opening Time</label>
           <input
             class="w-100"
@@ -91,7 +91,7 @@
             id="courtOpening"
             type="time"
           />
-          <br />
+
           <label for="courtClosing">Court Closing Time</label>
           <input
             class="w-100"
@@ -99,10 +99,10 @@
             id="courtClosing"
             type="time"
           />
-          <br />
+
           <div id="error-div" class="centered"></div>
           <div id="errors">{{bad}}</div>
-          <br />
+
           <button
             id="create-court"
             type="submit"

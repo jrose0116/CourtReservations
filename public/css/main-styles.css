@@ -177,6 +177,7 @@ li {
 .child2 {
   width: 50%;
   flex: 2;
+  height: fit-content;
 }
 
 .child3 {
@@ -279,8 +280,8 @@ li {
   position: relative;
   flex: 2;
   overflow-y: scroll;
-  height: 600px;
-  margin-bottom: 40px;
+  height: 500px;
+  /* margin-bottom: 40px; */
 }
 
 #map {
@@ -348,6 +349,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
 
 .court-card2 {
@@ -356,9 +358,7 @@ a {
   border: #333 solid 1px;
   padding: 10px 0;
   text-transform: capitalize;
-  margin-bottom: 5px;
   width: 50%;
-  margin: 0 auto;
   text-align: center;
 }
 
@@ -463,4 +463,35 @@ a {
 
 .caps {
   text-transform: capitalize;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #999;
+}
+
+.court-scroll1 {
+  background-color: #333;
+  border-radius: 10px;
+  padding: 10px 10px;
+  margin: 5px;
+  height: fit-content;
+}
+
+.white-bg {
+  background-color: white;
+}
+
+#createCourtParent .child2 input {
+  margin-bottom: 25px;
 }

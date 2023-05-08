@@ -2,7 +2,15 @@ import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import { validId, validStr, validStrArr, validNumber } from "../validation.js";
 
-const createReview = async (revieweeId, reviewerId, rating, comment) => {
+const createReview = async (revieweeId, reviewerId, rating, comment, reportNum) => {
+  if (!reportNum)
+  {
+    reportNum = 0;
+  }
+  if (typeof reportNum !== "number")
+  {
+    throw "Error (data/reviews.js :: createReview(revieweeId, reviewerId, rating, comment)): Needs to be a number";
+  }
   try {
     revieweeId = validId(revieweeId);
     reviewerId = validId(reviewerId);
@@ -62,7 +70,8 @@ const createReview = async (revieweeId, reviewerId, rating, comment) => {
     reviewee_id: revieweeId,
     rating: rating,
     comment: comment,
-    date: dateString
+    date: dateString,
+    reports: reportNum
   };
 
   reviews.push(reviewObject);
@@ -174,6 +183,13 @@ const updateOverallRating = async (userId) => {
   }
 
   return updatedInfo.value;
+};
+
+const reportReview = async (reviewId, revieweeId, reviewerId, rating, comment, reportNum) => {
+  //delete review
+  await deleteReview(reviewId);
+  //make 'new' one
+  await createReview(revieweeId, reviewerId, rating, comment, reportNum + 1);
 };
 
 export { createReview, deleteReview, updateOverallRating };

@@ -1,7 +1,7 @@
 <main>
   <div class="profile-page">
     <h1>{{user.firstName}} {{user.lastName}}</h1>
-    <img alt="{{user.username}}" width="200" height="200" src={{user.image}} />
+    <img alt="{{user.username}}" width="200" height="200" src={{user.image}} >
     <p id="p-username">{{user.username}}</p>
     <p id="p-experience">{{user.experience_level}} Player</p>
     <p id="p-age">Age {{user.age}}</p>
@@ -29,7 +29,7 @@
               <a
                 href="/user/id/{{this.reviewer_id}}"
               >{{this.reviewerUsername}}</a></p>
-            <hr />
+            <hr>
             <p>{{this.comment}}</p>
             <p>Rating: {{this.rating}}</p>
             <p>Date Posted: {{this.date}}</p>
@@ -42,10 +42,10 @@
                     type="radio"
                     name="reason"
                     value="inappropriate"
-                  />
+                  >
                 </label>
                 <label>Spam
-                  <input class="spam" type="radio" name="reason" value="spam" />
+                  <input class="spam" type="radio" name="reason" value="spam">
                 </label>
                 <label>Harassment
                   <input
@@ -53,7 +53,7 @@
                     type="radio"
                     name="reason"
                     value="harassment"
-                  />
+                  >
                 </label>
                 <a href="mailto:courtreservationreports@gmail.com?subject=Report%20Review%20&body=Please%20enter%20reviewer%20and%20reviewee%20here:">REPORT</a>
                 {{!-- <a href="/user/{{this._id}}/{{this.reviewee_id}}/{{this.reviewer_id}}/report" class="error">REPORT</a> --}}

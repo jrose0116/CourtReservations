@@ -5,18 +5,14 @@
     <ul>
       {{#if history}}
         {{#each past}}  
-            <div>
-                <li> 
-                    <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
-                    <p>Date: {{this.date}}</p>
-                    <p>Booked: {{this.startTime}} to {{this.endTime}}</p>
-                </li> 
-            </div>
-            <br>
+              <li> 
+                  <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
+                  <p>Date: {{this.date}}</p>
+                  <p>Booked: {{this.startTime}} to {{this.endTime}}</p>
+                  <br>
+              </li> 
         {{/each}}
-      {{!-- {{#if upcoming}} --}}
         {{#each upcoming}}  
-          <div>
             <li> 
                 <div class="row">
                   <a href="/courts/{{this.court_id}}">{{this.court_name}}</a>
@@ -24,9 +20,8 @@
                 </div>
                 <p>Date: {{this.date}}</p>
                 <p>Booked: {{this.startTime}} to {{this.endTime}}</p> 
+                <br>
             </li> 
-            <br>
-        </div>
         {{/each}}
       {{else}}
         <div>

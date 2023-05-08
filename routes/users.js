@@ -107,6 +107,7 @@ router
     } catch (e) {
       return res.status(400).render("createReview", {
         error: e,
+        user: reviewee,
         auth: true,
         //owner: req.session.user.owner,
         id: req.session.user.id,

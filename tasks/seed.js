@@ -122,14 +122,15 @@ try {
   user4 = await createUser(
     "Julian",
     "Perez",
-    "jsmitty33",
+    "flaco26",
     "Chicken27%",
-    22,
-    "Piscataway",
+    21,
+    "Old Bridge",
     "NJ",
-    "08854",//08855
+    "08857",//08855
     "33smitty@outlook.com",
-    "advanced"
+    "advanced", 
+    "/public/images/boldandbrash.jpg"
     //true
   );
   if (printUsers) console.log(user4);

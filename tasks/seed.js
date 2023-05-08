@@ -56,6 +56,7 @@ let court2 = undefined;
 
 // TODO: Seed Users ************************************************************************************************************
 //add user1
+console.log("Seeding users...");
 try {
   user1 = await createUser(
     "Isabella  ",
@@ -161,6 +162,7 @@ catch (e) {
 }
 
 // TODO: Seed Courts ************************************************************************************************************
+console.log("Seeding courts...");
 try {
   court1 = await createCourt(
     "Church Square Park",
@@ -506,6 +508,7 @@ try {
   if (printCourts) console.log(e);
 }
 // TODO: seed schedules ************************************************************************************************************
+console.log("Seeding schedules and history...");
 try {
   //add to past
   let pastsched1 = await addToSchedule(
@@ -1048,6 +1051,7 @@ catch (e)
 }
 
 // TODO: seed reviews ************************************************************************************************************
+console.log("Seeding reviews...");
 try {
   let review1 = await createReview(
     user1._id.toString(),

@@ -39,15 +39,14 @@ const createCourt = async (
   type = validStr(type, "Type of court");
   type = validSport(type);
 
-  //address = validAddress(address);
-  //city = validCity(city);
+  // address = validAddress(address);
+  // city = validCity(city);
 
   if (typeof city != "string")
   {
     throw `Error: city is not a string`;
   }
   city = city.trim();
-
   state = validState(state);
   zip = validZip(zip);
   if (typeof address != "string")
@@ -55,14 +54,14 @@ const createCourt = async (
     throw `Error: address is not a string`;
   }
   address = address.trim();
-  // try 
-  // {
-  //   await validAddress(address, city, state, zip);
-  // }
-  // catch (e)
-  // {
-  //   throw e;
-  // }
+  try 
+  {
+    await validAddress(address, city, state, zip);
+  }
+  catch (e)
+  {
+    throw e;
+  }
 
   validNumber(capacity, "Capacity", true, 0, Infinity);
   validNumber(length, "Length", false, 0, Infinity);
@@ -72,6 +71,50 @@ const createCourt = async (
   courtClosing = validTime(courtClosing, true);
 
   ownerId = validId(ownerId);
+
+  const courtCollection = await courts();
+
+  // const duplicateName = await courtCollection.findOne({name: new RegExp("^" + name, "i")});
+  // if (duplicateName) {
+  //   let newAddress = address;
+  //   let words = newAddress.split(" ");
+  //   words.pop(); 
+  //   newAddress = words.join(" ");
+
+  //   let dbAddress = duplicateName.address;
+  //   let words2 = dbAddress.split(" ");
+  //   words2.pop(); 
+  //   dbAddress = words.join(" ");
+    
+  //   if (dbAddress.toLowerCase() === newAddress.toLowerCase() 
+  //   && duplicateName.city.toLowerCase() === city.toLowerCase() 
+  //   && duplicateName.state.toLowerCase() === state.toLowerCase()
+  //   && duplicateName.zip.toLowerCase() === zip.toLowerCase()) {
+  //     throw 'A court already exists with this name at this location'
+  //   }
+  // }
+
+  //make sure can't add court to address already used
+  const sameZip = await courtCollection.find({zip: zip}).toArray();
+  console.log(sameZip)
+  for (let i = 0; i < sameZip.length; i++) {
+    let compareAddress = sameZip[i].address;
+    let words = compareAddress.split(" ");
+    words.pop(); 
+    compareAddress = words.join(" ");
+    // console.log(compareAddress);
+
+    let newAddress = address;
+    let words2 = newAddress.split(" ");
+    words2.pop(); 
+    newAddress = words2.join(" ");
+    // console.log(newAddress);
+
+    if (compareAddress === newAddress) {
+      throw 'A court already exists at this location'
+    }
+  }
+
 
   //add court
   let newCourt = {
@@ -92,7 +135,7 @@ const createCourt = async (
     ownerId,
   };
 
-  const courtCollection = await courts();
+  // const courtCollection = await courts();
   const insertInfo = await courtCollection.insertOne(newCourt);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
     throw "Error: Could not add court";

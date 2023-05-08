@@ -162,7 +162,7 @@ router.route("/id/:userId/history").get(async (req, res) => {
       auth: true,
       status: 400,
       //owner: req.session.user.owner,
-      id: req.session.user.id,
+      id: req.session.user.id
     });
   }
   let pastHistory, upcomingHistory;

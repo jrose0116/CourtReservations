@@ -466,7 +466,7 @@ try {
 let court12;
 try {
   court12 = await createCourt(
-    "Volleyball Court at Washington Park",
+    "Washington Park Volleyball Court",
     "volleyball",
     "524 Central Ave",
     "Jersey City",
@@ -487,12 +487,12 @@ try {
 let court13;
 try {
   court13 = await createCourt(
-    "Terrace Avenue Public Tennis Court",
+    "Harmon Tennis Court",
     "tennis",
-    "524 Central Ave",
-    "Jersey City",
+    "1104 Harmon Cove Tower",
+    "Secaucus",
     "NJ",
-    "07307",
+    "07094",
     12,
     60,
     90,

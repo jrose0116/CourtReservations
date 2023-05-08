@@ -18,6 +18,7 @@
         onclick="window.location.href='/user/id/{{user._id}}/editProfile';"
       >Edit Profile!</button>
     {{/if}}
+    <p id="currentUsername" hidden>{{currentUsername}}</p>
     <p id="p-reviewhead">Reviews ({{reviewcount}}):</p>
     <div class="parent">
       <div class="child1">
@@ -25,7 +26,6 @@
         {{#each reviews}}
            <div class="review review-{{this._id}}">
             {{! <li> }}
-           <button onclick="showReportForm('{{this._id}}')" id="report-button-{{this._id}}" class="report-review">Report</button>            
             <p>Reviewer:
               <a
                 href="/user/id/{{this.reviewer_id}}"
@@ -34,9 +34,23 @@
             <p>{{this.comment}}</p>
             <p>Rating: {{this.rating}}</p>
             <p>Date Posted: {{this.date}}</p>
-        <div id="report-form-{{this._id}}" style="display:none;">
+            {{! </li> }}
+          </div>
+        {{/each}}
+        {{! </ul> }}
+      </div>
+    </div>
+    <button onclick="showReportForm()" id="report-button" class="report-review">Report A Review</button>
+        <div id="report-form" style="display:none;">
+              <br>
               <h2>Report Review</h2>
-              <form class="report-form">
+              <form class="report-form" onsubmit="reportFormOnClick()">
+                <label for="reportReviewer">Select Reviewer to report:</label>
+                <select name="reportReviewer" id="reportReviewer">
+                  {{#each reviews}}
+                    <option value="{{this.reviewerUsername}}">{{this.reviewerUsername}}</option>
+                  {{/each}}
+                </select>
                 <label>Inappropriate Content
                   <input
                     class="inappropriate"
@@ -56,17 +70,21 @@
                     value="harassment"
                   >
                 </label>
-                <a href="mailto:courtreservationreports@gmail.com?subject=Report%20Review%20&body=Please%20enter%20reviewer%20and%20reviewee%20here:">REPORT</a>
+                <label>Irrelevant
+                  <input
+                    class="irrelevant"
+                    type="radio"
+                    name="reason"
+                    value="irrelevant"
+                  >
+                </label>
+                <input type="submit" name="submit" value="Submit">
+                {{!-- <a href="mailto:courtreservationreports@gmail.com?subject=Report%20Review%20&body=Please%20enter%20reviewer%20and%20reviewee%20here:">REPORT</a> --}}
                 {{!-- <a href="/user/{{this._id}}/{{this.reviewee_id}}/{{this.reviewer_id}}/report" class="error">REPORT</a> --}}
                 {{!-- <a href="/user/{{this._id}}{{this.reviewee_id}}/{{this.reviewer_id}}/{{this.rating}}/{{this.comment}}/{{this.reports}}/report" class="error">REPORT</a> --}}
               </form>
             </div>
-            {{! </li> }}
-          </div>
-        {{/each}}
-        {{! </ul> }}
-      </div>
-    </div>
+            <div id="error-div" class="error centered"></div>
     {{#if ownPage}}{{else}}
       <button
         onclick="window.location.href='/user/id/{{user._id}}/createReview';"
@@ -74,10 +92,26 @@
     {{/if}}
   </div>
   <script>
-    function showReportForm(reviewId) {
+    function showReportForm() {
       //console.log(reviewId)
-      var reportForm = document.getElementById("report-form-" + reviewId);
+      var reportForm = document.getElementById("report-form");
       reportForm.style.display = "block";
+    }
+    function reportFormOnClick() {
+      if (document.querySelector('input[name="reason"]:checked').value == null)
+      {
+        let errorDiv = document.getElementById("error-div");
+        errorDiv.innerHTML = "Error: Must select a reason for report";
+      }
+      else
+      {
+        var reasonInput = document.querySelector('input[name="reason"]:checked').value;
+        var reviewerUsername = document.getElementById("reportReviewer").value;
+        var currentUsername = document.getElementById("currentUsername").innerHTML;
+        var revieweeUsername = document.getElementById("p-username").innerHTML;
+        let bodyStr = `Reviewer%20Username:%20${reviewerUsername}%0D%0AReviewee%20Username:%20${revieweeUsername}%0D%0AType:%20${reasonInput}%0D%0AReported%20By%20Username:%20${currentUsername}`;
+        location.href = `mailto:courtreservationreports@gmail.com?subject=Report%20Review%20&body=${bodyStr}%0D%0A`;
+      }
     }
   </script>
 </main>

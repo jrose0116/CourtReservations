@@ -231,6 +231,16 @@ router.route("/id/:userId").get(async (req, res) => {
       .status(400)
       .render("error", { error: e, auth: true, status: 400 });
   }
+  let currentUser;
+  try {
+    currentUser = await getUserById(req.session.user.id);
+  }
+  catch (e)
+  {
+    return res
+    .status(404)
+    .render("error", { error: "Current user not found", auth: true, status: 404 });
+  }
   try {
     let user = await getUserById(req.params.userId);
     return res.render("profilePage", {
@@ -242,6 +252,7 @@ router.route("/id/:userId").get(async (req, res) => {
       ownPage: userId == sessionId,
       reviewcount: user.reviews.length,
       owner: isOwner,
+      currentUsername: currentUser.username
     });
   } catch (e) {
     return res

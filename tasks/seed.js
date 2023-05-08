@@ -1075,7 +1075,7 @@ try {
     user2._id.toString(),
     user5._id.toString(),
     1,
-    "This person was not nice on the courts!"
+    "They were really mean"
   );
   if (printReviews) console.log(review2a);
   if (printReviews) console.log(await getUserById(user1._id.toString()));

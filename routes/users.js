@@ -4,7 +4,7 @@ import multer from "multer";
 import { ObjectId } from "mongodb";
 const upload = multer({ dest: "public/images" });
 import fs from "fs";
-import nodemailer from 'nodemailer';
+// import nodemailer from 'nodemailer';
 import {
   createUser,
   getUserById,
@@ -448,34 +448,34 @@ router
     }
   });  
 
-  router
+  // router
   // .route("/:reviewId/:revieweeId/:reviewerId/:rating/:comment/:reportNum/report")
-  .route("/:reviewId/:revieweeId/:reviewerId/report")
-  .get(async (req, res) => {
-    console.log("REPORT LINK ENTER");
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'courtreservationreports@gmail.com',
-        pass: 'CS546!**'
-      }
-    });
+  // .route("/:reviewId/:revieweeId/:reviewerId/report")
+  // .get(async (req, res) => {
+  //   console.log("REPORT LINK ENTER");
+  //   const transporter = nodemailer.createTransport({
+  //     service: 'gmail',
+  //     auth: {
+  //       user: 'courtreservationreports@gmail.com',
+  //       pass: 'CS546!**'
+  //     }
+  //   });
   
-    // Define the email options
-    const mailOptions = {
-      from: 'courtreservationreports@gmail.com',
-      to: 'ibellarose1@gmail.com',
-      subject: 'Report Review',
-      text: 'Type of report'
-    };
+  //   // Define the email options
+  //   const mailOptions = {
+  //     from: 'courtreservationreports@gmail.com',
+  //     to: 'ibellarose1@gmail.com',
+  //     subject: 'Report Review',
+  //     text: 'Type of report'
+  //   };
 
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+  //   transporter.sendMail(mailOptions, function(error, info){
+  //     if (error) {
+  //       console.log(error);
+  //     } else {
+  //       console.log('Email sent: ' + info.response);
+  //     }
+  //   });
 
 
     // console.log("REPORT LINK ENTER");
@@ -498,6 +498,6 @@ router
     //     .status(404)
     //     .render("error", { error: "User not found", auth: true, status: 404 });
     // }
-  });
+  // });
 
 export default router;

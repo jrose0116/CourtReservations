@@ -122,7 +122,7 @@ const createUser = async (
     reviews: [],
     history: [],
     overallRating: 0,
-    reportedBy: []
+    report: []
   };
   const usersCollection = await users();
   // check if username already exists
@@ -418,24 +418,48 @@ const checkUser = async (email, password) => {
   };
 };
 
-const addReportedByUser = async (userId, reportedByUsername) => {
-  reportedByUsername = validStr(reportedByUsername);
-  let user = await getUserById(userId);
-  let buildReportedArray = user.reportedBy;
+const addReportedByUser = async (userId, writtenByUsername, writtenAboutId, reason) => {
+  //userId reported it
+  console.log("DATA REPORTING");
+  let user, by, about;
+  try {
+    user = await getUserById(userId);
+    by = await getUserByUsername(writtenByUsername);
+    about = await getUserById(writtenAboutId);
+    reason = validStr(reason, "reason");
+  }
+  catch (e)
+  {
+    throw e;
+  }
+  if (by._id == user._id)
+  {
+    throw "Error: cannot report your own review";
+  }
+  
+  let buildReportedArray = user.report;
   for (let i=0; i<buildReportedArray.length;i++)
   {
-    if (buildReportedArray[i].localeCompare(reportedByUsername) == 0)
+    if (buildReportedArray[i].reviewer.localeCompare(by.username) == 0 &&
+    buildReportedArray[i].reviewee.localeCompare(about.username) == 0)
     {
-      throw "Error: Already reported this user";
+      throw "Error: Already reported this review";
     }
   }
-  buildReportedArray.push(reportedByUsername);
+  //data stored in user (reported by)
+  let buildObjToPush =
+  {
+    reviewer: by.username,
+    reviewee: about.username,//who the review is about
+    reason: reason
+  };
+  buildReportedArray.push(buildObjToPush);
 
   const usersCollection = await users();
 
   const updateInfo = await usersCollection.findOneAndUpdate(
     { _id: new ObjectId(userId) },
-    { $set: {reportedBy: buildReportedArray} },
+    { $set: {report: buildReportedArray} },
     { returnDocument: "after" }
   );
   if (updateInfo.lastErrorObject.n === 0) throw "Error: Update failed";

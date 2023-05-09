@@ -513,4 +513,80 @@ router
     // }
   // });
 
+  router
+  .route("/id/:userId/reportReview")
+  .post(async (req, res) => {
+    //console.log("REPORT REVIEW");
+    let userId, currentId;
+    let sessionId;
+    try {
+      userId = validId(req.params.userId);
+      sessionId = validId(req.session.user.id);
+    } catch (e) {
+      return res.status(400).render("error", {
+        error: e,
+        auth: true,
+        status: 400,
+        //owner: req.session.user.owner,
+        id: req.session.user.id,
+      });
+    }
+    let isOwner = await checkIfOwner(req.params.userId);
+
+    let currentUser;
+    let user;
+    try {
+      currentUser = await getUserById(req.session.user.id);
+      user = currentUser;
+    }
+    catch (e)
+    {
+      return res
+      .status(404)
+      .render("error", { error: "Current user not found", auth: true, status: 404 });
+    }
+    let reportedArray;
+    try {
+      //(session user, reviever from input, user whose page it is)
+      //(id, username, id)
+      reportedArray = await addReportedByUser(req.session.user.id, req.body.reportReviewer, userId, req.body.reasonType);
+      console.log(reportedArray);
+    }
+    catch (e)
+    {
+      return res.render("profilePage", {
+        id: req.session.user.id,
+        //title: req.params.username,
+        user: user,
+        reviews: user.reviews,
+        auth: true,
+        ownPage: user._id == sessionId,
+        reviewcount: user.reviews.length,
+        owner: isOwner,
+        currentUsername: currentUser.username,
+        reportReviewsArray: true,
+        error: e
+      });
+    }
+
+    try {
+      return res.render("profilePage", {
+        id: req.session.user.id,
+        //title: req.params.username,
+        user: user,
+        reviews: user.reviews,
+        auth: true,
+        ownPage: user._id == sessionId,
+        reviewcount: user.reviews.length,
+        owner: isOwner,
+        currentUsername: currentUser.username,
+        reportReviewsArray: true
+      });
+    } catch (e) {
+      return res
+        .status(404)
+        .render("error", { error: "User not found", auth: true, status: 404 });
+    }
+  });
+
 export default router;

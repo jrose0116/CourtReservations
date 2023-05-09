@@ -99,9 +99,16 @@ router
     }
 
     // console.log(upcomingList)
-
+    let noCourts = false;
+    if (upcomingList.length === 0) {
+      noCourts = true;
+    }
+    // console.log(noCourts)
+    // console.log(courtList.length)
+    // console.log(upcomingList.length)
     return res.render("allCourts", {
       title: "Courts",
+      none: noCourts,
       courts: courtList,
       upcoming: upcomingList,
       auth: true,
@@ -204,9 +211,13 @@ router
     }
 
     // console.log(upcomingList)
-
+    let noCourts = false;
+    if (upcomingList.length === 0) {
+      noCourts = true;
+    }
     return res.render("allCourts", {
       title: "Courts",
+      none: noCourts,
       courts: courtList,
       upcoming: upcomingList,
       auth: true,

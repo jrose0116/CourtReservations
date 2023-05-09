@@ -1,46 +1,54 @@
 <h1 id="avail-title">{{title}}</h1>
 <button id="filter-btn">Filter</button>
 <main>
-  <div class="parent">
-    <div class="child2" id="courtsList">
-      <h2>Available Courts</h2>
-      {{#each courts}}
-        <div class="court-card">
-          <h2>{{this.name}}</h2>
-          <p>{{this.type}}</p>
-          <p>
-            {{this.address}},
-            {{this.city}},
-            {{this.state}}
-            {{this.zip}}</p>
-          <p>{{this.distance}}</p>
-          <a href="/courts/{{this._id}}">Click for Details</a>
-        </div>
-      {{/each}}
-    </div>
+    <div class="parent">
+      <div class="child2" id="courtsList">
+        <h2>Available Courts</h2>
+        {{#each courts}}
+          <div class="court-card">
+            <h2>{{this.name}}</h2>
+            <p>{{this.type}}</p>
+            <p>
+              {{this.address}},
+              {{this.city}},
+              {{this.state}}
+              {{this.zip}}</p>
+            <p>{{this.distance}}</p>
+            <a href="/courts/{{this._id}}">Click for Details</a>
+          </div>
+        {{/each}}
+      </div>
+        {{#if none}}
+            <div class="child2">
+              <h2>Upcoming Reservations: </h2>
+              <p>Sorry, you don't have any upcoming reservations yet! Once you make a reservation it will apear here.</p>
+            </div>
+        {{else}}
+        <div class="child2">
+          <h2>Upcoming Reservations: </h2>
+          {{#each upcoming}}
+            <div class="court-card">
+              <h2>{{this.court.name}}</h2>
+              <p class="date">{{this.date}}</p>
+              <p class="date">{{this.startTime}} - {{this.endTime}}</p>
+              <p>{{this.court.type}}</p>
+              <p>
+                {{this.court.address}},
+                {{this.court.city}},
+                {{this.court.state}}
+                {{this.court.zip}}</p>
+              <p>{{this.court.distance}}</p>
+              <a href="/courts/{{this.court._id}}">Click for Details</a>
+              <br>
+              <br>
+              <a href="/courts/{{this.court._id}}/{{this._id}}/cancel" class="error">CANCEL</a>
+            </div>
+          {{/each}}
+        {{/if}}
+      </div>
 
-    <div class="child2">
-      <h2>Upcoming Reservations: </h2>
-      {{#each upcoming}}
-        <div class="court-card">
-          <h2>{{this.court.name}}</h2>
-          <p class="date">{{this.date}}</p>
-          <p class="date">{{this.startTime}} - {{this.endTime}}</p>
-          <p>{{this.court.type}}</p>
-          <p>
-            {{this.court.address}},
-            {{this.court.city}},
-            {{this.court.state}}
-            {{this.court.zip}}</p>
-          <p>{{this.court.distance}}</p>
-          <a href="/courts/{{this.court._id}}">Click for Details</a>
-          <br>
-          <br>
-          <a href="/courts/{{this.court._id}}/{{this._id}}/cancel" class="error">CANCEL</a>
-        </div>
-      {{/each}}
-    </div>
-  </div>
+
+  
 
   <div id="filter-modal" hidden>
     <form id="filter-form" method="post" action="/courts/available">

@@ -250,7 +250,7 @@ router.route("/id/:userId").get(async (req, res) => {
       reviews: user.reviews,
       auth: true,
       ownPage: userId == sessionId,
-      reviewcount: user.reviews.length,
+      //reviewcount: user.reviews.length,
       owner: isOwner,
       currentUsername: currentUser.username
     });
@@ -535,7 +535,9 @@ router
 
     let currentUser;
     let user;
+    let revertToUser;
     try {
+      revertToUser = await getUserById(userId);
       currentUser = await getUserById(req.session.user.id);
       user = currentUser;
     }
@@ -550,18 +552,18 @@ router
       //(session user, reviever from input, user whose page it is)
       //(id, username, id)
       reportedArray = await addReportedByUser(req.session.user.id, req.body.reportReviewer, userId, req.body.reasonType);
-      console.log(reportedArray);
+      //console.log(reportedArray);
     }
     catch (e)
     {
       return res.render("profilePage", {
         id: req.session.user.id,
         //title: req.params.username,
-        user: user,
-        reviews: user.reviews,
+        user: revertToUser,//change here
+        reviews: revertToUser.reviews,
         auth: true,
-        ownPage: user._id == sessionId,
-        reviewcount: user.reviews.length,
+        ownPage: revertToUser._id == sessionId,
+        //reviewcount: user.reviews.length,
         owner: isOwner,
         currentUsername: currentUser.username,
         reportReviewsArray: true,
@@ -573,11 +575,11 @@ router
       return res.render("profilePage", {
         id: req.session.user.id,
         //title: req.params.username,
-        user: user,
-        reviews: user.reviews,
+        user: revertToUser,//change here
+        reviews: revertToUser.reviews,
         auth: true,
-        ownPage: user._id == sessionId,
-        reviewcount: user.reviews.length,
+        ownPage: revertToUser._id == sessionId,
+        //reviewcount: user.reviews.length,
         owner: isOwner,
         currentUsername: currentUser.username,
         reportReviewsArray: true

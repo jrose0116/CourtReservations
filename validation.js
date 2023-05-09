@@ -143,19 +143,23 @@ const validAddress = async (addressLine, city, state, zip/*, key*/) => {
   // console.log(address)
 
   try {
-    const res = await geocoder.geocode(address);
-    //console.log(res)
-    if (res.length === 0)
+    //console.log("A");
+    const result = await geocoder.geocode(address);
+    //console.log(result)
+    if (result.length === 0)
     {
       // console.log("inner");
       return false;
     }
-    const { latitude, longitude } = res[0];
+    //console.log("MIDDLE");
+    const { latitude, longitude } = result[0];
     //console.log(`The latitude and longitude of ${address} are: ${latitude}, ${longitude}`);
   }
   catch (e) {
-    //console.log("Caught in validaddress")
-    console.error(e);
+    //console.log(result);
+    //console.log("Caught in validaddress");
+    //console.log(e);
+    //console.error(e);
     return false;
   }
   return true;

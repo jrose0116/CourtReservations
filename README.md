@@ -1,4 +1,6 @@
 # CourtReservations
+Instructions to run:
+
 - unzip files
 - cd into folder and 'run npm i'
 - run 'npm run seed'

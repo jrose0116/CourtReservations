@@ -12,6 +12,7 @@ let level = document.getElementById('levelInput');
 let password = document.getElementById('passwordInput');
 let confirmPassword = document.getElementById('confirmPasswordInput');
 let errorDiv = document.getElementById('error-div');
+let serverErrors = document.getElementById('server-errors');
 
 const validNumber = (num, varName, isInteger, rangeLow, rangeHigh) => {
 	/* 
@@ -144,7 +145,9 @@ const validUsername = (username) => {
 };
 
 if (registerForm) {
-  registerForm.addEventListener('submit', (event) => {    
+  registerForm.addEventListener('submit', (event) => {   
+    serverErrors.hidden = true;
+
     errorDiv.hidden = false;
     errorDiv.innerHTML = "";
     let emptyFirst = false;

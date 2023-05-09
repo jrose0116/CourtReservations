@@ -2,6 +2,7 @@ let loginForm = document.getElementById("login-form");
 let emailAddress = document.getElementById("emailAddressInput");
 let password = document.getElementById("passwordInput");
 let errorDiv = document.getElementById("error-div");
+let serverErrors = document.getElementById("server-errors");
 
 const validStr = (str, varName) => {
 	let strName = varName || "String variable";
@@ -45,7 +46,9 @@ const checkPassword = (password) => {
 
 if (loginForm) {
   loginForm.addEventListener("submit", (event) => {
-    console.log("login submit js!!!!!!");
+    // console.log("login submit js!!!!!!");
+
+    serverErrors.hidden = true;
 
     errorDiv.hidden = false;
     errorDiv.innerHTML = "";

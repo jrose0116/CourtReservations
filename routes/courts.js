@@ -570,6 +570,7 @@ router
       auth: true,
       title: `Reserve ${thisCourt.name}`,
       court: thisCourt,
+      // id: thisCourt._id,
       id: thisCourt._id,
       mindate: currentDateStr,
       maxdate: maxDateStr,

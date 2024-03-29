@@ -1,5 +1,5 @@
 import express from "express";
-import session from "express-session";
+import session from "cookie-session";
 const app = express();
 import configRoutes from "./routes/index.js";
 import { fileURLToPath } from "url";

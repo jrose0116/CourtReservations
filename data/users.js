@@ -467,6 +467,8 @@ const addReportedByUser = async (userId, writtenByUsername, writtenAboutId, reas
   return buildReportedArray;
 };
 
+//await createUser("julian", "perez", "dumasasb", "hello21!762H", 21, "old birgde", "NJ", "08857", "jperez@stevens.edu", "intermediate");
+
 export {
   createUser,
   getUserById,
